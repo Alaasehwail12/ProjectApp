@@ -122,9 +122,33 @@ public class traineeSignUpFragment extends Fragment {
         EditText addressEditText = (EditText) getActivity().findViewById(R.id.addresstext);
         Button photo_button = (Button) getActivity().findViewById(R.id.photoButton);
         Button signUpButton = (Button) getActivity().findViewById(R.id.signUpButton);
-        image_view2 = (ImageView) getActivity().findViewById(R.id.imageView2);
+        image_view2 = (ImageView) getActivity().findViewById(R.id.imageView_trniee);
 
         TextView error = (TextView) getActivity().findViewById(R.id.error);
+
+        photo_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ByteArrayOutputStream byteoutput;
+                byteoutput = new ByteArrayOutputStream();
+                isButtonNotPressed = true;
+                if(bitmap != null){
+                    bitmap.compress(Bitmap.CompressFormat.JPEG,100,byteoutput);
+                    bytes = byteoutput.toByteArray();
+                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                        final String base64image = Base64.getEncoder().encodeToString(bytes);
+                        //showphoto.setText(base64image);
+                        //    image_view2.setBackground(d2);
+
+                    }
+                    // Bitmap bitmapImageDB = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                }
+                else{
+                }
+
+            }
+        });
+
 
         image_view2.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -134,6 +158,10 @@ public class traineeSignUpFragment extends Fragment {
                 activityResultLauncher2.launch(intent);
             }
         });
+
+
+
+
 
         signUpButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -200,28 +228,6 @@ public class traineeSignUpFragment extends Fragment {
                 }
 
 
-                photo_button.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        ByteArrayOutputStream byteoutput;
-                        byteoutput = new ByteArrayOutputStream();
-                        isButtonNotPressed = true;
-                        if(bitmap != null){
-                            bitmap.compress(Bitmap.CompressFormat.JPEG,100,byteoutput);
-                            bytes = byteoutput.toByteArray();
-                            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-                                final String base64image = Base64.getEncoder().encodeToString(bytes);
-                                //showphoto.setText(base64image);
-                                image_view2.setBackground(d2);
-
-                            }
-                            // Bitmap bitmapImageDB = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-                        }
-                        else{
-                        }
-
-                    }
-                });
 
                 DataBaseHelper dbHelper = new DataBaseHelper(requireContext(), "Database", null, 1);
                 trainee user = new trainee();
@@ -300,15 +306,15 @@ public class traineeSignUpFragment extends Fragment {
 
 
                 Cursor allTraineeCursor = dbHelper.getAllTrainees();
-                /*while (allTraineeCursor.moveToNext()){ //this function allow me to move between data
+                while (allTraineeCursor.moveToNext()){ //this function allow me to move between data
                     System.out.println("Email= "+allTraineeCursor.getString(0) +"\nFirstName= "+allTraineeCursor.getString(1)
                             +"\nLastName= "+allTraineeCursor.getString(2)
                             +"\nPassword= "+allTraineeCursor.getString(3)
-                            +"\nPhoto= "+allTraineeCursor.getString(4)+
+                            +"\nPhoto= "+allTraineeCursor.getBlob(4)+
                             "\nMobile Number= "+allTraineeCursor.getString(5)+
                             "\nAddress= "+allTraineeCursor.getString(6)+
                             "\n\n" );
-                }*/
+                }
                 if (somethingWrong[0]) {
                     error.setTextColor(Color.RED);
                     error.setText(errorMessage[0]);

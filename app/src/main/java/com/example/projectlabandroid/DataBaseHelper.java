@@ -77,12 +77,13 @@ public class DataBaseHelper extends SQLiteOpenHelper {
             contentValues.put("LASTNAME", user.getLast_name());
             contentValues.put("PASSWORD", user.getPassword());
             contentValues.put("PHOTO", user.getPhoto());
-            contentValues.put("PHONE", user.getMobile_number());
+            contentValues.put("mobile_number", user.getMobile_number());
             contentValues.put("ADDRESS", user.getAddress());
             contentValues.put("SPECIALIZATION", user.getSpecialization());
             contentValues.put("DEGREE", user.getDegree());
             sqLiteDatabase.insert("instructor", null, contentValues);
-            return true;}
+            return true;
+        }
         return false;
 
     }

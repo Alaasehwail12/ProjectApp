@@ -221,7 +221,29 @@ public class instructorSignupFragment extends Fragment {
                 activityResultLauncher2.launch(intent);
             }
         });
+        DataBaseHelper dbHelper = new DataBaseHelper(requireContext(), "Database", null, 1);
+        instructor user = new instructor();
 
+        photo_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ByteArrayOutputStream byteoutput;
+                byteoutput = new ByteArrayOutputStream();
+                isButtonNotPressed = true;
+                if(bitmap != null){
+                    bitmap.compress(Bitmap.CompressFormat.JPEG,100,byteoutput);
+                    bytes = byteoutput.toByteArray();
+                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                        final String base64image = Base64.getEncoder().encodeToString(bytes);
+
+                    }
+                    // Bitmap bitmapImageDB = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                }
+                else{
+                }
+
+            }
+        });
         signUpButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -306,30 +328,8 @@ public class instructorSignupFragment extends Fragment {
 //                }
 
 
-                photo_button.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        ByteArrayOutputStream byteoutput;
-                        byteoutput = new ByteArrayOutputStream();
-                        isButtonNotPressed = true;
-                        if(bitmap != null){
-                            bitmap.compress(Bitmap.CompressFormat.JPEG,100,byteoutput);
-                            bytes = byteoutput.toByteArray();
-                            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-                                final String base64image = Base64.getEncoder().encodeToString(bytes);
-                                image.setBackground(d2);
 
-                            }
-                            // Bitmap bitmapImageDB = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-                        }
-                        else{
-                        }
 
-                    }
-                });
-
-                DataBaseHelper dbHelper = new DataBaseHelper(requireContext(), "Database", null, 1);
-                instructor user = new instructor();
 
                 if (!isEmailValid(emailEditText.getText().toString().trim())) {
                     somethingWrong[0] = true;
@@ -434,26 +434,25 @@ public class instructorSignupFragment extends Fragment {
                     }
                 }
 
+                Cursor allInstructorCursor = dbHelper.getAllInstructors();
+                while (allInstructorCursor.moveToNext()){ //this function allow me to move between data
+
+                    System.out.println("Email= "+allInstructorCursor.getString(0) +"\nFirstName= "+allInstructorCursor.getString(1)
+                            +"\nLastName= "+allInstructorCursor.getString(2)
+                            +"\nPassword= "+allInstructorCursor.getString(3)
+                            +"\nPhoto= "+allInstructorCursor.getBlob(4)+
+                            "\nMobile Number= "+allInstructorCursor.getString(5)+
+                            "\nAddress= "+allInstructorCursor.getString(6)+
+                            "\nSpecialization= "+allInstructorCursor.getString(7)+
+                            "\nDegree= "+allInstructorCursor.getString(8)+
+                            "\n\n" );
+                }
                 if (somethingWrong[0]) {
                     error.setTextColor(Color.RED);
                     error.setText(errorMessage[0]);
                     Toast toast =Toast.makeText(getActivity(),"Error in Information",Toast.LENGTH_SHORT);
                     toast.show();
                 } else {
-
-//                    Cursor allInstructorCursor = dbHelper.getAllInstructors();
-//                    while (allInstructorCursor.moveToNext()){ //this function allow me to move between data
-//
-//                        t.setText("Email= "+allInstructorCursor.getString(0) +"\nFirstName= "+allInstructorCursor.getString(1)
-//                                +"\nLastName= "+allInstructorCursor.getString(2)
-//                                +"\nPassword= "+allInstructorCursor.getString(3)
-//                                +"\nPhoto= "+allInstructorCursor.getString(4)+
-//                                "\nMobile Number= "+allInstructorCursor.getString(5)+
-//                                "\nAddress= "+allInstructorCursor.getString(6)+
-//                                "\nSpecialization= "+allInstructorCursor.getString(7)+
-//                                "\nDegree= "+allInstructorCursor.getString(8)+
-//                                "\n\n" );
-//                    }
                     error.setTextColor(Color.BLACK);
                     error.setText("Signing up is done successfully!");
                     Toast toast =Toast.makeText(getActivity(),"Signing up is done successfully!",Toast.LENGTH_SHORT);

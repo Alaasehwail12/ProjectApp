@@ -130,7 +130,26 @@ public class adminSignUpFragment extends Fragment {
 
         GradientDrawable d2 = new GradientDrawable();
 
+        photo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ByteArrayOutputStream byteoutput;
+                byteoutput = new ByteArrayOutputStream();
+                isButtonNotPressed = true;
+                if(bitmap != null){
+                    bitmap.compress(Bitmap.CompressFormat.JPEG,100,byteoutput);
+                    bytes = byteoutput.toByteArray();
+                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                        final String base64image = Base64.getEncoder().encodeToString(bytes);
+                        //showphoto.setText(base64image);
+                        image_view.setBackground(d2);
 
+                    }
+                    // Bitmap bitmapImageDB = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                }
+
+            }
+        });
         image_view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -197,28 +216,7 @@ public class adminSignUpFragment extends Fragment {
                     image_view.setBackground(d2);
                 }
 
-                photo.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        ByteArrayOutputStream byteoutput;
-                        byteoutput = new ByteArrayOutputStream();
-                        isButtonNotPressed = true;
-                        if(bitmap != null){
-                            bitmap.compress(Bitmap.CompressFormat.JPEG,100,byteoutput);
-                            bytes = byteoutput.toByteArray();
-                            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-                                final String base64image = Base64.getEncoder().encodeToString(bytes);
-                                //showphoto.setText(base64image);
-                                image_view.setBackground(d2);
 
-                            }
-                            // Bitmap bitmapImageDB = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-                        }
-                        else{
-                        }
-
-                    }
-                });
 
                 DataBaseHelper dbHelper = new DataBaseHelper(requireContext(), "Database", null, 1);
                 admin user = new admin();
@@ -290,7 +288,7 @@ public class adminSignUpFragment extends Fragment {
                     System.out.println("Email= "+allAdminCursor.getString(0) +"\nFirstName= "+allAdminCursor.getString(1)
                             +"\nLastName= "+allAdminCursor.getString(2)
                             +"\nPassword= "+allAdminCursor.getString(3)
-                            +"\nPhoto= "+allAdminCursor.getString(4)+
+                            +"\nPhoto= "+allAdminCursor.getBlob(4)+
                             "\n\n" );
                 }
 
@@ -310,7 +308,7 @@ public class adminSignUpFragment extends Fragment {
                     builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
-                            startActivity(new Intent(requireContext(), MainActivity.class));
+                            startActivity(new Intent(requireContext(), logIn.class));
 
                             fname.setText("");
                             lname.setText("");

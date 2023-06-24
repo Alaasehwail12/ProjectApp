@@ -18,7 +18,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL("CREATE TABLE admin(EMAIL TEXT PRIMARY KEY, FIRSTNAME TEXT, LASTNAME TEXT, PASSWORD TEXT NOT NULL,PHOTO BLOB)");
         sqLiteDatabase.execSQL("CREATE TABLE traniee(EMAIL TEXT PRIMARY KEY, FIRSTNAME TEXT, LASTNAME TEXT, PASSWORD TEXT NOT NULL,PHOTO BLOB,mobile_number TEXT,ADDRESS TEXT)");
         sqLiteDatabase.execSQL("CREATE TABLE instructor(EMAIL TEXT PRIMARY KEY, FIRSTNAME TEXT, LASTNAME TEXT, PASSWORD TEXT NOT NULL,PHOTO BLOB,mobile_number TEXT,ADDRESS TEXT,DEGREE TEXT,SPECIALIZATION TEXT )");
-        sqLiteDatabase.execSQL("CREATE TABLE Course(CNum TEXT PRIMARY KEY, Ctitle TEXT, CTopics TEXT, prerequisites TEXT ,PHOTO BLOB )");
+        sqLiteDatabase.execSQL("CREATE TABLE Course(CNum INTEGER PRIMARY KEY AUTOINCREMENT, Ctitle TEXT, CTopics TEXT, prerequisites TEXT ,PHOTO BLOB )");
         sqLiteDatabase.execSQL("CREATE TABLE Course_instructor( EMAIL TEXT , Ctitle TEXT, PRIMARY KEY(EMAIL, Ctitle), FOREIGN KEY (EMAIL) REFERENCES instructor(EMAIL) ON DELETE CASCADE ON UPDATE CASCADE, FOREIGN KEY (Ctitle) REFERENCES Course(Ctitle))");
     }
 
@@ -98,6 +98,101 @@ public class DataBaseHelper extends SQLiteOpenHelper {
             sqLiteDatabase.insert("Course_instructor", null, contentValues);
         }
     }
+////////////////////////admin//////////////
+    public boolean isadminRegistered(String email){
+        SQLiteDatabase sqLiteDatabase = getReadableDatabase();
+        Cursor cursor = sqLiteDatabase.rawQuery("SELECT * FROM admin WHERE EMAIL = \"" + email + "\";", null);
+        return cursor.moveToFirst();
+    }
+
+    public boolean correctadminSignIn(String email, String password){
+        SQLiteDatabase sqLiteDatabase = getReadableDatabase();
+        Cursor cursor = sqLiteDatabase.rawQuery("SELECT * FROM admin WHERE EMAIL = \"" + email + "\" AND PASSWORD = \"" + password + "\";", null);
+        return cursor.moveToFirst();
+    }
+
+
+    public admin getadminByEmail(String email){
+        SQLiteDatabase sqLiteDatabaseR = getReadableDatabase();
+        admin user = new admin();
+        Cursor cursor = sqLiteDatabaseR.rawQuery("SELECT * FROM admin WHERE EMAIL = \"" + email + "\";", null);
+        if (cursor.moveToFirst()) {
+            user.setEmail(cursor.getString(0));
+            user.setFirst_name(cursor.getString(1));
+            user.setLast_name(cursor.getString(2));
+            user.setPassword(cursor.getString(3));
+            user.setBytes(cursor.getBlob(4));
+        }
+        return user;
+    }
+
+//////////////////////////trainee/////////////////////
+
+    public boolean istraineeRegistered(String email){
+        SQLiteDatabase sqLiteDatabase = getReadableDatabase();
+        Cursor cursor = sqLiteDatabase.rawQuery("SELECT * FROM traniee WHERE EMAIL = \"" + email + "\";", null);
+        return cursor.moveToFirst();
+    }
+
+
+    public boolean correcttranieeSignIn(String email, String password){
+        SQLiteDatabase sqLiteDatabase = getReadableDatabase();
+        Cursor cursor = sqLiteDatabase.rawQuery("SELECT * FROM traniee WHERE EMAIL = \"" + email + "\" AND PASSWORD = \"" + password + "\";", null);
+        return cursor.moveToFirst();
+    }
+
+
+    public trainee gettraineeByEmail(String email){
+        SQLiteDatabase sqLiteDatabaseR = getReadableDatabase();
+        trainee user = new trainee();
+        Cursor cursor = sqLiteDatabaseR.rawQuery("SELECT * FROM traniee WHERE EMAIL = \"" + email + "\";", null);
+        if (cursor.moveToFirst()) {
+            user.setEmail(cursor.getString(0));
+            user.setFirst_name(cursor.getString(1));
+            user.setLast_name(cursor.getString(2));
+            user.setPassword(cursor.getString(3));
+            user.setPhoto(cursor.getBlob(4));
+            user.setMobile_number(cursor.getString(5));
+            user.setAddress(cursor.getString(6));
+        }
+        return user;
+    }
+
+
+    /////////////////////////////////////instructor////////////////
+
+    public boolean isinstructorRegistered(String email){
+        SQLiteDatabase sqLiteDatabase = getReadableDatabase();
+        Cursor cursor = sqLiteDatabase.rawQuery("SELECT * FROM INSTRUCTOR WHERE EMAIL = \"" + email + "\";", null);
+        return cursor.moveToFirst();
+    }
+
+
+    public boolean correctinstructoSignIn(String email, String password){
+        SQLiteDatabase sqLiteDatabase = getReadableDatabase();
+        Cursor cursor = sqLiteDatabase.rawQuery("SELECT * FROM INSTRUCTOR WHERE EMAIL = \"" + email + "\" AND PASSWORD = \"" + password + "\";", null);
+        return cursor.moveToFirst();
+    }
+
+
+    public instructor getinstructoByEmail(String email){
+        SQLiteDatabase sqLiteDatabaseR = getReadableDatabase();
+        instructor user = new instructor();
+        Cursor cursor = sqLiteDatabaseR.rawQuery("SELECT * FROM INSTRUCTOR WHERE EMAIL = \"" + email + "\";", null);
+        if (cursor.moveToFirst()) {
+            user.setEmail(cursor.getString(0));
+            user.setFirst_name(cursor.getString(1));
+            user.setLast_name(cursor.getString(2));
+            user.setPassword(cursor.getString(3));
+            user.setPhoto(cursor.getBlob(4));
+            user.setMobile_number(cursor.getString(5));
+            user.setAddress(cursor.getString(6));
+            user.setSpecialization(cursor.getString(7));
+            user.setDegree(cursor.getString(8));
+        }
+        return user;
+    }
+////////////////////////////////////////////////////////////////////////
     public Cursor getAllInstructors() { //read from database it returns cursor object
         SQLiteDatabase sqLiteDatabase = getReadableDatabase();
         return sqLiteDatabase.rawQuery("SELECT * FROM INSTRUCTOR", null); //null value returned when an error ocurred

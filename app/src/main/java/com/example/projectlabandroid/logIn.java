@@ -56,6 +56,7 @@ public class logIn extends AppCompatActivity {
                     @Override
                     public void onCheckedChanged(RadioGroup radioGroup, int checkedId) {
                         switch (checkedId) {
+                            //////alaaaaaaaaaaaaaaaaaaaa
 
                             case R.id.admin2:
                                 if (!dbHelper.isadminRegistered(enteredEmail))

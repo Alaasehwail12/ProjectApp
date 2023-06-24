@@ -12,6 +12,9 @@
         android:theme="@style/Theme.ProjectLabandroid"
         tools:targetApi="31">
         <activity
+            android:name=".HomeLayout"
+            android:exported="false" />
+        <activity
             android:name=".traineeSignUpFragment"
             android:exported="false"
             android:label="@string/title_activity_trainee_sign_up_fragment"

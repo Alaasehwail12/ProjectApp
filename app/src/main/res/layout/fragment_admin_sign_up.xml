@@ -28,7 +28,7 @@
                 android:layout_height="133dp"
                 android:layout_marginLeft="25dp"
                 android:layout_weight="1"
-                android:src="@drawable/admin" />
+                android:src="@drawable/adminpic" />
             <TextView
                 android:id="@+id/textView"
                 android:layout_width="match_parent"

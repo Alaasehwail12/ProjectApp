@@ -72,7 +72,7 @@ public class logIn extends AppCompatActivity {
                                     ad= dbHelper.getadminByEmail(email.getText().toString().trim());
                                     Toast.makeText(logIn.this, "the login procsess succesfull for admin!", Toast.LENGTH_SHORT).show();
 
-                                    //startActivity(new Intent(logIn.this, HomeScreen.class));
+                                    startActivity(new Intent(logIn.this, HomeLayout.class));
                                 }
 
                                 break;

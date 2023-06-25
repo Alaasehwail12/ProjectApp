@@ -6,14 +6,14 @@ public class Course {
     private String Ctitle;
     private String CTopics;
     private String prerequisites;
-    private Byte [] photo;
+    private byte [] photo;
 
 
-    private Course(){
+    public Course(){
 
     }
 
-    public Course(String CNum, String ctitle, String CTopics, String prerequisites, Byte[] photo) {
+    public Course(String CNum, String ctitle, String CTopics, String prerequisites, byte[] photo) {
         this.CNum = CNum;
         Ctitle = ctitle;
         this.CTopics = CTopics;
@@ -53,11 +53,11 @@ public class Course {
         this.prerequisites = prerequisites;
     }
 
-    public Byte[] getPhoto() {
+    public byte[] getPhoto() {
         return photo;
     }
 
-    public void setPhoto(Byte[] photo) {
+    public void setPhoto(byte[] photo) {
         this.photo = photo;
     }
 

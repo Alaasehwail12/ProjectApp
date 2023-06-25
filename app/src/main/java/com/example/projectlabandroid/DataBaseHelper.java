@@ -43,6 +43,24 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         return false;
     }
 
+    public void insertCourse(Course course) {
+      //  SQLiteDatabase sqLiteDatabaseR = getReadableDatabase();
+       // Cursor cursor = sqLiteDatabaseR.rawQuery("SELECT * FROM Course WHERE Ctitle = \"" + course.getCtitle(), null);
+
+     //   if (cursor.moveToFirst()) {
+            SQLiteDatabase sqLiteDatabase = getWritableDatabase();
+            ContentValues contentValues = new ContentValues();
+            int i = 0;
+            //contentValues.put("CNum", i++);
+            contentValues.put("Ctitle", course.getCtitle());
+            contentValues.put("CTopics", course.getCTopics());
+            contentValues.put("prerequisites", course.getPrerequisites());
+            contentValues.put("PHOTO", course.getPhoto());
+            sqLiteDatabase.insert("course", null, contentValues);
+
+       // }
+    }
+
     public boolean inserttrainee(trainee user) {
         SQLiteDatabase sqLiteDatabaseR = getReadableDatabase();
         Cursor cursor = sqLiteDatabaseR.rawQuery("SELECT * FROM traniee WHERE EMAIL = \"" + user.getEmail() + "\";", null);
@@ -206,6 +224,11 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     public Cursor getAllTrainees() { //read from database it returns cursor object
         SQLiteDatabase sqLiteDatabase = getReadableDatabase();
         return sqLiteDatabase.rawQuery("SELECT * FROM traniee", null); //null value returned when an error ocurred
+    }
+
+    public Cursor getAllCourses() { //read from database it returns cursor object
+        SQLiteDatabase sqLiteDatabase = getReadableDatabase();
+        return sqLiteDatabase.rawQuery("SELECT * FROM Course", null); //null value returned when an error ocurred
     }
 
 }

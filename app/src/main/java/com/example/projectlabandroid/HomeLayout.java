@@ -35,11 +35,15 @@ public class HomeLayout extends AppCompatActivity {
                 int id = item.getItemId();
                 drawerLayout.closeDrawer(GravityCompat.START);
                 switch (id){
-                    case R.id.profile:
+                    case R.id.insprofile:
                         getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, new ProfileFragment()).commit();
                         break;
+//                    case R.id.trineeprofile:
+//                        getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, new ProfileFragment()).commit();
+//                        break;
+
                     case R.id.course:
-                       getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, new CourseFragment()).commit();
+                       getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, new CreateCourseFragment()).commit();
                         break;
                     case R.id.history:
                        getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, new HistoryFragment()).commit();

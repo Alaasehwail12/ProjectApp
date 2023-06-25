@@ -11,14 +11,31 @@
                         android:id="@+id/course"
                         android:icon="@drawable/baseline_fiber_new_24"
                         android:title="Courses" />
-                    <item
-                        android:id="@+id/profile"
-                        android:icon="@drawable/outline_account_circle_24"
-                        android:title="Profile" />
+
                     <item
                         android:id="@+id/history"
                         android:icon="@drawable/baseline_history_24"
                         android:title="History" />
+                </group>
+            </menu>
+        </item>
+
+        <item android:title="Profile">
+            <menu>
+                <group android:checkableBehavior="single">
+                    <item
+                        android:id="@+id/insprofile"
+                        android:icon="@drawable/outline_account_circle_24"
+                        android:title="Instructor profile" />
+
+                    <item
+                        android:id="@+id/trineeprofile"
+                        android:icon="@drawable/outline_account_circle_24"
+                        android:title="Trainee profile" />
+                    <item
+                        android:id="@+id/logout"
+                        android:icon="@drawable/baseline_logout_24"
+                        android:title="lodout" />
                 </group>
             </menu>
         </item>

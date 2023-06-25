@@ -1,5 +1,9 @@
 package com.example.projectlabandroid;
 
+import java.sql.Time;
+import java.util.Arrays;
+import java.util.Date;
+
 public class Course {
 
     private String CNum;
@@ -8,17 +12,30 @@ public class Course {
     private String prerequisites;
     private byte [] photo;
 
+    private String deadline;
+
+    private String startDateCourse;
+
+    private String schedule;
+
+    private String venue;
+
 
     public Course(){
 
     }
 
-    public Course(String CNum, String ctitle, String CTopics, String prerequisites, byte[] photo) {
+    public Course(String CNum, String ctitle, String CTopics, String prerequisites, byte[] photo,String deadline,
+                  String startDateCourse,String schedule,String venue) {
         this.CNum = CNum;
         Ctitle = ctitle;
         this.CTopics = CTopics;
         this.prerequisites = prerequisites;
         this.photo = photo;
+        this.deadline=deadline;
+        this.startDateCourse=startDateCourse;
+        this.schedule=schedule;
+        this.venue=venue;
     }
 
     public String getCNum() {
@@ -61,6 +78,38 @@ public class Course {
         this.photo = photo;
     }
 
+    public String getDeadline() {
+        return deadline;
+    }
+
+    public void setDeadline(String deadline) {
+        this.deadline = deadline;
+    }
+
+    public String getStartDateCourse() {
+        return startDateCourse;
+    }
+
+    public void setStartDateCourse(String startDateCourse) {
+        this.startDateCourse = startDateCourse;
+    }
+
+    public String getSchedule() {
+        return schedule;
+    }
+
+    public void setSchedule(String schedule) {
+        this.schedule = schedule;
+    }
+
+    public String getVenue() {
+        return venue;
+    }
+
+    public void setVenue(String venue) {
+        this.venue = venue;
+    }
+
     @Override
     public String toString() {
         return "Course{" +
@@ -68,7 +117,11 @@ public class Course {
                 ", Ctitle='" + Ctitle + '\'' +
                 ", CTopics='" + CTopics + '\'' +
                 ", prerequisites='" + prerequisites + '\'' +
-                ", photo=" + photo +
+                ", photo=" + Arrays.toString(photo) +
+                ", deadline=" + deadline +
+                ", startDateCourse=" + startDateCourse +
+                ", schedule=" + schedule +
+                ", venue='" + venue + '\'' +
                 '}';
     }
 }

@@ -30,6 +30,7 @@ import android.widget.Toast;
  */
 public class CourseFragment extends Fragment {
 
+    public static Course course = new Course();
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -131,13 +132,17 @@ public class CourseFragment extends Fragment {
             if (bytes != null) {
                 bitmapImageDB = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
             } else {
-                textView.setText("Photo=" +allCourses.getString(0) +"\n");
+                textView.setText("Photo=" +allCourses.getString(4) +"\n");
             }
 
-            textView.append("CNum= "+allCourses.getInt(0) +
-                    "\nCtitle= "+allCourses.getString(1)
-                    +"\nCTopics= "+allCourses.getString(2)
-                    +"\nprerequisites= "+allCourses.getString(3)+
+            textView.append("Course Number= "+allCourses.getInt(0) +
+                    "\nCourse Title= "+allCourses.getString(1)
+                    +"\nCourse Topics= "+allCourses.getString(2)
+                    +"\nPrerequisites= "+allCourses.getString(3)+
+                    "\nDeadline= "+allCourses.getString(5)+
+                    "\nCourse Start Date= "+allCourses.getString(6)+
+                    "\nSchedule= "+allCourses.getString(7)+
+                    "\nVenue= "+allCourses.getString(8)+
                     "\n\n" );
             ImageView imageView = new ImageView(requireContext());
             imageView.setLayoutParams(new ViewGroup.LayoutParams(300, 300));
@@ -173,16 +178,28 @@ public class CourseFragment extends Fragment {
             image_view_minus.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    //Toast.makeText(requireContext(), "Minus clicked", Toast.LENGTH_SHORT).show();
 
-
+                    if (allCourses.moveToFirst()) {
+                        int courseIdIndex = allCourses.getColumnIndex("CNum");
+                        int courseId = allCourses.getInt(courseIdIndex);
+                        dbHelper.removeCoursebyCnum(courseId);
+                        textView.setText("");
+                        Toast.makeText(requireContext(), "Course Number " + courseId + " Deleted !", Toast.LENGTH_SHORT).show();
+                    }
                 }
             });
 
             image_view_edit.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    //Toast.makeText(requireContext(), "Edit clicked", Toast.LENGTH_SHORT).show();
+
+                    FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
+                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                    fragmentTransaction.replace(R.id.frameLayout, new EditCourseFragment());
+                    fragmentTransaction.addToBackStack(null);
+                    fragmentTransaction.commit();
+                    Toast.makeText(requireContext(), "Edit Clicked", Toast.LENGTH_SHORT).show();
+
                 }
             });
 

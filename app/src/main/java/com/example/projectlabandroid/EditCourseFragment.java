@@ -1,17 +1,13 @@
 package com.example.projectlabandroid;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.net.Uri;
 import android.os.Bundle;
 
-import androidx.activity.result.ActivityResult;
-import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -31,23 +27,17 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.sql.Time;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Base64;
 import java.util.Collections;
-import java.util.Date;
-import java.util.Locale;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link CreateCourseFragment#newInstance} factory method to
+ * Use the {@link EditCourseFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class CreateCourseFragment extends Fragment {
+public class EditCourseFragment extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -57,8 +47,16 @@ public class CreateCourseFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+    DataBaseHelper dbHelper ;
 
-    public CreateCourseFragment() {
+    private ImageView imagephoto ;
+
+    private Bitmap bitmap;
+    private byte [] bytes;
+
+    private ActivityResultLauncher<Intent> activityResultLauncher;
+
+    public EditCourseFragment() {
         // Required empty public constructor
     }
 
@@ -68,22 +66,17 @@ public class CreateCourseFragment extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment CreateCourseFragment.
+     * @return A new instance of fragment EditCourseFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static CreateCourseFragment newInstance(String param1, String param2) {
-        CreateCourseFragment fragment = new CreateCourseFragment();
+    public static EditCourseFragment newInstance(String param1, String param2) {
+        EditCourseFragment fragment = new EditCourseFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
     }
-    private ActivityResultLauncher<Intent> activityResultLauncher;
-    private ImageView imagephoto ;
-    private Bitmap bitmap;
-    private byte [] bytes;
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -92,26 +85,7 @@ public class CreateCourseFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
-
-        activityResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
-            @Override
-            public void onActivityResult(ActivityResult result) {
-                if(result.getResultCode() == Activity.RESULT_OK){
-                    Intent data = result.getData();
-                    Uri uri = data.getData();
-                    try {
-                        bitmap = MediaStore.Images.Media.getBitmap(requireContext().getContentResolver(), uri);
-                        imagephoto.setImageBitmap(bitmap);
-                    }catch (IOException a){
-                        a.printStackTrace();
-
-                    }
-                }
-            }
-        });
     }
-
-
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -275,7 +249,16 @@ public class CreateCourseFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_create_course, container, false);
-        return view;
+        return inflater.inflate(R.layout.fragment_edit_course, container, false);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        dbHelper = new DataBaseHelper(requireContext(), "Database", null, 1);
+        Course newCourse = new Course();
+        dbHelper.editCoursebyCnum(CourseFragment.course, newCourse);
+        CourseFragment.course = newCourse;
     }
 }
+

@@ -446,6 +446,7 @@ public class instructorSignupFragment extends Fragment {
                             "\nAddress= "+allInstructorCursor.getString(6)+
                             "\nSpecialization= "+allInstructorCursor.getString(7)+
                             "\nDegree= "+allInstructorCursor.getString(8)+
+                            "\nlist= "+allInstructorCursor.getString(9)+
                             "\n\n" );
                 }
                 if (somethingWrong[0]) {

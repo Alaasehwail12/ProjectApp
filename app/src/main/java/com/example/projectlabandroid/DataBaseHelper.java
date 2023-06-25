@@ -43,11 +43,11 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         return false;
     }
 
-    public void insertCourse(Course course) {
-      //  SQLiteDatabase sqLiteDatabaseR = getReadableDatabase();
-       // Cursor cursor = sqLiteDatabaseR.rawQuery("SELECT * FROM Course WHERE Ctitle = \"" + course.getCtitle(), null);
+    /*public void insertCourse(Course course) {
+        SQLiteDatabase sqLiteDatabaseR = getReadableDatabase();
+        Cursor cursor = sqLiteDatabaseR.rawQuery("SELECT * FROM Course", null);
 
-     //   if (cursor.moveToFirst()) {
+        if (cursor.moveToFirst()) {
             SQLiteDatabase sqLiteDatabase = getWritableDatabase();
             ContentValues contentValues = new ContentValues();
             int i = 0;
@@ -58,8 +58,22 @@ public class DataBaseHelper extends SQLiteOpenHelper {
             contentValues.put("PHOTO", course.getPhoto());
             sqLiteDatabase.insert("course", null, contentValues);
 
-       // }
+        }
+    }*/
+
+    public void insertCourse(Course course) {
+        SQLiteDatabase sqLiteDatabase = getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+
+        contentValues.put("Ctitle", course.getCtitle());
+        contentValues.put("CTopics", course.getCTopics());
+        contentValues.put("prerequisites", course.getPrerequisites());
+        contentValues.put("PHOTO", course.getPhoto());
+
+        long newRowId = sqLiteDatabase.insert("Course", null, contentValues);
+        course.setCNum(String.valueOf(newRowId)); // Set the generated CNum value in the Course object
     }
+
 
     public boolean inserttrainee(trainee user) {
         SQLiteDatabase sqLiteDatabaseR = getReadableDatabase();
@@ -229,6 +243,15 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     public Cursor getAllCourses() { //read from database it returns cursor object
         SQLiteDatabase sqLiteDatabase = getReadableDatabase();
         return sqLiteDatabase.rawQuery("SELECT * FROM Course", null); //null value returned when an error ocurred
+    }
+
+    public void removeCoursebyCnum(Course course) {
+        SQLiteDatabase sqLiteDatabaseR = getReadableDatabase();
+        SQLiteDatabase sqLiteDatabase = getWritableDatabase();
+        Cursor cursor = sqLiteDatabaseR.rawQuery("SELECT * FROM Course WHERE CNum = \"" + course.getCNum()+ ";", null);
+        if (cursor.moveToFirst()) {
+            sqLiteDatabase.execSQL("DELETE FROM Course WHERE CNum = \"" + course.getCNum() +  ";");
+        }
     }
 
 }

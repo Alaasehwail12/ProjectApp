@@ -115,6 +115,7 @@ public class instructorSignupFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
+
         EditText emailEditText = (EditText) getActivity().findViewById(R.id.editTextText4);
         EditText firstNameEditText = (EditText) getActivity().findViewById(R.id.firstname);
         EditText lastNameEditText = (EditText) getActivity().findViewById(R.id.lastname);

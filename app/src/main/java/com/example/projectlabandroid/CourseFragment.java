@@ -1,6 +1,7 @@
 package com.example.projectlabandroid;
 
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -123,17 +124,7 @@ public class CourseFragment extends Fragment {
         Cursor allCourses = dbHelper.getAllCourses();
         secondLinearLayout.removeAllViews();
 
-//
-//        if (allCourses.moveToFirst()) {
-//            do {
-//                int cnum = allCourses.getColumnIndex("CNum");
-//                System.out.println("CNum: " + cnum);
-//            } while (allCourses.moveToNext());
-//        }
-
-
         while(allCourses.moveToNext()){
-          //  int cNumIndex = allCourses.getColumnIndex("CNum");
             TextView textView = new TextView(requireContext());
             byte [] bytes = allCourses.getBlob(4);
             Bitmap bitmapImageDB = null;
@@ -154,7 +145,7 @@ public class CourseFragment extends Fragment {
             secondLinearLayout.addView(imageView);
             secondLinearLayout.addView(textView);
 
-            image_view_minus = new ImageView(requireContext());;
+            image_view_minus = new ImageView(requireContext());
             image_view_edit = new ImageView(requireContext());
             image_view_edit.setImageResource(R.drawable.edit);
             image_view_minus.setImageResource(R.drawable.minus);
@@ -178,6 +169,24 @@ public class CourseFragment extends Fragment {
 
             horizontalLayout.setGravity(Gravity.CENTER);
             secondLinearLayout.addView(horizontalLayout);
+
+            image_view_minus.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    //Toast.makeText(requireContext(), "Minus clicked", Toast.LENGTH_SHORT).show();
+
+
+                }
+            });
+
+            image_view_edit.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    //Toast.makeText(requireContext(), "Edit clicked", Toast.LENGTH_SHORT).show();
+                }
+            });
+
+
         }
 
 

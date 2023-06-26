@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -78,11 +79,11 @@ public class make_courses_avaliableFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
 
         TextView new_text = (TextView) getActivity().findViewById(R.id.textt);
-        Button newbutton = (Button) getActivity().findViewById(R.id.getaval);
         DataBaseHelper dbHelper = new DataBaseHelper(requireContext(), "Database", null, 1);
         List<String> instructorNames = new ArrayList<>();
+        ImageView imageView = (ImageView) getActivity().findViewById(R.id.imageView3);
 
-        newbutton.setOnClickListener(new View.OnClickListener() {
+        imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
@@ -123,15 +124,22 @@ public class make_courses_avaliableFragment extends Fragment {
         toast.show();
         DataBaseHelper dbHelper = new DataBaseHelper(requireContext(), "Database", null, 1);
 
-        Cursor allCourses = dbHelper.getAllinstroucter_course();
+        Cursor allCourses = dbHelper.getAllAvailableCourses();
         secondLinearLayout.removeAllViews();
 
         while(allCourses.moveToNext()){
 
             TextView textView = new TextView(requireContext());
-            textView.append("EMAIL= "+allCourses.getString(0) +
-                    "\nCtitle= "+allCourses.getString(1)+
-                    "\n\n" );
+            textView.append("Course Number= "+allCourses.getInt(0) +
+                            "\ninstructor name= "+allCourses.getString(2)+
+                    "\nCourse Title= "+allCourses.getString(1)
+                    +"\nCourse Topics= "+allCourses.getString(3)
+                    +"\nPrerequisites= "+allCourses.getString(4)+
+                    "\nDeadline= "+allCourses.getString(6)+
+                    "\nCourse Start Date= "+allCourses.getString(7)+
+                    "\nSchedule= "+allCourses.getString(8)+
+                    "\nVenue= "+allCourses.getString(9)+
+                    "\n\n"  );
             textView.setTextSize(20);
             secondLinearLayout.addView(textView);
         }

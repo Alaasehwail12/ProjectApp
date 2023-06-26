@@ -15,6 +15,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -70,6 +71,8 @@ public class create_course_avaliable_fragment extends Fragment {
     public String course_t;
     ArrayAdapter<String> objdegreeArr;
 
+    Course c;
+
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -79,9 +82,7 @@ public class create_course_avaliable_fragment extends Fragment {
         Button done= (Button) getActivity().findViewById(R.id.button7);
         Button get= (Button) getActivity().findViewById(R.id.button8);
         final Spinner degreeSpinner =(Spinner)getActivity().findViewById(R.id.spinner2);
-        TextView tv = (TextView) getActivity().findViewById(R.id.textView6) ;
 
-       // course_title.setText("hiiiiiiiiiii");
         DataBaseHelper dbHelper = new DataBaseHelper(requireContext(), "Database", null, 1);
 
         get.setOnClickListener(new View.OnClickListener() {
@@ -89,6 +90,7 @@ public class create_course_avaliable_fragment extends Fragment {
             public void onClick(View view) {
                 course_t = course_title.getText().toString();
                 instructorNames = get_names(course_t);
+                instructorNames.add(" ");
                 options=instructorNames.toArray(new String[instructorNames.size()]);
             }
         });
@@ -98,8 +100,7 @@ public class create_course_avaliable_fragment extends Fragment {
             public void onClick(View view) {
                objdegreeArr = new ArrayAdapter<>(requireContext(),android.R.layout.simple_spinner_item, options);
                 degreeSpinner.setAdapter(objdegreeArr);
-                Course c = dbHelper.getAllCoursesbytitel(course_t);
-                tv.setText(c.getCtitle()+"\n"+c.getCTopics());
+                c = dbHelper.getAllCoursesbytitel(course_t);
             }
         });
 
@@ -108,10 +109,18 @@ public class create_course_avaliable_fragment extends Fragment {
             @Override
             public void onClick(View view) {
 
-                FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
-                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.frameLayout, new make_courses_avaliableFragment());
-                fragmentTransaction.commit();
+                if(degreeSpinner.getSelectedItem().toString().equals(" ")){
+                    Toast toast =Toast.makeText(getActivity(),"No instructors to tech that course",Toast.LENGTH_SHORT);
+                    toast.show();
+                }else{
+                    dbHelper.insertavailableCourse(c,degreeSpinner.getSelectedItem().toString());
+                    FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
+                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                    fragmentTransaction.replace(R.id.frameLayout, new make_courses_avaliableFragment());
+                    fragmentTransaction.commit();
+                }
+
+
             }
         });
 

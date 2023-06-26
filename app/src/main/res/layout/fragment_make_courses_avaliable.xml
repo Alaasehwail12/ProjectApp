@@ -13,6 +13,18 @@
         android:orientation="horizontal">
 
 
+        <TextView
+            android:id="@+id/textView6"
+            android:layout_width="611dp"
+            android:layout_height="73dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_weight="1"
+            android:text="Available Courses"
+            android:textColor="#973B7D"
+            android:textSize="36sp"
+            android:textStyle="bold|italic" />
+
         <ImageView
             android:id="@+id/imageView3"
             android:layout_width="399dp"
@@ -38,11 +50,6 @@
                 android:layout_height="103dp"
                 android:text="" />
 
-            <Button
-                android:id="@+id/getaval"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Button" />
         </LinearLayout>
 
     </ScrollView>

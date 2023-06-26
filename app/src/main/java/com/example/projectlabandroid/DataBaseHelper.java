@@ -23,6 +23,8 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL("CREATE TABLE instructor(EMAIL TEXT PRIMARY KEY, FIRSTNAME TEXT, LASTNAME TEXT, PASSWORD TEXT NOT NULL,PHOTO BLOB,mobile_number TEXT,ADDRESS TEXT,DEGREE TEXT,SPECIALIZATION TEXT )");
         sqLiteDatabase.execSQL("CREATE TABLE Course(CNum INTEGER PRIMARY KEY AUTOINCREMENT, Ctitle TEXT, CTopics TEXT, prerequisites TEXT, PHOTO BLOB, DEADLINECOURSE DATE, COURSESTARTDATE DATE, SCHEDULE_COURSE TIME, COURSEVENUE TEXT)");
        // sqLiteDatabase.execSQL("DROP TABLE IF EXISTS Course");
+        sqLiteDatabase.execSQL("CREATE TABLE available_Course(CNum INTEGER PRIMARY KEY AUTOINCREMENT, Ctitle TEXT,Name TEXT ,CTopics TEXT, prerequisites TEXT, PHOTO BLOB, DEADLINECOURSE DATE, COURSESTARTDATE DATE, SCHEDULE_COURSE TIME, COURSEVENUE TEXT)");
+
         sqLiteDatabase.execSQL("CREATE TABLE Course_instructor( EMAIL TEXT , Ctitle TEXT, PRIMARY KEY(EMAIL, Ctitle), FOREIGN KEY (EMAIL) REFERENCES instructor(EMAIL) ON DELETE CASCADE ON UPDATE CASCADE, FOREIGN KEY (Ctitle) REFERENCES Course(Ctitle))");
     }
 
@@ -87,6 +89,24 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         contentValues.put("COURSEVENUE", course.getVenue());
 
         long newRowId = sqLiteDatabase.insert("Course", null, contentValues);
+        course.setCNum(String.valueOf(newRowId)); // Set the generated CNum value in the Course object
+    }
+
+    public void insertavailableCourse(Course course,String name) {
+        SQLiteDatabase sqLiteDatabase = getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+
+        contentValues.put("Ctitle", course.getCtitle());
+        contentValues.put("Name", name);
+        contentValues.put("CTopics", course.getCTopics());
+        contentValues.put("prerequisites", course.getPrerequisites());
+        contentValues.put("PHOTO", course.getPhoto());
+        contentValues.put("DEADLINECOURSE", course.getDeadline());
+        contentValues.put("COURSESTARTDATE",course.getStartDateCourse());
+        contentValues.put("SCHEDULE_COURSE", course.getSchedule());
+        contentValues.put("COURSEVENUE", course.getVenue());
+
+        long newRowId = sqLiteDatabase.insert("available_Course", null, contentValues);
         course.setCNum(String.valueOf(newRowId)); // Set the generated CNum value in the Course object
     }
 

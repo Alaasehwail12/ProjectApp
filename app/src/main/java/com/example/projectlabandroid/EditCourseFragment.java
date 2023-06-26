@@ -254,18 +254,6 @@ public class EditCourseFragment extends Fragment {
             @Override
             public void onClick(View view) {
 
-                CourseFragment coursef = new CourseFragment();
-                Bundle bundle = new Bundle();
-
-                bundle.putString("titel",courseTitle.getText().toString());
-                bundle.putString("topics",courseTpoics.getText().toString());
-                bundle.putString("date", String.valueOf(deadline.getDate()));
-                bundle.putString("calender",String.valueOf(courseStartDate.getDate()));
-                bundle.putString("schedule",selectedTime);
-                bundle.putString("venue",venue.getText().toString());
-                bundle.putByteArray("phtot",bytes);
-                bundle.putString("prequisit",prequsites_string);
-                coursef.setArguments(bundle);
 
                 course.setCtitle(courseTitle.getText().toString());
                 course.setCTopics(courseTpoics.getText().toString());

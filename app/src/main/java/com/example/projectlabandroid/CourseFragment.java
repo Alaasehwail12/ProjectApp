@@ -194,36 +194,7 @@ public class CourseFragment extends Fragment {
                 Course new_course = new Course();
                 @Override
                 public void onClick(View v) {
-                    Bundle bundle = getArguments();
-                    String title = new String();
-                    String topics = new String();
-                    String date = new String();
-                    String calender = new String();
-                    String schedule= new String();
-                    String venue= new String();
-                    String prequisit = new String();
-                    byte [] bytes1 = new byte[100];
-                    if (bundle != null) {
-                        Toast.makeText(requireContext(), " the bundel not null !", Toast.LENGTH_SHORT).show();
 
-                        title = bundle.getString("titel");
-                         topics = bundle.getString("topics");
-                         date = bundle.getString("date");
-                         calender = bundle.getString("calender");
-                         schedule = bundle.getString("schedule");
-                         venue = bundle.getString("venue");
-                         prequisit = bundle.getString("prequisit");
-                         bytes1 =  bundle.getByteArray("phtot");
-                    }
-                    textView2.setText("\nCourse Title= "+title
-                                    +"\nCourse Topics= "+topics
-                                    +"\nPrerequisites= "+prequisit+
-                                    "\nDeadline= "+date+
-                                    "\nCourse Start Date= "+calender+
-                                    "\nSchedule= "+schedule+
-                                    "\nVenue= "+venue+
-                                     "\nphoto"+bytes1+
-                                    "\n\n" );
 
                     FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
                     FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();

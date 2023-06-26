@@ -4,6 +4,8 @@ import android.os.Bundle;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -65,7 +67,9 @@ public class create_course_avaliable_fragment extends Fragment {
     }
     public  String[] options = null;
     public List<String>  instructorNames;
-    public String name;
+    public String course_t;
+    ArrayAdapter<String> objdegreeArr;
+
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -75,39 +79,46 @@ public class create_course_avaliable_fragment extends Fragment {
         Button done= (Button) getActivity().findViewById(R.id.button7);
         Button get= (Button) getActivity().findViewById(R.id.button8);
         final Spinner degreeSpinner =(Spinner)getActivity().findViewById(R.id.spinner2);
+        TextView tv = (TextView) getActivity().findViewById(R.id.textView6) ;
 
        // course_title.setText("hiiiiiiiiiii");
+        DataBaseHelper dbHelper = new DataBaseHelper(requireContext(), "Database", null, 1);
 
         get.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                name = course_title.getText().toString();
-                instructorNames = get_names(name);
+                course_t = course_title.getText().toString();
+                instructorNames = get_names(course_t);
                 options=instructorNames.toArray(new String[instructorNames.size()]);
             }
         });
 
-
-//        done.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                tv.setText(course_title.getText().toString() );
-//
-//            }
-//        });
-
-     //   get_names(name);
-
-
         getnames.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ArrayAdapter<String> objdegreeArr = new ArrayAdapter<>(requireContext(),android.R.layout.simple_spinner_item, options);
+               objdegreeArr = new ArrayAdapter<>(requireContext(),android.R.layout.simple_spinner_item, options);
                 degreeSpinner.setAdapter(objdegreeArr);
-            //     tv.setText(course_title.getText().toString() );
-
+                Course c = dbHelper.getAllCoursesbytitel(course_t);
+                tv.setText(c.getCtitle()+"\n"+c.getCTopics());
             }
         });
+
+
+        done.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.frameLayout, new make_courses_avaliableFragment());
+                fragmentTransaction.commit();
+            }
+        });
+
+
+
+
+
 
     }
 

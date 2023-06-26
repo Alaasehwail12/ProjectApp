@@ -281,6 +281,48 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         return sqLiteDatabase.rawQuery("SELECT * FROM Course", null); //null value returned when an error ocurred
     }
 
+    public Course getAllCoursesbytitel(String title) { //read from database it returns cursor object
+        SQLiteDatabase sqLiteDatabase = getReadableDatabase();
+        Cursor cursor = sqLiteDatabase.rawQuery("SELECT * FROM Course WHERE Course.Ctitle = ?", new String[]{title});
+        Course course = null;
+
+        if (cursor != null && cursor.moveToFirst()) {
+          //  String courseTitle = course.getCtitle();
+            course = new Course(title);
+
+            String courseDescription = cursor.getString(2);
+            String prerequisites = cursor.getString(3);
+            byte []  PHOTO =  cursor.getBlob(4);
+            String DEADLINECOURSE = cursor.getString(5);
+            String COURSESTARTDATE = cursor.getString(6);
+            String SCHEDULE_COURSE = cursor.getString(7);
+            String COURSEVENUE = cursor.getString(8);
+
+            course.setCTopics(courseDescription);
+            course.setPrerequisites(prerequisites);
+            course.setPhoto(PHOTO);
+            course.setDeadline(DEADLINECOURSE);
+            course.setStartDateCourse(COURSESTARTDATE);
+            course.setSchedule(SCHEDULE_COURSE);
+            course.setVenue(COURSEVENUE);
+
+         //   course = new Course(title, courseDescription,prerequisites,PHOTO,DEADLINECOURSE,COURSESTARTDATE,SCHEDULE_COURSE,COURSEVENUE);
+        }
+
+        // Close the cursor
+        if (cursor != null) {
+            cursor.close();
+        }
+        return course;
+    }
+
+
+    public Cursor getAllAvailableCourses() { //read from database it returns cursor object
+        SQLiteDatabase sqLiteDatabase = getReadableDatabase();
+        return sqLiteDatabase.rawQuery("SELECT * FROM available_Course ", null); //null value returned when an error ocurred
+    }
+
+
     public Cursor getAllinstroucter_course() { //read from database it returns cursor object
         SQLiteDatabase sqLiteDatabase = getReadableDatabase();
         return sqLiteDatabase.rawQuery("SELECT * FROM Course_instructor", null); //null value returned when an error ocurred

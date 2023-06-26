@@ -56,5 +56,11 @@
         android:backgroundTint="#E91E63"
         android:text="Make the course avaliable" />
 
+    <TextView
+        android:id="@+id/textView6"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="TextView" />
+
 
 </LinearLayout>

@@ -38,6 +38,11 @@ public class Course {
         this.venue=venue;
     }
 
+    public Course( String ctitle) {
+        Ctitle = ctitle;
+
+    }
+
     public String getCNum() {
         return CNum;
     }

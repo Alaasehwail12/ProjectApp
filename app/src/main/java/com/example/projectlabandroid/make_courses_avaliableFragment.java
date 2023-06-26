@@ -1,5 +1,6 @@
 package com.example.projectlabandroid;
 
+import android.database.Cursor;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
@@ -13,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -90,7 +92,7 @@ public class make_courses_avaliableFragment extends Fragment {
             }
         });
 
-      //  secondLinearLayout = getActivity().findViewById(R.id.secondLinearLayout);
+        secondLinearLayout = getActivity().findViewById(R.id.secondLinearLayout);
 
         instructorNames= dbHelper.make_course_avalabile("AI");
         options = instructorNames.toArray(new String[instructorNames.size()]);
@@ -113,28 +115,27 @@ public class make_courses_avaliableFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_make_courses_avaliable, container, false);
     }
 
-//
-//    @Override
-//    public void onResume() {
-//        super.onResume();
-////        Toast toast =Toast.makeText(getActivity(),"inside the resume function true",Toast.LENGTH_SHORT);
-////        toast.show();
-//        DataBaseHelper dbHelper = new DataBaseHelper(requireContext(), "Database", null, 1);
-//
-//        Cursor allCourses = dbHelper.getAllinstroucter_course();
-//        secondLinearLayout.removeAllViews();
-//
-//
-//        while(allCourses.moveToNext()){
-//
-//            TextView textView = new TextView(requireContext());
-//            textView.append("EMAIL= "+allCourses.getString(0) +
-//                    "\nCtitle= "+allCourses.getString(1)+
-//                    "\n\n" );
-//            textView.setTextSize(20);
-//            secondLinearLayout.addView(textView);
-//        }
-//
-//
-//    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Toast toast =Toast.makeText(getActivity(),"inside the resume function true",Toast.LENGTH_SHORT);
+        toast.show();
+        DataBaseHelper dbHelper = new DataBaseHelper(requireContext(), "Database", null, 1);
+
+        Cursor allCourses = dbHelper.getAllinstroucter_course();
+        secondLinearLayout.removeAllViews();
+
+        while(allCourses.moveToNext()){
+
+            TextView textView = new TextView(requireContext());
+            textView.append("EMAIL= "+allCourses.getString(0) +
+                    "\nCtitle= "+allCourses.getString(1)+
+                    "\n\n" );
+            textView.setTextSize(20);
+            secondLinearLayout.addView(textView);
+        }
+
+
+    }
 }

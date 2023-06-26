@@ -13,9 +13,16 @@
                         android:title="Courses" />
 
                     <item
+                        android:id="@+id/makeavailable"
+                        android:icon="@drawable/baseline_check_circle_outline_24"
+                        android:title="make available courses" />
+
+                    <item
                         android:id="@+id/history"
                         android:icon="@drawable/baseline_history_24"
                         android:title="History" />
+
+
                 </group>
             </menu>
         </item>

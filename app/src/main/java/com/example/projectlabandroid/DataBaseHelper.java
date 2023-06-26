@@ -8,6 +8,9 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import androidx.annotation.Nullable;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class DataBaseHelper extends SQLiteOpenHelper {
     public DataBaseHelper(@Nullable Context context, @Nullable String name, @Nullable SQLiteDatabase.CursorFactory factory, int version) {
         super(context, name, factory, version);
@@ -27,6 +30,31 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
 
     }
+
+    public List<String> make_course_avalabile(String courseTitle) {
+        List<String> instructorNames = new ArrayList<>();
+
+        SQLiteDatabase sqLiteDatabaseR = getReadableDatabase();
+        String sql_query = "SELECT * FROM Course_instructor " +
+                "JOIN Course ON Course_instructor.Ctitle = Course.Ctitle " +
+                "WHERE Course.Ctitle = ?";
+
+        String sql_query2 = "SELECT FIRSTNAME, LASTNAME FROM instructor " +
+                "JOIN Course_instructor ON Course_instructor.EMAIL = instructor.EMAIL " +
+                "JOIN Course ON Course_instructor.Ctitle = Course.Ctitle " +
+                "WHERE Course.Ctitle = ?";
+
+        Cursor cursor = sqLiteDatabaseR.rawQuery(sql_query2, new String[]{courseTitle});
+
+        while (cursor.moveToNext()) {
+            String instructorName = cursor.getString(0) +" "+ cursor.getString(1);
+            instructorNames.add(instructorName);
+        }
+
+        cursor.close();
+        return instructorNames;
+    }
+
 
     public boolean insertadmin(admin user) {
         SQLiteDatabase sqLiteDatabaseR = getReadableDatabase();
@@ -231,6 +259,11 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     public Cursor getAllCourses() { //read from database it returns cursor object
         SQLiteDatabase sqLiteDatabase = getReadableDatabase();
         return sqLiteDatabase.rawQuery("SELECT * FROM Course", null); //null value returned when an error ocurred
+    }
+
+    public Cursor getAllinstroucter_course() { //read from database it returns cursor object
+        SQLiteDatabase sqLiteDatabase = getReadableDatabase();
+        return sqLiteDatabase.rawQuery("SELECT * FROM Course_instructor", null); //null value returned when an error ocurred
     }
 
     public void removeCoursebyCnum(int id) {

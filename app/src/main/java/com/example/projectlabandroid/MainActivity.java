@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.navigation.NavigationView;
@@ -45,6 +46,10 @@ public class MainActivity extends AppCompatActivity {
                         break;
                     case R.id.history:
                         getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, new HistoryFragment()).commit();
+                        break;
+                    case R.id.makeavailable:
+
+                        getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, new make_courses_avaliableFragment()).commit();
                         break;
 
                     default:

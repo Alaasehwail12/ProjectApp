@@ -90,8 +90,6 @@ public class CourseFragment extends Fragment {
         secondLinearLayout=getActivity().findViewById(R.id.secondLinearLayout);
 
 
-
-
         image_view_plues.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -118,8 +116,8 @@ public class CourseFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        Toast toast =Toast.makeText(getActivity(),"inside the resume function true",Toast.LENGTH_SHORT);
-        toast.show();
+//        Toast toast =Toast.makeText(getActivity(),"inside the resume function true",Toast.LENGTH_SHORT);
+//        toast.show();
         dbHelper = new DataBaseHelper(requireContext(), "Database", null, 1);
 
         Cursor allCourses = dbHelper.getAllCourses();
@@ -127,6 +125,8 @@ public class CourseFragment extends Fragment {
 
         while(allCourses.moveToNext()){
             TextView textView = new TextView(requireContext());
+            TextView textView2 = new TextView(requireContext());
+
             byte [] bytes = allCourses.getBlob(4);
             Bitmap bitmapImageDB = null;
             if (bytes != null) {
@@ -148,7 +148,7 @@ public class CourseFragment extends Fragment {
             imageView.setLayoutParams(new ViewGroup.LayoutParams(300, 300));
             imageView.setImageBitmap(bitmapImageDB);
             secondLinearLayout.addView(imageView);
-            secondLinearLayout.addView(textView);
+
 
             image_view_minus = new ImageView(requireContext());
             image_view_edit = new ImageView(requireContext());
@@ -171,7 +171,7 @@ public class CourseFragment extends Fragment {
             textView.setTextSize(20);
             horizontalLayout.addView(image_view_minus);
             horizontalLayout.addView(image_view_edit);
-
+            secondLinearLayout.addView(textView);
             horizontalLayout.setGravity(Gravity.CENTER);
             secondLinearLayout.addView(horizontalLayout);
 
@@ -190,23 +190,51 @@ public class CourseFragment extends Fragment {
             });
 
             image_view_edit.setOnClickListener(new View.OnClickListener() {
+                
+                Course new_course = new Course();
                 @Override
                 public void onClick(View v) {
+                    Bundle bundle = getArguments();
+                    String title = new String();
+                    String topics = new String();
+                    String date = new String();
+                    String calender = new String();
+                    String schedule= new String();
+                    String venue= new String();
+                    String prequisit = new String();
+                    byte [] bytes1 = new byte[100];
+                    if (bundle != null) {
+                        Toast.makeText(requireContext(), " the bundel not null !", Toast.LENGTH_SHORT).show();
+
+                        title = bundle.getString("titel");
+                         topics = bundle.getString("topics");
+                         date = bundle.getString("date");
+                         calender = bundle.getString("calender");
+                         schedule = bundle.getString("schedule");
+                         venue = bundle.getString("venue");
+                         prequisit = bundle.getString("prequisit");
+                         bytes1 =  bundle.getByteArray("phtot");
+                    }
+                    textView2.setText("\nCourse Title= "+title
+                                    +"\nCourse Topics= "+topics
+                                    +"\nPrerequisites= "+prequisit+
+                                    "\nDeadline= "+date+
+                                    "\nCourse Start Date= "+calender+
+                                    "\nSchedule= "+schedule+
+                                    "\nVenue= "+venue+
+                                     "\nphoto"+bytes1+
+                                    "\n\n" );
 
                     FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
                     FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                     fragmentTransaction.replace(R.id.frameLayout, new EditCourseFragment());
-                    fragmentTransaction.addToBackStack(null);
                     fragmentTransaction.commit();
-                    Toast.makeText(requireContext(), "Edit Clicked", Toast.LENGTH_SHORT).show();
 
                 }
             });
-
+            secondLinearLayout.addView(textView2);
 
         }
-
-
     }
 }
 

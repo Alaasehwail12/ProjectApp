@@ -50,6 +50,7 @@
             android:backgroundTint="#D720AF"
             android:text="Sign Up"
             android:textSize="20sp"
+
             tools:ignore="MissingConstraints" />
     </LinearLayout>
 

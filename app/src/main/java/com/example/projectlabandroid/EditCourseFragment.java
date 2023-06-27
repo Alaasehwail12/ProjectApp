@@ -1,18 +1,13 @@
 package com.example.projectlabandroid;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.net.Uri;
 import android.os.Bundle;
 
-import androidx.activity.result.ActivityResult;
-import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -32,7 +27,6 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Base64;
@@ -59,7 +53,9 @@ public class EditCourseFragment extends Fragment {
 
     private Bitmap bitmap;
     private byte [] bytes;
-    private String prequsites_string ;
+   public static Course newCourse = new Course();
+
+
     private ActivityResultLauncher<Intent> activityResultLauncher;
 
     public EditCourseFragment() {
@@ -91,25 +87,7 @@ public class EditCourseFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
-
-        activityResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
-            @Override
-            public void onActivityResult(ActivityResult result) {
-                if(result.getResultCode() == Activity.RESULT_OK){
-                    Intent data = result.getData();
-                    Uri uri = data.getData();
-                    try {
-                        bitmap = MediaStore.Images.Media.getBitmap(requireContext().getContentResolver(), uri);
-                        imagephoto.setImageBitmap(bitmap);
-                    }catch (IOException a){
-                        a.printStackTrace();
-
-                    }
-                }
-            }
-        });
     }
-    public String selectedTime;
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -121,18 +99,16 @@ public class EditCourseFragment extends Fragment {
         TextView preqe = (TextView) getActivity().findViewById(R.id.editTextTextPersonName3);
         imagephoto = (ImageView) getActivity().findViewById(R.id.imageView6);
         Button uploadphoto = (Button) getActivity().findViewById(R.id.button4);
-        Button addcourse = (Button) getActivity().findViewById(R.id.button5);
+        Button editcourse = (Button) getActivity().findViewById(R.id.button5);
 
         CalendarView deadline =(CalendarView) getActivity().findViewById(R.id.etDeadline);
         CalendarView courseStartDate =(CalendarView) getActivity().findViewById(R.id.etStartDate);
         TimePicker schedule = (TimePicker)getActivity().findViewById(R.id.etCourseSchedule);
         EditText venue = (EditText) getActivity().findViewById(R.id.etVenue);
 
-        prequsites_string = "";
-
-        Course course = new Course();
+        final String[] prequsites_string = {""};
         DataBaseHelper dbHelper = new DataBaseHelper(requireContext(), "Database", null, 1);
-
+        Cursor allCourses = dbHelper.getAllCourses();
 
         imagephoto.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -158,7 +134,7 @@ public class EditCourseFragment extends Fragment {
                     }
                     // Bitmap bitmapImageDB = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
                 }
-                course.setPhoto(bytes);
+                newCourse.setPhoto(bytes);
             }
         });
 
@@ -166,7 +142,7 @@ public class EditCourseFragment extends Fragment {
             @Override
             public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
                 String selectedDate = dayOfMonth + "/" + (month + 1) + "/" + year;
-                course.setDeadline(selectedDate);
+                newCourse.setDeadline(selectedDate);
             }
         });
 
@@ -174,7 +150,7 @@ public class EditCourseFragment extends Fragment {
             @Override
             public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
                 String selectedDate = dayOfMonth + "/" + (month + 1) + "/" + year;
-                course.setStartDateCourse(selectedDate);
+                newCourse.setStartDateCourse(selectedDate);
             }
         });
 
@@ -182,8 +158,8 @@ public class EditCourseFragment extends Fragment {
             @Override
             public void onTimeChanged(TimePicker view, int hourOfDay, int minute) {
                 // Handle the selected time
-                selectedTime = hourOfDay + ":" + minute;
-                course.setSchedule(selectedTime);
+                String selectedTime = hourOfDay + ":" + minute;
+                newCourse.setSchedule(selectedTime);
             }
         });
 
@@ -220,11 +196,11 @@ public class EditCourseFragment extends Fragment {
 
                         for (int i = 0; i < prequisites.length; i++) {
                             if (selectedprequisites[i]){
-                                prequsites_string += prequisites[i]+" , ";
+                                prequsites_string[0] += prequisites[i]+" , ";
                             }
                         }
-                        preqe.append(prequsites_string);
-                        course.setPrerequisites(prequsites_string);
+                        preqe.append(prequsites_string[0]);
+                        newCourse.setPrerequisites(prequsites_string[0]);
                         dialog.dismiss();
                     }
                 });
@@ -248,19 +224,21 @@ public class EditCourseFragment extends Fragment {
             }
         });
 
-
-
-        addcourse.setOnClickListener(new View.OnClickListener() {
+        editcourse.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-
-                course.setCtitle(courseTitle.getText().toString());
-                course.setCTopics(courseTpoics.getText().toString());
-                course.setVenue(venue.getText().toString());
-                Toast toast =Toast.makeText(getActivity(),"updeted a course successfully!",Toast.LENGTH_SHORT);
+                newCourse.setCtitle(courseTitle.getText().toString());
+                newCourse.setCTopics(courseTpoics.getText().toString());
+                newCourse.setVenue(venue.getText().toString());
+                Toast toast =Toast.makeText(getActivity(),"You edit a course successfully!",Toast.LENGTH_SHORT);
                 toast.show();
-                //dbHelper.insertCourse(course);
+                if (allCourses.moveToFirst()) {
+                    int courseIdIndex = allCourses.getColumnIndex("CNum");
+                    int courseId = allCourses.getInt(courseIdIndex);
+                    dbHelper.editCoursebyCnum(CreateCourseFragment.course, newCourse,courseId);
+                    CreateCourseFragment.course = newCourse;
+
+                }
                 FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.replace(R.id.frameLayout, new CourseFragment());
@@ -277,13 +255,13 @@ public class EditCourseFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_edit_course, container, false);
     }
 
-    @Override
+   /* @Override
     public void onResume() {
         super.onResume();
         dbHelper = new DataBaseHelper(requireContext(), "Database", null, 1);
         Course newCourse = new Course();
         dbHelper.editCoursebyCnum(CourseFragment.course, newCourse);
         CourseFragment.course = newCourse;
-    }
+    }*/
 }
 

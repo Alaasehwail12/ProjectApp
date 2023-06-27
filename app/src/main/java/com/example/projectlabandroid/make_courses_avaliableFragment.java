@@ -135,10 +135,10 @@ public class make_courses_avaliableFragment extends Fragment {
         border.setCornerRadius(25);
         secondLinearLayout.removeAllViews();
        secondLinearLayout.setGravity(Gravity.CENTER);
-        secondLinearLayout.setBackground(border);
+       // secondLinearLayout.setBackground(border);
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(1000, 700);
         layoutParams.setMargins(0, 30, 0, 0);
-        secondLinearLayout.setLayoutParams(layoutParams);
+       // secondLinearLayout.setLayoutParams(layoutParams);
         while(allCourses.moveToNext()){
             TextView textView = new TextView(requireContext());
 

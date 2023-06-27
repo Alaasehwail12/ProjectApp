@@ -54,6 +54,9 @@ public class CreateCourseFragment extends Fragment {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
+    public static  Course course = new Course();
+
+
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
@@ -132,7 +135,6 @@ public class CreateCourseFragment extends Fragment {
 
         final String[] prequsites_string = {""};
 
-        Course course = new Course();
         DataBaseHelper dbHelper = new DataBaseHelper(requireContext(), "Database", null, 1);
 
 
@@ -250,12 +252,9 @@ public class CreateCourseFragment extends Fragment {
             }
         });
 
-
-
         addcourse.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 course.setCtitle(courseTitle.getText().toString());
                 course.setCTopics(courseTpoics.getText().toString());
                 course.setVenue(venue.getText().toString());
@@ -268,7 +267,6 @@ public class CreateCourseFragment extends Fragment {
                 fragmentTransaction.commit();
             }
         });
-
     }
 
     @Override

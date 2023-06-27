@@ -28,7 +28,7 @@ public class Course {
     public Course(String CNum, String ctitle, String CTopics, String prerequisites, byte[] photo,String deadline,
                   String startDateCourse,String schedule,String venue) {
         this.CNum = CNum;
-        Ctitle = ctitle;
+        this.Ctitle = ctitle;
         this.CTopics = CTopics;
         this.prerequisites = prerequisites;
         this.photo = photo;

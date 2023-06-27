@@ -30,7 +30,7 @@ import android.widget.Toast;
  */
 public class CourseFragment extends Fragment {
 
-    public static Course course = new Course();
+
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -134,7 +134,6 @@ public class CourseFragment extends Fragment {
             } else {
                 textView.setText("Photo=" +allCourses.getString(4) +"\n");
             }
-
             textView.append("Course Number= "+allCourses.getInt(0) +
                     "\nCourse Title= "+allCourses.getString(1)
                     +"\nCourse Topics= "+allCourses.getString(2)
@@ -194,8 +193,6 @@ public class CourseFragment extends Fragment {
                 Course new_course = new Course();
                 @Override
                 public void onClick(View v) {
-
-
                     FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
                     FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                     fragmentTransaction.replace(R.id.frameLayout, new EditCourseFragment());

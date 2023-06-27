@@ -124,11 +124,6 @@ public class create_course_avaliable_fragment extends Fragment {
             }
         });
 
-
-
-
-
-
     }
 
 

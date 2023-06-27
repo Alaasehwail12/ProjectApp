@@ -21,8 +21,13 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -134,14 +139,14 @@ public class make_courses_avaliableFragment extends Fragment {
         border.setStroke(5, borderColor);
         border.setCornerRadius(25);
         secondLinearLayout.removeAllViews();
-       secondLinearLayout.setGravity(Gravity.CENTER);
-       // secondLinearLayout.setBackground(border);
+      //  secondLinearLayout.setBackground(border);
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(1000, 700);
         layoutParams.setMargins(0, 30, 0, 0);
+        layoutParams.gravity = Gravity.CENTER;
        // secondLinearLayout.setLayoutParams(layoutParams);
         while(allCourses.moveToNext()){
             TextView textView = new TextView(requireContext());
-
+            textView.setBackground(border);
             byte [] bytes = allCourses.getBlob(5);
             Bitmap bitmapImageDB = null;
             if (bytes != null) {
@@ -167,8 +172,46 @@ public class make_courses_avaliableFragment extends Fragment {
             ImageView imageView = new ImageView(requireContext());
             imageView.setLayoutParams(new ViewGroup.LayoutParams(300, 300));
             imageView.setImageBitmap(bitmapImageDB);
+
+            String inputDate =allCourses.getString(6);
+            String outputFormat = "yyyy-MM-dd";
+            if(inputDate == null){
+                inputDate="00/0/0000";
+            }
+
+            SimpleDateFormat inputDateFormat = new SimpleDateFormat("dd/M/yyyy");
+            SimpleDateFormat outputDateFormat = new SimpleDateFormat(outputFormat);
+            Date date = null;
+            try {
+                date = inputDateFormat.parse(inputDate);
+            } catch (ParseException e) {
+                throw new RuntimeException(e);
+            }
+            String outputDate = outputDateFormat.format(date);
+            LocalDate currentDate = LocalDate.now();
+
+//            textView.append(currentDate.toString());
+//            textView.append("\n");
+//            textView.append(outputDate);
+
+            if(currentDate.toString().equals(outputDate)){
+           //  Toast.makeText(requireContext(), " Deleted !", Toast.LENGTH_SHORT).show();
+
+                if (allCourses.moveToFirst()) {
+                    int courseIdIndex = allCourses.getColumnIndex("CNum");
+                    int courseId = allCourses.getInt(courseIdIndex);
+                    dbHelper.removeavailableCoursebyCnum(courseId);
+                    textView.setText("");
+                    Toast.makeText(requireContext(), "Course Number " + courseId + " Deleted !", Toast.LENGTH_SHORT).show();
+                }
+            }
             secondLinearLayout.addView(imageView);
             secondLinearLayout.addView(textView);
+
+
+
+
+
         }
 
 

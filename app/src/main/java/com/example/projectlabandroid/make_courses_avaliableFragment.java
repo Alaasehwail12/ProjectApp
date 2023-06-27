@@ -1,6 +1,8 @@
 package com.example.projectlabandroid;
 
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 
@@ -133,17 +135,24 @@ public class make_courses_avaliableFragment extends Fragment {
         border.setCornerRadius(25);
         secondLinearLayout.removeAllViews();
        secondLinearLayout.setGravity(Gravity.CENTER);
-
-
+        secondLinearLayout.setBackground(border);
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(1000, 700);
+        layoutParams.setMargins(0, 30, 0, 0);
+        secondLinearLayout.setLayoutParams(layoutParams);
         while(allCourses.moveToNext()){
-            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(1000, 700);
-            layoutParams.setMargins(0, 30, 0, 0);
-
             TextView textView = new TextView(requireContext());
-            textView.setBackground(border);
-           // textView.setGravity(Gravity.CENTER);
+
+            byte [] bytes = allCourses.getBlob(5);
+            Bitmap bitmapImageDB = null;
+            if (bytes != null) {
+                bitmapImageDB = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+            } else {
+                textView.setText(allCourses.getString(5) +"\n");
+            }
+          //  textView.setBackground(border);
+            textView.setGravity(Gravity.CENTER);
             textView.setTextColor(borderColor);
-            textView.setLayoutParams(layoutParams);
+        //textView.setLayoutParams(layoutParams);
             textView.append("Course Number: "+allCourses.getInt(0) +
                             "\nInstructor Name: "+allCourses.getString(2)+
                     "\nCourse Title: "+allCourses.getString(1)
@@ -155,6 +164,10 @@ public class make_courses_avaliableFragment extends Fragment {
                     "\nVenue: "+allCourses.getString(9)+
                     "\n"  );
             textView.setTextSize(22);
+            ImageView imageView = new ImageView(requireContext());
+            imageView.setLayoutParams(new ViewGroup.LayoutParams(300, 300));
+            imageView.setImageBitmap(bitmapImageDB);
+            secondLinearLayout.addView(imageView);
             secondLinearLayout.addView(textView);
         }
 

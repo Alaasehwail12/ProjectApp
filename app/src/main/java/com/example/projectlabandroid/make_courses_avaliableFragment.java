@@ -1,6 +1,7 @@
 package com.example.projectlabandroid;
 
 import android.database.Cursor;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
@@ -8,6 +9,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -125,22 +127,34 @@ public class make_courses_avaliableFragment extends Fragment {
         DataBaseHelper dbHelper = new DataBaseHelper(requireContext(), "Database", null, 1);
 
         Cursor allCourses = dbHelper.getAllAvailableCourses();
+        int borderColor = getResources().getColor(R.color.purple_200);
+        GradientDrawable border = new GradientDrawable();
+        border.setStroke(5, borderColor);
+        border.setCornerRadius(25);
         secondLinearLayout.removeAllViews();
+       secondLinearLayout.setGravity(Gravity.CENTER);
+
 
         while(allCourses.moveToNext()){
+            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(1000, 700);
+            layoutParams.setMargins(0, 30, 0, 0);
 
             TextView textView = new TextView(requireContext());
-            textView.append("Course Number= "+allCourses.getInt(0) +
-                            "\ninstructor name= "+allCourses.getString(2)+
-                    "\nCourse Title= "+allCourses.getString(1)
-                    +"\nCourse Topics= "+allCourses.getString(3)
-                    +"\nPrerequisites= "+allCourses.getString(4)+
-                    "\nDeadline= "+allCourses.getString(6)+
-                    "\nCourse Start Date= "+allCourses.getString(7)+
-                    "\nSchedule= "+allCourses.getString(8)+
-                    "\nVenue= "+allCourses.getString(9)+
-                    "\n\n"  );
-            textView.setTextSize(20);
+            textView.setBackground(border);
+           // textView.setGravity(Gravity.CENTER);
+            textView.setTextColor(borderColor);
+            textView.setLayoutParams(layoutParams);
+            textView.append("Course Number: "+allCourses.getInt(0) +
+                            "\nInstructor Name: "+allCourses.getString(2)+
+                    "\nCourse Title: "+allCourses.getString(1)
+                    +"\nCourse Topics: "+allCourses.getString(3)
+                    +"\nPrerequisites: "+allCourses.getString(4)+
+                    "\nDeadline: "+allCourses.getString(6)+
+                    "\nCourse Start Date: "+allCourses.getString(7)+
+                    "\nSchedule: "+allCourses.getString(8)+
+                    "\nVenue: "+allCourses.getString(9)+
+                    "\n"  );
+            textView.setTextSize(22);
             secondLinearLayout.addView(textView);
         }
 

@@ -8,8 +8,6 @@ import android.os.Bundle;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -20,16 +18,12 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link ViewProfileFragment#newInstance} factory method to
+ * Use the {@link ViewTraineeProfileFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ViewProfileFragment extends Fragment {
+public class ViewTraineeProfileFragment extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -40,7 +34,7 @@ public class ViewProfileFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    public ViewProfileFragment() {
+    public ViewTraineeProfileFragment() {
         // Required empty public constructor
     }
 
@@ -50,13 +44,13 @@ public class ViewProfileFragment extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment ViewProfile.
+     * @return A new instance of fragment ViewTraineeProfileFragment.
      */
     LinearLayout secondLinearLayout;
 
     // TODO: Rename and change types and number of parameters
-    public static ViewProfileFragment newInstance(String param1, String param2) {
-        ViewProfileFragment fragment = new ViewProfileFragment();
+    public static ViewTraineeProfileFragment newInstance(String param1, String param2) {
+        ViewTraineeProfileFragment fragment = new ViewTraineeProfileFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -85,17 +79,15 @@ public class ViewProfileFragment extends Fragment {
         super.onResume();
         DataBaseHelper dbHelper = new DataBaseHelper(requireContext(), "Database", null, 1);
 
-        Cursor allCourses = dbHelper.getAllInstructors();
+        Cursor allCourses = dbHelper.getAllTrainees();
         int borderColor = getResources().getColor(R.color.purple_200);
         GradientDrawable border = new GradientDrawable();
         border.setStroke(5, borderColor);
         border.setCornerRadius(25);
         secondLinearLayout.removeAllViews();
         secondLinearLayout.setGravity(Gravity.CENTER);
-        // secondLinearLayout.setBackground(border);
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(1000, 700);
         layoutParams.setMargins(0, 30, 0, 0);
-        // secondLinearLayout.setLayoutParams(layoutParams);
         while(allCourses.moveToNext()){
             TextView textView = new TextView(requireContext());
             ImageView imageView = new ImageView(requireContext());
@@ -115,7 +107,6 @@ public class ViewProfileFragment extends Fragment {
             textView.setBackground(border);
             textView.setGravity(Gravity.CENTER);
             textView.setTextColor(borderColor);
-            //textView.setLayoutParams(layoutParams);
             textView.append("Email: "+allCourses.getString(0) +
                     "\nFirst Name: "+allCourses.getString(1)+
                     "\nLast Name: "+allCourses.getString(2)
@@ -123,15 +114,15 @@ public class ViewProfileFragment extends Fragment {
                     +"\nAddress: "+allCourses.getString(6)+
                     "\n"  );
             textView.setTextSize(22);
-
             secondLinearLayout.addView(textView);
         }
     }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_view_profile, container, false);
+        return inflater.inflate(R.layout.fragment_view_trainee_profile, container, false);
     }
 }

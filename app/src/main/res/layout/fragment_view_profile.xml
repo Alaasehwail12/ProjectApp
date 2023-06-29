@@ -20,7 +20,7 @@
             android:layout_marginLeft="10dp"
             android:layout_marginTop="10dp"
             android:layout_weight="1"
-            android:text="All Instructors Profile"
+            android:text="All Instructors Profiles"
             android:textAlignment="center"
             android:textColor="#973B7D"
             android:textSize="36sp"

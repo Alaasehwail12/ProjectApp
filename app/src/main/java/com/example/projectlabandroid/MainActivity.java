@@ -52,6 +52,10 @@ public class MainActivity extends AppCompatActivity {
 
                         getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, new ViewProfileFragment()).commit();
                         break;
+                    case R.id.trineeprofile:
+
+                        getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, new ViewTraineeProfileFragment()).commit();
+                        break;
 
                     default:
                         return true;

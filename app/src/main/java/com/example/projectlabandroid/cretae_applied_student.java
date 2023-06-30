@@ -2,6 +2,8 @@ package com.example.projectlabandroid;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.database.Cursor;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
@@ -13,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -75,23 +78,28 @@ public class cretae_applied_student extends Fragment {
     String[] text2Elements;
     String preq;
     public static boolean isapplied= false;
+    public static boolean time_conflict= false;
+    TextView text2;
 
-    String value="";
-
+    Course c ;
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         TextView text = (TextView) getActivity().findViewById(R.id.materials);
-        TextView text2 = (TextView) getActivity().findViewById(R.id.textView9);
+         text2 = (TextView) getActivity().findViewById(R.id.textView9);
         course_titel = (TextView) getActivity().findViewById(R.id.textView13);
         Button back = (Button)  getActivity().findViewById(R.id.back);
 
+        course_titel.setText(student_apply_for_course.c2.getCtitle());
 
         String [] items = {"Java", "C", "Calculus I", "Calculus II", "Physics I", "Physics II", "Data Structure","Differential","Linear","Statistics"};
 
         boolean[] selecteditems = new boolean[items.length];
         ArrayList<Integer> itemsList = new ArrayList<>();
         DataBaseHelper dbHelper = new DataBaseHelper(requireContext(), "Database", null, 1);
+
+        c = new Course();
+        c.setCtitle("Web");
 
 
         text.setOnClickListener(new View.OnClickListener() {
@@ -149,34 +157,36 @@ public class cretae_applied_student extends Fragment {
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Bundle b = getArguments();
-                if (b != null) {
-                    value= b.getString("title");
-                    Toast.makeText(requireContext() , "the args is not null", Toast.LENGTH_SHORT).show();
-                }
-                course_titel.setText(value);
-//                text2.append(preq);
-//                text2.append("\n");
-//                text2.append(string);
-//                preq =preq.replaceAll("\\s+", "").replaceAll(",", "");
-//                string = string.replaceAll("\\s+", "").replaceAll(",", "");
-//                text2Elements = string.split(",");
-//                String[] text1Elements = preq.split(",");
-//
-//                Set<String> set1 = new HashSet<>(Arrays.asList(text1Elements));
-//                Set<String> set2 = new HashSet<>(Arrays.asList(text2Elements));
-//                text2.append("\n");
-//                FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
-//                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-//                fragmentTransaction.replace(R.id.frameLayout1, new student_apply_for_course());
-//                fragmentTransaction.commit();
 
-//                if (set1.equals(set2)) {
-//                    text2.append("The contents of the texts are the same.");
-//                } else {
-//                    text2.append("The contents of the texts are not the same.");
-//                    ;
-//                }
+                String preq = dbHelper.preq(student_apply_for_course.c2.getCtitle());
+
+                preq =preq.replaceAll("\\s+", "").replaceAll(",", "");
+                string = string.replaceAll("\\s+", "").replaceAll(",", "");
+                text2Elements = string.split(",");
+                String[] text1Elements = preq.split(",");
+
+                Set<String> set1 = new HashSet<>(Arrays.asList(text1Elements));
+                Set<String> set2 = new HashSet<>(Arrays.asList(text2Elements));
+
+                if (set1.equals(set2) && time_conflict == false) {
+                    isapplied=true;
+                    Toast.makeText(requireContext(), "You  applied to this course", Toast.LENGTH_SHORT).show();
+//                   text2.append(trineelogin.tr.getEmail());
+//                    text2.append("\n");
+//                    text2.append(student_apply_for_course.c2.getCtitle());
+                     dbHelper.insertcourse_trinee(trineelogin.tr,student_apply_for_course.c2);
+                    // text2.append("The contents of the texts are the same.");
+                } else if(time_conflict == true){
+                    Toast.makeText(requireContext(), "there is a time conflict", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    Toast.makeText(requireContext(), "You cant applied to this course,You did not finish the prerequisites", Toast.LENGTH_SHORT).show();
+                  //  text2.append("The contents of the texts are not the same.");
+                }
+                FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.frameLayout, new student_apply_for_course());
+                fragmentTransaction.commit();
             }
         });
 
@@ -192,4 +202,26 @@ public class cretae_applied_student extends Fragment {
         return view;
     }
 
-}
+    public void onResume() {
+        super.onResume();
+
+        Toast toast = Toast.makeText(getActivity(), "inside the resume function true", Toast.LENGTH_SHORT);
+        toast.show();
+        DataBaseHelper dbHelper = new DataBaseHelper(requireContext(), "Database", null, 1);
+        Cursor allCourses = dbHelper.getAllAvailableCourses_trinee();
+
+        while (allCourses.moveToNext()) {
+//            text2.setText("\nstudent Name: "+allCourses.getString(2)+
+//                    "\nCourse Title: "+allCourses.getString(1)+
+//                    "\n Time: "+allCourses.getString(3)+
+//                    "\n");
+//            text2.append(student_apply_for_course.c2.getSchedule());
+//            text2.append("\n");
+//            text2.append(allCourses.getString(3));
+            if(allCourses.getString(3).equals(student_apply_for_course.c2.getSchedule())){
+                time_conflict=true;
+            }
+       }
+    }
+
+        }

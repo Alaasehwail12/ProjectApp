@@ -5,6 +5,7 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.GradientDrawable;
+import android.graphics.drawable.TransitionDrawable;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
@@ -99,9 +100,14 @@ public class student_apply_for_course extends Fragment {
 //        cretae_applied_student secondFragment = (cretae_applied_student) getSupportFragmentManager().findFragmentById(R.id.fragment2);
 //        secondFragment.changeData(data);
 //    }
+
+    public static Course c2;
+
+
     @Override
     public void onResume() {
         super.onResume();
+
         Toast toast =Toast.makeText(getActivity(),"inside the resume function true",Toast.LENGTH_SHORT);
         toast.show();
         DataBaseHelper dbHelper = new DataBaseHelper(requireContext(), "Database", null, 1);
@@ -118,9 +124,7 @@ public class student_apply_for_course extends Fragment {
         //layoutParams.gravity = Gravity.CENTER;
         // secondLinearLayout.setLayoutParams(layoutParams);
         while(allCourses.moveToNext()){
-
             ImageView imageView = new ImageView(requireContext());
-
             TextView textView = new TextView(requireContext());
             textView.setBackground(border);
             byte [] bytes = allCourses.getBlob(5);
@@ -141,33 +145,40 @@ public class student_apply_for_course extends Fragment {
             //textView.setLayoutParams(layoutParams);
             textView.append("\nInstructor Name: "+allCourses.getString(2)+
                             "\nCourse Title: "+allCourses.getString(1)+
+                    "\nCourse Topics: "+allCourses.getString(3)+
                     "\n"  );
             textView.setTextSize(20);
-            String title = allCourses.getString(1);
             ImageView apply = new ImageView(requireContext());
             apply.setImageResource(R.drawable.apply);
             apply.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup
                     .LayoutParams.WRAP_CONTENT));
             apply.setLayoutParams(new ViewGroup.LayoutParams(200, 200));
 
+            String t = allCourses.getString(1);
+            String time = allCourses.getString(8);
+
             apply.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                   if(cretae_applied_student.isapplied == true){
+                       apply.setImageResource(R.drawable.apply_fill);
+                       Toast.makeText(requireContext(), "You already tried to apply!!", Toast.LENGTH_SHORT).show();
 
-                    cretae_applied_student targetFragment = new cretae_applied_student();
-                    Bundle args = new Bundle();
-                    args.putString("title", title); // Replace "key" with your desired key and "value" with the actual data
-                    targetFragment.setArguments(args);
+                  }else if(cretae_applied_student.time_conflict == true){
+                       Toast.makeText(requireContext(), "there is a time conflict!!", Toast.LENGTH_SHORT).show();
 
-                    // apply.startAnimation(AnimationUtils.loadAnimation(requireContext(),R.drawable.apply_fill));
-                    apply.setImageResource(R.drawable.apply_fill);
-                    FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
-                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                    fragmentTransaction.replace(R.id.frameLayout, new cretae_applied_student());
-                    fragmentTransaction.commit();
+                   }
+                   else {
+                       c2 = new Course();
+                       c2.setCtitle(t);
+                       c2.setSchedule(time);
+                       FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
+                       FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                       fragmentTransaction.replace(R.id.frameLayout, new cretae_applied_student());
+                       fragmentTransaction.commit();
+                   }
                 }
             });
-
 
             LinearLayout.LayoutParams layoutParam = new LinearLayout.LayoutParams(700, 700);
             layoutParam.setMargins(0, 0, 20, 0);
@@ -187,6 +198,21 @@ public class student_apply_for_course extends Fragment {
             secondLinearLayout.addView(horizontalLayout);
 
         }
+//
+//        Cursor allCourses2 = dbHelper.getAllAvailableCourses_trinee();
+//        while (allCourses2.moveToNext()) {
+//            TextView text2 = new TextView(requireContext());
+//
+//            text2.setText("\nstudent Name: "+allCourses2.getString(2)+
+//                    "\nCourse Title: "+allCourses2.getString(1)+
+//                    "\n Time: "+allCourses2.getString(3)+
+//                    "\n");
+//            ImageView apply = new ImageView(requireContext());
+//            apply.setImageResource(R.drawable.apply);
+//            secondLinearLayout.addView(text2);
+//
+//        }
+
 
     }
 }

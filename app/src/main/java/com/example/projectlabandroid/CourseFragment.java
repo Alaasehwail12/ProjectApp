@@ -132,7 +132,7 @@ public class CourseFragment extends Fragment {
             imageView.setLayoutParams(new ViewGroup.LayoutParams(300, 300));
 
             byte [] bytes = allCourses.getBlob(4);
-            Bitmap bitmapImageDB = null;
+            Bitmap bitmapImageDB ;
             if (bytes != null) {
                 bitmapImageDB = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
                 imageView.setImageBitmap(bitmapImageDB);
@@ -189,20 +189,31 @@ public class CourseFragment extends Fragment {
                     }
                 }
             });
+
+          int  num = allCourses.getInt(0);
           String  title = allCourses.getString(1);
-          String  topic = allCourses.getString(2);
-          String  venue = allCourses.getString(8);
+          String  topice = allCourses.getString(2);
+          String  venu = allCourses.getString(8);
           String  preq = allCourses.getString(3);
+          byte [] bytes2 = allCourses.getBlob(4);
+          String Start_date = allCourses.getString(6);
+          String dedline = allCourses.getString(5);
+          String schedual = allCourses.getString(7);
+
 
             c = new Course();
             image_view_edit.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
+                    c.setCNum(String.valueOf(num));
+                    c.setDeadline(dedline);
+                    c.setStartDateCourse(Start_date);
+                    c.setSchedule(schedual);
                     c.setCtitle(title);
-                    c.setCTopics(topic);
+                    c.setCTopics(topice);
                     c.setPrerequisites(preq);
-                    c.setVenue(venue);
+                    c.setVenue(venu);
+                    c.setPhoto(bytes2);
 
                     FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
                     FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();

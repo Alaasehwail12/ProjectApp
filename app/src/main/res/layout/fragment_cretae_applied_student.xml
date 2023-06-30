@@ -20,6 +20,7 @@
                 android:id="@+id/textView13"
                 android:layout_width="match_parent"
                 android:layout_height="71dp"
+                android:gravity="center"
                 android:textSize="34sp" />
 
             <ImageView

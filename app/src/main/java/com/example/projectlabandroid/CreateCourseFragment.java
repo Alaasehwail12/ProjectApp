@@ -229,6 +229,7 @@ public class CreateCourseFragment extends Fragment {
                         }
                         preqe.append(prequsites_string);
                         course.setPrerequisites(prequsites_string);
+                        prequsites_string="";
                         dialog.dismiss();
                     }
                 });
@@ -236,6 +237,7 @@ public class CreateCourseFragment extends Fragment {
                 builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        prequsites_string="";
                         dialog.dismiss();
                     }
                 });

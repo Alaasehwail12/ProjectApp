@@ -77,7 +77,6 @@ public class trineelogin extends Fragment {
                 String enteredEmail = email.getText().toString().trim();
                 String enterPassword = pass.getText().toString().trim();
 
-
                 if (!dbHelper.istraineeRegistered(enteredEmail))
                 {
                     Toast.makeText(requireContext(), "This email is not registered for trainee!", Toast.LENGTH_SHORT).show();

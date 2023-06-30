@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -135,6 +136,11 @@ public class EditCourseFragment extends Fragment {
         EditText venue = (EditText) getActivity().findViewById(R.id.etVenue);
         venue.setText(CourseFragment.c.getVenue());
 
+//        bytes = CourseFragment.c.getPhoto();
+//        Bitmap bitmapImageDB2 = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+//        imagephoto.setImageBitmap(bitmapImageDB2);
+//        newCourse.setPhoto(bytes);
+
         final String[] prequsites_string = {""};
         DataBaseHelper dbHelper = new DataBaseHelper(requireContext(), "Database", null, 1);
         Cursor allCourses = dbHelper.getAllCourses();
@@ -158,9 +164,9 @@ public class EditCourseFragment extends Fragment {
                 if(bitmap != null){
                     bitmap.compress(Bitmap.CompressFormat.JPEG,100,byteoutput);
                     bytes = byteoutput.toByteArray();
-                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-                        final String base64image = Base64.getEncoder().encodeToString(bytes);
-                    }
+//                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+//                        final String base64image = Base64.getEncoder().encodeToString(bytes);
+//                    }
                     // Bitmap bitmapImageDB = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
                 }
                 newCourse.setPhoto(bytes);
@@ -261,13 +267,14 @@ public class EditCourseFragment extends Fragment {
                 newCourse.setCtitle(courseTitle.getText().toString());
                 newCourse.setCTopics(courseTpoics.getText().toString());
                 newCourse.setVenue(venue.getText().toString());
+                newCourse.setPhoto(bytes);
                 Toast toast =Toast.makeText(getActivity(),"You edit a course successfully!",Toast.LENGTH_SHORT);
                 toast.show();
 
                 if (allCourses.moveToFirst()) {
                     int courseIdIndex = allCourses.getColumnIndex("CNum");
                     int courseId = allCourses.getInt(courseIdIndex);
-                    dbHelper.editCoursebyCnum(CreateCourseFragment.course, newCourse,courseId);
+                    dbHelper.editCoursebyCnum(CourseFragment.c, newCourse,courseId,newCourse.getPhoto());
                     CreateCourseFragment.course = newCourse;
 
                 }

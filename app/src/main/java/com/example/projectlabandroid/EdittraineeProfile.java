@@ -190,18 +190,17 @@ public class EdittraineeProfile extends Fragment {
                 if (!isButtonNotPressed) {
                     image_view2.setBackground(drawable);
 
-                }
-                else{
+                } else {
                     image_view2.setBackground(d2);
                 }
 
                 if (firstNameEditText.getText().toString().trim().length() < 3 || firstNameEditText.getText().toString().trim().length() > 20) {
                     firstNameEditText.setBackground(drawable);
-                }else {
+                } else {
                     firstNameEditText.setBackground(d2);
                 }
 
-                if (lastNameEditText.getText().toString().trim().length() < 3 || lastNameEditText.getText().toString().trim().length() >20) {
+                if (lastNameEditText.getText().toString().trim().length() < 3 || lastNameEditText.getText().toString().trim().length() > 20) {
                     lastNameEditText.setBackground(drawable);
                 } else {
                     lastNameEditText.setBackground(d2);
@@ -238,7 +237,6 @@ public class EdittraineeProfile extends Fragment {
                 }
 
 
-
                 DataBaseHelper dbHelper = new DataBaseHelper(requireContext(), "Database", null, 1);
                 trainee user = new trainee();
 
@@ -248,8 +246,6 @@ public class EdittraineeProfile extends Fragment {
                 } else {
                     user.setEmail(emailEditText.getText().toString());
                 }
-
-
 
 
                 if (!somethingWrong[0]) {
@@ -302,9 +298,9 @@ public class EdittraineeProfile extends Fragment {
                                             if (!isButtonNotPressed) {
                                                 somethingWrong[0] = true;
                                                 errorMessage[0] = "You should click on the upload Photo first .";
-                                            }else{
+                                            } else {
                                                 user.setPhoto(bytes);
-                                                dbHelper.edittrainee(trineelogin.tr,user);
+                                                dbHelper.edittrainee(trineelogin.tr, user);
                                             }
                                         }
                                     }
@@ -315,57 +311,39 @@ public class EdittraineeProfile extends Fragment {
                 }
 
 
-
                 if (somethingWrong[0]) {
                     error.setTextColor(Color.RED);
                     error.setText(errorMessage[0]);
-                    Toast toast =Toast.makeText(getActivity(),"Error in Information",Toast.LENGTH_SHORT);
+                    Toast toast = Toast.makeText(getActivity(), "Error in Information", Toast.LENGTH_SHORT);
                     toast.show();
                 } else {
                     error.setTextColor(Color.BLACK);
                     error.setText("Signing up is done successfully!");
-                    Toast toast =Toast.makeText(getActivity(),"Edit is done successfully!",Toast.LENGTH_SHORT);
+                    Toast toast = Toast.makeText(getActivity(), "Edit is done successfully!", Toast.LENGTH_SHORT);
                     toast.show();
-                    AlertDialog.Builder builder = new AlertDialog.Builder(  requireContext());
-                    builder.setTitle("Login");
-                    builder.setMessage("Do you want to login in !!");
-                    builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            startActivity(new Intent(requireContext(), logIn.class));
-
-                            firstNameEditText.setText("");
-                            lastNameEditText.setText("");
-                            emailEditText.setText("");
-                            passwordEditText.setText("");
-                            confirmPasswordEditText.setText("");
-                            mobileEditText.setText("");
-                            addressEditText.setText("");
-                        }
-                    });
-                    builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            dialogInterface.dismiss();
-                        }
-                    });
-                    builder.show();
 
 
+                    firstNameEditText.setText("");
+                    lastNameEditText.setText("");
+                    emailEditText.setText("");
+                    passwordEditText.setText("");
+                    confirmPasswordEditText.setText("");
+                    mobileEditText.setText("");
+                    addressEditText.setText("");
+
+                }
+            }
+
+        });
+                byte[] bytes = trineelogin.tr.getPhoto();
+                if (bytes != null) {
+                    Bitmap bitmapImageDB = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                    image_view2.setImageBitmap(bitmapImageDB);
                 }
 
 
-            }
-        });
 
-        byte [] bytes = trineelogin.tr.getPhoto();
-        if(bytes != null ){
-            Bitmap bitmapImageDB = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-            image_view2.setImageBitmap(bitmapImageDB);
         }
-
-
-    }
     static boolean isEmailValid(CharSequence email) {
         return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
     }

@@ -104,19 +104,7 @@ public class make_courses_avaliableFragment extends Fragment {
 
         secondLinearLayout = getActivity().findViewById(R.id.secondLinearLayout);
 
-//        instructorNames= dbHelper.make_course_avalabile("AI");
-//        options = instructorNames.toArray(new String[instructorNames.size()]);
-//
-//        create_course_avaliable_fragment fragment = new create_course_avaliable_fragment();
-////        Bundle args = new Bundle();
-////        args.putStringArray("options", options);
-//       // fragment.setArguments(args);
-//        new_text.setTextSize(30);
-//        String optionsString = Arrays.toString(options);
-    //    new_text.setText(optionsString);
-
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

@@ -354,6 +354,19 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         return sqLiteDatabase.rawQuery("SELECT * FROM Course_instructor", null); //null value returned when an error ocurred
     }
 
+    public Cursor getAllCoursesforInstructor(String email){
+        SQLiteDatabase sqLiteDatabase = getReadableDatabase();
+
+        String query = "SELECT Ctitle FROM Course_instructor WHERE EMAIL = ?";
+        return sqLiteDatabase.rawQuery(query, new String[]{email});
+    }
+
+    public Cursor getAllInstructorSchedule(String email){
+        SQLiteDatabase sqLiteDatabase = getReadableDatabase();
+        String query = "SELECT ci.Ctitle, c.SCHEDULE_COURSE FROM Course_instructor ci JOIN Course c ON ci.Ctitle = c.Ctitle WHERE ci.EMAIL = ?";
+        return sqLiteDatabase.rawQuery(query, new String[]{email});
+    }
+
     public void removeCoursebyCnum(int id) {
         SQLiteDatabase sqLiteDatabaseR = getReadableDatabase();
         SQLiteDatabase sqLiteDatabase = getWritableDatabase();

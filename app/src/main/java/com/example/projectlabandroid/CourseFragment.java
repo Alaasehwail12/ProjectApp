@@ -190,8 +190,8 @@ public class CourseFragment extends Fragment {
                 }
             });
           String  title = allCourses.getString(1);
-          String  topice = allCourses.getString(2);
-          String  venu = allCourses.getString(8);
+          String  topic = allCourses.getString(2);
+          String  venue = allCourses.getString(8);
           String  preq = allCourses.getString(3);
 
             c = new Course();
@@ -200,9 +200,9 @@ public class CourseFragment extends Fragment {
                 public void onClick(View v) {
 
                     c.setCtitle(title);
-                    c.setCTopics(topice);
+                    c.setCTopics(topic);
                     c.setPrerequisites(preq);
-                    c.setVenue(venu);
+                    c.setVenue(venue);
 
                     FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
                     FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();

@@ -85,17 +85,18 @@ public class adminlogin extends Fragment {
                                 }else if(!dbHelper.correctadminSignIn(enteredEmail, enterPassword)){
                                     Toast.makeText(requireContext(), "Incorrect password for admin!", Toast.LENGTH_SHORT).show();
                                 }else{
-                                    if (rememberme.isChecked())
+                                    if (rememberme.isChecked()) {
                                         sharedPrefManager.writeString("email", email.getText().toString().trim());
-                                    else
+                                    }
+                                    else {
                                         sharedPrefManager.writeString("email", "noValue");
-                                        ad= dbHelper.getadminByEmail(email.getText().toString().trim());
-                                    Toast.makeText(requireContext(), "the login procsess succesfull for admin!", Toast.LENGTH_SHORT).show();
+                                    }
+                                    ad= dbHelper.getadminByEmail(email.getText().toString().trim());
+                                    Toast.makeText(requireContext(), "The login process successful for admin!", Toast.LENGTH_SHORT).show();
                                     startActivity(new Intent(requireContext(), HomeLayout.class));
                                 }
             }
         });
-
 
         signUP.setOnClickListener(new View.OnClickListener() {
             @Override

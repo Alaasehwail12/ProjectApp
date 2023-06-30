@@ -4,23 +4,23 @@
     tools:showIn="navigation_view">
 
     <group android:checkableBehavior="single">
-        <item android:title="Trainee Menu">
+        <item android:title="Instructor Menu">
             <menu>
                 <group android:checkableBehavior="single">
                     <item
-                        android:id="@+id/Apply"
-                        android:icon="@drawable/baseline_fiber_new_24"
-                        android:title="Apply for course" />
+                        android:id="@+id/coursetaught"
+                        android:icon="@drawable/baseline_preview_24"
+                        android:title="Courses Previously taught" />
 
                     <item
-                        android:id="@+id/serach"
-                        android:icon="@drawable/baseline_saved_search_24"
-                        android:title="Search for courses" />
+                        android:id="@+id/schedule"
+                        android:icon="@drawable/baseline_schedule_24"
+                        android:title="Schedule" />
 
                     <item
-                        android:id="@+id/history"
-                        android:icon="@drawable/baseline_history_24"
-                        android:title="History" />
+                        android:id="@+id/liststudent"
+                        android:icon="@drawable/baseline_format_list_numbered_24"
+                        android:title="List Of Student" />
 
 
                 </group>

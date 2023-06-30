@@ -19,9 +19,9 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_home_layout);
+        setContentView(R.layout.activity_main);
 
-        MaterialToolbar toolbar = findViewById(R.id.topAppBar);
+      /*  MaterialToolbar toolbar = findViewById(R.id.topAppBar);
         DrawerLayout drawerLayout = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.navigation_view);
 
@@ -75,14 +75,13 @@ public class MainActivity extends AppCompatActivity {
                 return false;
             }
         });
-
-//
-//        Button startButton =(Button) findViewById(R.id.startButton);
-//        startButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                startActivity(new Intent(MainActivity.this, SignInSignUp.class));
-//            }
-//        });
+*/
+        Button startButton =(Button) findViewById(R.id.startButton);
+        startButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(MainActivity.this, SignInSignUp.class));
+            }
+        });
     }
 }

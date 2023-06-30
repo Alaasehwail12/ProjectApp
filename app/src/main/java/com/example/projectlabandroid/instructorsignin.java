@@ -5,6 +5,7 @@ import android.os.Bundle;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -87,19 +88,20 @@ public class instructorsignin extends Fragment {
                 String enterPassword = pass.getText().toString().trim();
 
 
-                if (!dbHelper.istraineeRegistered(enteredEmail))
+                if (!dbHelper.isinstructorRegistered(enteredEmail))
                 {
-                    Toast.makeText(requireContext(), "This email is not registered for trainee!", Toast.LENGTH_SHORT).show();
-                }else if(!dbHelper.correcttranieeSignIn(enteredEmail, enterPassword)){
-                    Toast.makeText(requireContext(), "Incorrect password for trainee!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(requireContext(), "This email is not registered for instructor!", Toast.LENGTH_SHORT).show();
+                }else if(!dbHelper.correctinstructoSignIn(enteredEmail, enterPassword)){
+                    Toast.makeText(requireContext(), "Incorrect password for instructor!", Toast.LENGTH_SHORT).show();
                 }else{
                     if (rememberme.isChecked())
                         sharedPrefManager.writeString("email", email.getText().toString().trim());
                     else
                         sharedPrefManager.writeString("email", "noValue");
-                       ins= dbHelper.getinstructoByEmail(email.getText().toString().trim());
-                     Toast.makeText(requireContext(), "the login procsess succesfull for trainee!", Toast.LENGTH_SHORT).show();
-                    startActivity(new Intent(requireContext(), HomeLayout.class));
+                    ins= dbHelper.getinstructoByEmail(email.getText().toString().trim());
+                    Toast.makeText(requireContext(), "the login process successful for instructor!", Toast.LENGTH_SHORT).show();
+                    startActivity(new Intent(requireContext(), InstructorPage.class));
+
                 }
             }
         });

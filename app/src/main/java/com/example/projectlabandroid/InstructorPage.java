@@ -42,6 +42,7 @@ public class InstructorPage extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 int id = item.getItemId();
                 drawerLayout.closeDrawer(GravityCompat.START);
+
                 switch (id){
                     case R.id.coursetaught:
                         getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, new InstructorCourseTaught()).commit();
@@ -64,8 +65,8 @@ public class InstructorPage extends AppCompatActivity {
 
                     default:
                         return true;
-                }
 
+                }
                 return false;
             }
         });

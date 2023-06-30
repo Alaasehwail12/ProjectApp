@@ -22,9 +22,8 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL("CREATE TABLE traniee(EMAIL TEXT PRIMARY KEY, FIRSTNAME TEXT, LASTNAME TEXT, PASSWORD TEXT NOT NULL,PHOTO BLOB,mobile_number TEXT,ADDRESS TEXT)");
         sqLiteDatabase.execSQL("CREATE TABLE instructor(EMAIL TEXT PRIMARY KEY, FIRSTNAME TEXT, LASTNAME TEXT, PASSWORD TEXT NOT NULL,PHOTO BLOB,mobile_number TEXT,ADDRESS TEXT,DEGREE TEXT,SPECIALIZATION TEXT )");
         sqLiteDatabase.execSQL("CREATE TABLE Course(CNum INTEGER  PRIMARY KEY AUTOINCREMENT, Ctitle TEXT , CTopics TEXT, prerequisites TEXT, PHOTO BLOB, DEADLINECOURSE DATE, COURSESTARTDATE DATE, SCHEDULE_COURSE TIME, COURSEVENUE TEXT)");
-        // sqLiteDatabase.execSQL("DROP TABLE IF EXISTS Course");
-        sqLiteDatabase.execSQL("CREATE TABLE available_Course(CNum INTEGER PRIMARY KEY , Ctitle TEXT,Name TEXT ,CTopics TEXT, prerequisites TEXT, PHOTO BLOB, DEADLINECOURSE DATE, COURSESTARTDATE DATE, SCHEDULE_COURSE TIME, COURSEVENUE TEXT, FOREIGN KEY (CNum) REFERENCES Course(CNum))");
-
+        sqLiteDatabase.execSQL("CREATE TABLE available_Course(CNum INTEGER PRIMARY KEY , Ctitle TEXT,Name TEXT ,CTopics TEXT, prerequisites TEXT, PHOTO BLOB, DEADLINECOURSE DATE, COURSESTARTDATE DATE, SCHEDULE_COURSE TIME, COURSEVENUE TEXT, FOREIGN KEY (CNum) REFERENCES Course(CNum) ON DELETE CASCADE ON UPDATE CASCADE)");
+        sqLiteDatabase.execSQL("CREATE TABLE trainee_Course(CNum INTEGER PRIMARY KEY, Ctitle TEXT,EMAIL TEXT, FOREIGN KEY (CNum) REFERENCES Course(CNum) ,FOREIGN KEY (Ctitle) REFERENCES Course(Ctitle),FOREIGN KEY (EMAIL) REFERENCES traniee(EMAIL))");
         sqLiteDatabase.execSQL("CREATE TABLE Course_instructor( EMAIL TEXT , Ctitle TEXT, PRIMARY KEY(EMAIL, Ctitle), FOREIGN KEY (EMAIL) REFERENCES instructor(EMAIL) ON DELETE CASCADE ON UPDATE CASCADE, FOREIGN KEY (Ctitle) REFERENCES Course(Ctitle))");
     }
 
@@ -55,6 +54,18 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
         cursor.close();
         return instructorNames;
+    }
+
+    public String preq(String title) { //read from database it returns cursor object
+        String preq = null;
+        SQLiteDatabase sqLiteDatabase = getReadableDatabase();
+        String q ="SELECT prerequisites FROM Course where Course.Ctitle = ?";
+        Cursor cursor = sqLiteDatabase.rawQuery(q , new String[]{title}); //null value returned when an error ocurred
+        while (cursor.moveToNext()) {
+            preq = cursor.getString(0);
+        }
+        cursor.close();
+        return preq;
     }
 
 
@@ -329,6 +340,14 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         return sqLiteDatabase.rawQuery("SELECT * FROM available_Course ", null); //null value returned when an error ocurred
     }
 
+    public Cursor getAllAvailableCourses_bytitle(String title) { //read from database it returns cursor object
+        SQLiteDatabase sqLiteDatabase = getReadableDatabase();
+        String query="SELECT * FROM available_Course where available_Course.Ctitle = ? ";
+        return sqLiteDatabase.rawQuery(query,  new String[]{title}); //null value returned when an error ocurred
+    }
+
+
+
 
     public Cursor getAllinstroucter_course() { //read from database it returns cursor object
         SQLiteDatabase sqLiteDatabase = getReadableDatabase();
@@ -360,6 +379,13 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         db.execSQL(sql, new String[]{newCourse.getCtitle(), newCourse.getCTopics(),
                 newCourse.getPrerequisites(), String.valueOf(newCourse.getPhoto()),newCourse.getDeadline(),newCourse.getStartDateCourse(),
                 newCourse.getSchedule(),newCourse.getVenue(), String.valueOf(id)});
+    }
+    public void edittrainee(trainee old, trainee newUser) {
+        SQLiteDatabase db = getWritableDatabase();
+        String sql = "UPDATE traniee SET EMAIL = ?, FIRSTNAME = ?, LASTNAME = ?, PASSWORD = ?,PHOTO = ?,mobile_number=?,ADDRESS=? WHERE EMAIL = ?";
+        db.execSQL(sql, new String[]{newUser.getEmail(), newUser.getFirst_name(), newUser.getLast_name(),
+                newUser.getPassword(),newUser.getMobile_number(),newUser.getAddress(), old.getEmail()});
+        db.execSQL("UPDATE FAVORITES SET EMAIL = '" + newUser.getEmail() + "' WHERE EMAIL = '" + old.getEmail() + "';");
     }
 }
 

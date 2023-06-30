@@ -1,13 +1,18 @@
 package com.example.projectlabandroid;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -27,6 +32,7 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Base64;
@@ -87,6 +93,22 @@ public class EditCourseFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+        activityResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
+            @Override
+            public void onActivityResult(ActivityResult result) {
+                if(result.getResultCode() == Activity.RESULT_OK){
+                    Intent data = result.getData();
+                    Uri uri = data.getData();
+                    try {
+                        bitmap = MediaStore.Images.Media.getBitmap(requireContext().getContentResolver(), uri);
+                        imagephoto.setImageBitmap(bitmap);
+                    }catch (IOException a){
+                        a.printStackTrace();
+
+                    }
+                }
+            }
+        });
     }
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -94,9 +116,15 @@ public class EditCourseFragment extends Fragment {
 
 
         EditText courseTpoics = (EditText) getActivity().findViewById(R.id.editTextTextPersonName2);
-        EditText courseTitle = (EditText) getActivity().findViewById(R.id.editTextTextPersonName);
+        courseTpoics.setText(CourseFragment.c.getCTopics());
+
+        TextView courseTitle = (TextView) getActivity().findViewById(R.id.editTextTextPersonName);
+        courseTitle.setText(CourseFragment.c.getCtitle());
+
         ImageView preq = (ImageView) getActivity().findViewById(R.id.imageView8);
         TextView preqe = (TextView) getActivity().findViewById(R.id.editTextTextPersonName3);
+
+        preqe.setText(CourseFragment.c.getPrerequisites());
         imagephoto = (ImageView) getActivity().findViewById(R.id.imageView6);
         Button uploadphoto = (Button) getActivity().findViewById(R.id.button4);
         Button editcourse = (Button) getActivity().findViewById(R.id.button5);
@@ -105,6 +133,7 @@ public class EditCourseFragment extends Fragment {
         CalendarView courseStartDate =(CalendarView) getActivity().findViewById(R.id.etStartDate);
         TimePicker schedule = (TimePicker)getActivity().findViewById(R.id.etCourseSchedule);
         EditText venue = (EditText) getActivity().findViewById(R.id.etVenue);
+        venue.setText(CourseFragment.c.getVenue());
 
         final String[] prequsites_string = {""};
         DataBaseHelper dbHelper = new DataBaseHelper(requireContext(), "Database", null, 1);
@@ -217,6 +246,8 @@ public class EditCourseFragment extends Fragment {
                     public void onClick(DialogInterface dialog, int which) {
                         Arrays.fill(selectedprequisites, false);
                         prequisitesList.clear();
+                        prequsites_string[0]="";
+                        preqe.append(prequsites_string[0]);
                     }
                 });
 
@@ -232,6 +263,7 @@ public class EditCourseFragment extends Fragment {
                 newCourse.setVenue(venue.getText().toString());
                 Toast toast =Toast.makeText(getActivity(),"You edit a course successfully!",Toast.LENGTH_SHORT);
                 toast.show();
+
                 if (allCourses.moveToFirst()) {
                     int courseIdIndex = allCourses.getColumnIndex("CNum");
                     int courseId = allCourses.getInt(courseIdIndex);

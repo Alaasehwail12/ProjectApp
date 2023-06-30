@@ -5,9 +5,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.navigation.NavigationView;
@@ -22,6 +24,11 @@ public class MainActivity extends AppCompatActivity {
         MaterialToolbar toolbar = findViewById(R.id.topAppBar);
         DrawerLayout drawerLayout = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.navigation_view);
+
+//        MaterialToolbar toolbar = findViewById(R.id.topAppBar1);
+//        DrawerLayout drawerLayout = findViewById(R.id.drawer_layout1);
+//        NavigationView navigationView = findViewById(R.id.navigation_view1);
+
         getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, new ProfileFragment()).commit();
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -35,9 +42,14 @@ public class MainActivity extends AppCompatActivity {
                 int id = item.getItemId();
                 drawerLayout.closeDrawer(GravityCompat.START);
                 switch (id){
-//                    case R.id.profile:
-//                        getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, new ProfileFragment()).commit();
+//                    case R.id.serach:
+//                        getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, new search_for_course()).commit();
 //                        break;
+//                    case R.id.Apply:
+//                        getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, new student_apply_for_course()).commit();
+//                        break;
+//
+
                     case R.id.course:
                         getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, new CourseFragment()).commit();
                         break;
@@ -64,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
+//
 //        Button startButton =(Button) findViewById(R.id.startButton);
 //        startButton.setOnClickListener(new View.OnClickListener() {
 //            @Override

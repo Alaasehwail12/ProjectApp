@@ -104,6 +104,17 @@ public class make_courses_avaliableFragment extends Fragment {
 
         secondLinearLayout = getActivity().findViewById(R.id.secondLinearLayout);
 
+//        instructorNames= dbHelper.make_course_avalabile("AI");
+//        options = instructorNames.toArray(new String[instructorNames.size()]);
+//
+//        create_course_avaliable_fragment fragment = new create_course_avaliable_fragment();
+////        Bundle args = new Bundle();
+////        args.putStringArray("options", options);
+//       // fragment.setArguments(args);
+//        new_text.setTextSize(30);
+//        String optionsString = Arrays.toString(options);
+    //    new_text.setText(optionsString);
+
     }
 
 
@@ -121,6 +132,7 @@ public class make_courses_avaliableFragment extends Fragment {
         Toast toast =Toast.makeText(getActivity(),"inside the resume function true",Toast.LENGTH_SHORT);
         toast.show();
         DataBaseHelper dbHelper = new DataBaseHelper(requireContext(), "Database", null, 1);
+
         Cursor allCourses = dbHelper.getAllAvailableCourses();
         int borderColor = getResources().getColor(R.color.purple_200);
         GradientDrawable border = new GradientDrawable();
@@ -133,14 +145,18 @@ public class make_courses_avaliableFragment extends Fragment {
         layoutParams.gravity = Gravity.CENTER;
        // secondLinearLayout.setLayoutParams(layoutParams);
         while(allCourses.moveToNext()){
+            ImageView imageView = new ImageView(requireContext());
             TextView textView = new TextView(requireContext());
             textView.setBackground(border);
             byte [] bytes = allCourses.getBlob(5);
+            imageView.setLayoutParams(new ViewGroup.LayoutParams(300, 300));
             Bitmap bitmapImageDB = null;
             if (bytes != null) {
                 bitmapImageDB = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                imageView.setImageBitmap(bitmapImageDB);
             } else {
-                textView.setText(allCourses.getString(5) +"\n");
+               // textView.setText(allCourses.getString(5) +"\n");
+                imageView.setImageResource(R.drawable.online_learning);
             }
           //  textView.setBackground(border);
             textView.setGravity(Gravity.CENTER);
@@ -157,9 +173,7 @@ public class make_courses_avaliableFragment extends Fragment {
                     "\nVenue: "+allCourses.getString(9)+
                     "\n"  );
             textView.setTextSize(22);
-            ImageView imageView = new ImageView(requireContext());
-            imageView.setLayoutParams(new ViewGroup.LayoutParams(300, 300));
-            imageView.setImageBitmap(bitmapImageDB);
+
 
             String inputDate =allCourses.getString(6);
             String outputFormat = "yyyy-MM-dd";

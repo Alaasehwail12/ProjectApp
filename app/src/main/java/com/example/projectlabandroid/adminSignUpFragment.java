@@ -6,7 +6,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.net.Uri;
@@ -21,8 +20,6 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import android.provider.MediaStore;
-import android.text.InputType;
-import android.text.method.PasswordTransformationMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,9 +29,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.material.textfield.TextInputLayout;
-
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.Base64;
@@ -125,7 +119,7 @@ public class adminSignUpFragment extends Fragment {
         EditText pass2 = (EditText) getActivity().findViewById(R.id.pass2);
         Button signup2 = (Button) getActivity().findViewById(R.id.signupadmin);
         Button photo = (Button) getActivity().findViewById(R.id.photo);
-        TextView error = (TextView) getActivity().findViewById(R.id.error);
+        TextView error = (TextView) getActivity().findViewById(R.id.error2);
         image_view = (ImageView) getActivity().findViewById(R.id.imageView2);
 
         GradientDrawable d2 = new GradientDrawable();

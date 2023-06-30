@@ -113,6 +113,7 @@ public class CreateCourseFragment extends Fragment {
             }
         });
     }
+    public static String prequsites_string = "";
 
 
     @Override
@@ -133,7 +134,6 @@ public class CreateCourseFragment extends Fragment {
         TimePicker schedule = (TimePicker)getActivity().findViewById(R.id.etCourseSchedule);
         EditText venue = (EditText) getActivity().findViewById(R.id.etVenue);
 
-        final String[] prequsites_string = {""};
 
         DataBaseHelper dbHelper = new DataBaseHelper(requireContext(), "Database", null, 1);
 
@@ -224,11 +224,11 @@ public class CreateCourseFragment extends Fragment {
 
                         for (int i = 0; i < prequisites.length; i++) {
                             if (selectedprequisites[i]){
-                                prequsites_string[0] += prequisites[i]+" , ";
+                                prequsites_string += prequisites[i]+" , ";
                             }
                         }
-                        preqe.append(prequsites_string[0]);
-                        course.setPrerequisites(prequsites_string[0]);
+                        preqe.append(prequsites_string);
+                        course.setPrerequisites(prequsites_string);
                         dialog.dismiss();
                     }
                 });
@@ -258,13 +258,20 @@ public class CreateCourseFragment extends Fragment {
                 course.setCtitle(courseTitle.getText().toString());
                 course.setCTopics(courseTpoics.getText().toString());
                 course.setVenue(venue.getText().toString());
-                Toast toast =Toast.makeText(getActivity(),"You create a course successfully!",Toast.LENGTH_SHORT);
-                toast.show();
-                dbHelper.insertCourse(course);
-                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.frameLayout, new CourseFragment());
-                fragmentTransaction.commit();
+
+                if(dbHelper.insertCourse(course) == false){
+                    Toast toast =Toast.makeText(getActivity(),"This course already exist!!!",Toast.LENGTH_SHORT);
+                    toast.show();
+                }
+                else {
+                    Toast toast =Toast.makeText(getActivity(),"You create a course successfully!",Toast.LENGTH_SHORT);
+                    toast.show();
+                    dbHelper.insertCourse(course);
+                    FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                    fragmentTransaction.replace(R.id.frameLayout, new CourseFragment());
+                    fragmentTransaction.commit();
+                }
             }
         });
     }

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".instructorsignin" >
+    <EditText
+        android:id="@+id/emailins"
+        android:layout_width="match_parent"
+        android:layout_height="62dp"
+        android:layout_marginBottom="50dp"
+        android:ems="10"
+        android:hint="E-mail"
+        android:textSize="20sp" />
+
+    <EditText
+        android:id="@+id/pass_ins"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="Passowrd"
+        android:inputType="textPassword"
+        android:textSize="20sp" />
+
+    <CheckBox
+        android:id="@+id/remembermeains"
+        android:layout_width="match_parent"
+        android:layout_height="65dp"
+        android:text="Remember me"
+        android:textSize="16sp" />
+
+    <Button
+        android:id="@+id/signinains"
+        style="@style/Widget.Material3.Button"
+        android:layout_width="152dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="15dp"
+        android:text="Sign in"
+        android:textAlignment="center"
+        android:textColorHighlight="#E91E63"
+        android:textColorLink="#E91E63"
+        android:textSize="20sp"
+        />
+
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Don't Have an Account? "
+        android:textSize="22sp" />
+
+    <Button
+        android:id="@+id/signupins2"
+        style="@style/Widget.Material3.Button"
+        android:layout_width="109dp"
+        android:layout_height="wrap_content"
+        android:text="SignUp"
+        android:textSize="16sp" />
+
+</LinearLayout>

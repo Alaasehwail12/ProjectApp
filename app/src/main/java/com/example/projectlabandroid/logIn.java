@@ -3,6 +3,7 @@ package com.example.projectlabandroid;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Intent;
@@ -22,9 +23,10 @@ import java.util.Objects;
 public class logIn extends AppCompatActivity {
 
     DataBaseHelper dbHelper =new DataBaseHelper(logIn.this,"Database", null,1);
-    public static admin ad = new admin();
-    public static trainee tr = new trainee();
-    public static instructor ins = new instructor();
+
+    public static String trinee_user1 = "alaa@gmail.com";
+    public static String trinee_user2 = "shahd@gmail.com";
+
 
 
 
@@ -33,105 +35,45 @@ public class logIn extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_log_in);
 
-        EditText email = (EditText) findViewById(R.id.email);
-        EditText pass = (EditText) findViewById(R.id.pass);
-        CheckBox rememberme = (CheckBox) findViewById(R.id.rememberme);
-        Button signin =(Button) findViewById(R.id.signin);
-        Button signUP =(Button) findViewById(R.id.signup);
+        final adminlogin admin = new adminlogin();
+        final trineelogin trainee = new trineelogin();
+        final instructorsignin instructor = new instructorsignin();
+        final FragmentManager fragmentM = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentM.beginTransaction();
+
+
         RadioGroup radioGroup = findViewById(R.id.radioGroup2);
-        rememberme.setChecked(true);
 
-        SharedPrefManager sharedPrefManager = SharedPrefManager.getInstance(logIn.this);
-        if (!Objects.equals(sharedPrefManager.readString("email", "noValue"), "noValue")){
-            email.setText(sharedPrefManager.readString("email", "noValue"));
-        }
 
-        signin.setOnClickListener(new View.OnClickListener() {
+        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
-            public void onClick(View v) {
-                String enteredEmail = email.getText().toString().trim();
-                String enterPassword = pass.getText().toString().trim();
+            public void onCheckedChanged(RadioGroup radioGroup, int checkedId) {
+                switch (checkedId) {
+                    case R.id.admin2:
+                        FragmentTransaction fragmentT = fragmentM.beginTransaction();
+                        fragmentT.replace(R.id.login_root_layout, admin, "adminLogin");
+                        fragmentT.commit();
+                        break;
+                    case R.id.trainee2:
+                        FragmentTransaction fragmentT1 = fragmentM.beginTransaction();
+                        fragmentT1.replace(R.id.login_root_layout, trainee, "traineeLogin");
+                        fragmentT1.commit();
+                        break;
+                    case R.id.instructor2:
+                        FragmentTransaction fragmentT2 = fragmentM.beginTransaction();
+                        fragmentT2.replace(R.id.login_root_layout, instructor, "inasLogin");
+                        fragmentT2.commit();
+                        break;
 
-                radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-                    @Override
-                    public void onCheckedChanged(RadioGroup radioGroup, int checkedId) {
-                        switch (checkedId) {
-                            //////alaaaaaaaaaaaaaaaaaaaa
-
-                            case R.id.admin2:
-                                if (!dbHelper.isadminRegistered(enteredEmail))
-                                {
-                                    Toast.makeText(logIn.this, "This email is not registered for admin!", Toast.LENGTH_SHORT).show();
-                                }else if(!dbHelper.correctadminSignIn(enteredEmail, enterPassword)){
-                                    Toast.makeText(logIn.this, "Incorrect password for admin!", Toast.LENGTH_SHORT).show();
-                                }else{
-                                    if (rememberme.isChecked())
-                                        sharedPrefManager.writeString("email", email.getText().toString().trim());
-                                    else
-                                        sharedPrefManager.writeString("email", "noValue");
-                                    ad= dbHelper.getadminByEmail(email.getText().toString().trim());
-                                    Toast.makeText(logIn.this, "the login procsess succesfull for admin!", Toast.LENGTH_SHORT).show();
-
-                                    startActivity(new Intent(logIn.this, HomeLayout.class));
-                                }
-
-                                break;
-
-                            case R.id.trainee2:
-                                if (!dbHelper.istraineeRegistered(enteredEmail))
-                                {
-                                    Toast.makeText(logIn.this, "This email is not registered for trainee!", Toast.LENGTH_SHORT).show();
-                                }else if(!dbHelper.correcttranieeSignIn(enteredEmail, enterPassword)){
-                                    Toast.makeText(logIn.this, "Incorrect password for trainee!", Toast.LENGTH_SHORT).show();
-                                }else{
-                                    if (rememberme.isChecked())
-                                        sharedPrefManager.writeString("email", email.getText().toString().trim());
-                                    else
-                                        sharedPrefManager.writeString("email", "noValue");
-                                    tr= dbHelper.gettraineeByEmail(email.getText().toString().trim());
-                                    Toast.makeText(logIn.this, "the login procsess succesfull for trainee!", Toast.LENGTH_SHORT).show();
-
-                                    //startActivity(new Intent(logIn.this, HomeScreen.class));
-                                }
-
-                                break;
-                            case R.id.instructor2:
-                                if (!dbHelper.isinstructorRegistered(enteredEmail))
-                                {
-                                    Toast.makeText(logIn.this, "This email is not registered for inst!", Toast.LENGTH_SHORT).show();
-                                }else if(!dbHelper.correctinstructoSignIn(enteredEmail, enterPassword)){
-                                    Toast.makeText(logIn.this, "Incorrect password!", Toast.LENGTH_SHORT).show();
-                                }else{
-                                    if (rememberme.isChecked())
-                                        sharedPrefManager.writeString("email", email.getText().toString().trim());
-                                    else
-                                        sharedPrefManager.writeString("email", "noValue");
-                                    ins= dbHelper.getinstructoByEmail(email.getText().toString().trim());
-                                    Toast.makeText(logIn.this, "the login procsess succesfull for instructor!", Toast.LENGTH_SHORT).show();
-
-                                    //startActivity(new Intent(logIn.this, HomeScreen.class));
-                                }
-
-                                break;
-
-                        }
-
-                    }
-                });
+                }
             }
         });
-
-
-        signUP.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(logIn.this, SignUp.class));
-            }
-        });
-
-
-
     }
+}
+
+
+
+
 //    protected void onResume() {
 //        super.onResume();
 //        DataBaseHelper dbHelper =new DataBaseHelper(logIn.this,"Database", null,1);
@@ -151,4 +93,3 @@ public class logIn extends AppCompatActivity {
 //                    }
 //    }
 
-}

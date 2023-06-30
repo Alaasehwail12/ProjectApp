@@ -2,12 +2,10 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/address"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:baselineAligned="false"
     android:orientation="vertical"
-    tools:context=".traineeSignUpFragment">
+    tools:context=".EdittraineeProfile">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -19,14 +17,13 @@
             android:orientation="vertical" >
 
             <ImageView
-                android:id="@+id/imageView"
+                android:id="@+id/imageV10"
                 android:layout_width="match_parent"
-                android:layout_height="224dp"
-                android:layout_gravity="center"
-                app:srcCompat="@drawable/traniee" />
+                android:layout_height="188dp"
+                android:src="@drawable/traniee" />
 
             <TextView
-                android:id="@+id/textView"
+                android:id="@+id/textV2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
@@ -34,7 +31,7 @@
                 android:textAppearance="@style/TextAppearance.AppCompat.Large" />
 
             <TextView
-                android:id="@+id/textView2"
+                android:id="@+id/textV"
                 android:layout_width="match_parent"
                 android:layout_height="37dp"
                 android:gravity="center"
@@ -42,7 +39,7 @@
                 android:textSize="20sp" />
 
             <EditText
-                android:id="@+id/editTextText4"
+                android:id="@+id/editT"
                 android:layout_width="match_parent"
                 android:layout_height="58dp"
                 android:layout_marginTop="5dp"
@@ -59,7 +56,7 @@
                 android:orientation="horizontal">
 
                 <EditText
-                    android:id="@+id/firstnametext"
+                    android:id="@+id/ft1"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
@@ -70,7 +67,7 @@
                     android:textSize="20sp" />
 
                 <EditText
-                    android:id="@+id/lastnametext"
+                    android:id="@+id/lt2"
                     android:layout_width="wrap_content"
                     android:layout_height="66dp"
                     android:layout_weight="1"
@@ -88,7 +85,7 @@
                 android:orientation="horizontal">
 
                 <EditText
-                    android:id="@+id/passwordtext"
+                    android:id="@+id/passt2"
                     android:layout_width="wrap_content"
                     android:layout_height="58dp"
                     android:layout_weight="1"
@@ -99,7 +96,7 @@
                     android:textSize="20sp" />
 
                 <EditText
-                    android:id="@+id/confirmpasswordtext"
+                    android:id="@+id/confirmptext2"
                     android:layout_width="wrap_content"
                     android:layout_height="59dp"
                     android:layout_weight="1"
@@ -117,7 +114,7 @@
                 android:orientation="horizontal">
 
                 <EditText
-                    android:id="@+id/mobiletext"
+                    android:id="@+id/mobiltext2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -127,7 +124,7 @@
                     android:inputType="phone" />
 
                 <EditText
-                    android:id="@+id/addresstext"
+                    android:id="@+id/addresstext2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -146,10 +143,10 @@
                 android:orientation="horizontal">
 
                 <Button
-                    android:id="@+id/photoButton"
+                    android:id="@+id/photoButton2"
                     style="@style/Widget.Material3.Button"
                     android:layout_width="211dp"
-                    android:layout_height="80dp"
+                    android:layout_height="68dp"
                     android:layout_marginLeft="30dp"
                     android:layout_marginTop="25dp"
                     android:layout_marginRight="30dp"
@@ -158,31 +155,52 @@
                     android:text="Upload Photo"
                     android:textColorHighlight="#E91E63"
                     android:textColorLink="#E91E63"
-                    android:textSize="20sp"
-                    app:rippleColor="#BD5358" />
+                    android:textSize="20sp" />
 
                 <ImageView
-                    android:id="@+id/imageView_trniee"
-                    android:layout_width="151dp"
-                    android:layout_height="108dp"
-                    android:layout_marginRight="30dp"
+                    android:id="@+id/saved_image"
+                    android:layout_width="205dp"
+                    android:layout_height="107dp"
                     android:layout_weight="1"
-                    app:srcCompat="@drawable/upload" />
+                    android:src="@drawable/upload" />
+
             </LinearLayout>
 
-            <Button
-                android:id="@+id/signUpButton"
-                style="@style/Widget.Material3.Button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="15dp"
-                android:backgroundTint="#D720AF"
-                android:text="SignUp"
-                android:textColorHighlight="#E91E63"
-                android:textColorLink="#E91E63"
-                android:textSize="20sp"
-                app:rippleColor="#BD5358" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="84dp"
+
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/save_profile"
+                    style="@style/Widget.Material3.Button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginRight="30dp"
+                    android:backgroundTint="#D720AF"
+                    android:text="Save"
+                    android:textColorHighlight="#E91E63"
+                    android:textColorLink="#E91E63"
+                    android:textSize="20sp" />
+
+                <Button
+                    android:id="@+id/cancle"
+                    style="@style/Widget.Material3.Button"
+                    android:layout_width="146dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginRight="20dp"
+                    android:backgroundTint="#D720AF"
+                    android:text="Cancel"
+                    android:textColorHighlight="#E91E63"
+                    android:textColorLink="#E91E63"
+                    android:textSize="20sp" />
+            </LinearLayout>
 
             <TextView
                 android:id="@+id/error2"
@@ -190,12 +208,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:textColor="#CF0F0F"
-                android:textSize="16sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/haveAnAccount" />
+                android:textSize="16sp" />
         </LinearLayout>
     </ScrollView>
-
 </LinearLayout>

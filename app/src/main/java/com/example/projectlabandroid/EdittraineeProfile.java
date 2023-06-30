@@ -1,12 +1,12 @@
 package com.example.projectlabandroid;
 
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.net.Uri;
@@ -18,6 +18,8 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.provider.MediaStore;
 import android.view.LayoutInflater;
@@ -35,13 +37,12 @@ import java.util.Base64;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link traineeSignUpFragment#newInstance} factory method to
+ * Use the {@link EdittraineeProfile#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class traineeSignUpFragment extends Fragment {
+public class EdittraineeProfile extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -52,9 +53,7 @@ public class traineeSignUpFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    private  ImageView image ;
-
-    public traineeSignUpFragment() {
+    public EdittraineeProfile() {
         // Required empty public constructor
     }
 
@@ -64,24 +63,24 @@ public class traineeSignUpFragment extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment traineeSignUp.
+     * @return A new instance of fragment EdittraineeProfile.
      */
     // TODO: Rename and change types and number of parameters
-    public static traineeSignUpFragment newInstance(String param1, String param2) {
-        traineeSignUpFragment fragment = new traineeSignUpFragment();
+    public static EdittraineeProfile newInstance(String param1, String param2) {
+        EdittraineeProfile fragment = new EdittraineeProfile();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
     }
-    private  ImageView image_view2 ;
+
+    private ImageView image_view2 ;
     private ActivityResultLauncher<Intent> activityResultLauncher2;
     boolean isButtonNotPressed = false;
 
     private Bitmap bitmap;
     private byte [] bytes;
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -106,24 +105,40 @@ public class traineeSignUpFragment extends Fragment {
                 }
             }
         });
-
     }
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        EditText emailEditText = (EditText) getActivity().findViewById(R.id.editTextText4);
-        EditText firstNameEditText = (EditText) getActivity().findViewById(R.id.firstnametext);
-        EditText lastNameEditText = (EditText) getActivity().findViewById(R.id.lastnametext);
-        EditText passwordEditText = (EditText) getActivity().findViewById(R.id.passwordtext);
-        EditText confirmPasswordEditText = (EditText) getActivity().findViewById(R.id.confirmpasswordtext);
-        EditText mobileEditText = (EditText) getActivity().findViewById(R.id.mobiletext);
-        EditText addressEditText = (EditText) getActivity().findViewById(R.id.addresstext);
-        Button photo_button = (Button) getActivity().findViewById(R.id.photoButton);
-        Button signUpButton = (Button) getActivity().findViewById(R.id.signUpButton);
-        image_view2 = (ImageView) getActivity().findViewById(R.id.imageView_trniee);
+        EditText emailEditText = (EditText) getActivity().findViewById(R.id.editT);
+        emailEditText.setText(trineelogin.tr.getEmail());
 
-        TextView error = (TextView) getActivity().findViewById(R.id.error2);
+        EditText firstNameEditText = (EditText) getActivity().findViewById(R.id.ft1);
+        firstNameEditText.setText(trineelogin.tr.getFirst_name());
+
+        EditText lastNameEditText = (EditText) getActivity().findViewById(R.id.lt2);
+        lastNameEditText.setText(trineelogin.tr.getLast_name());
+
+        EditText passwordEditText = (EditText) getActivity().findViewById(R.id.passt2);
+        passwordEditText.setText(trineelogin.tr.getPassword());
+
+        EditText confirmPasswordEditText = (EditText) getActivity().findViewById(R.id.confirmptext2);
+        confirmPasswordEditText.setText(trineelogin.tr.getPassword());
+
+        EditText mobileEditText = (EditText) getActivity().findViewById(R.id.mobiltext2);
+        mobileEditText.setText(trineelogin.tr.getMobile_number());
+
+        EditText addressEditText = (EditText) getActivity().findViewById(R.id.addresstext2);
+        addressEditText.setText(trineelogin.tr.getAddress());
+
+        image_view2 = (ImageView) getActivity().findViewById(R.id.saved_image);
+
+        TextView error = (TextView)  getActivity().findViewById(R.id.error2);
+
+        Button up= (Button) getActivity().findViewById(R.id.save_profile);
+        Button canel= (Button) getActivity().findViewById(R.id.cancle);
+        Button photo_button= (Button) getActivity().findViewById(R.id.photoButton2);
+
 
         photo_button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -148,21 +163,17 @@ public class traineeSignUpFragment extends Fragment {
             }
         });
 
-
-        image_view2.setOnClickListener(new View.OnClickListener() {
+        canel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-                intent.setData(MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                activityResultLauncher2.launch(intent);
+                FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.frameLayout, new TraineeProfile());
+                fragmentTransaction.commit();
             }
         });
 
-
-
-
-
-        signUpButton.setOnClickListener(new View.OnClickListener() {
+        up.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 final boolean[] somethingWrong = {false};
@@ -293,7 +304,7 @@ public class traineeSignUpFragment extends Fragment {
                                                 errorMessage[0] = "You should click on the upload Photo first .";
                                             }else{
                                                 user.setPhoto(bytes);
-                                                dbHelper.inserttrainee(user);
+                                                dbHelper.edittrainee(trineelogin.tr,user);
                                             }
                                         }
                                     }
@@ -304,16 +315,7 @@ public class traineeSignUpFragment extends Fragment {
                 }
 
 
-                Cursor allTraineeCursor = dbHelper.getAllTrainees();
-                while (allTraineeCursor.moveToNext()){ //this function allow me to move between data
-                    System.out.println("Email= "+allTraineeCursor.getString(0) +"\nFirstName= "+allTraineeCursor.getString(1)
-                            +"\nLastName= "+allTraineeCursor.getString(2)
-                            +"\nPassword= "+allTraineeCursor.getString(3)
-                            +"\nPhoto= "+allTraineeCursor.getBlob(4)+
-                            "\nMobile Number= "+allTraineeCursor.getString(5)+
-                            "\nAddress= "+allTraineeCursor.getString(6)+
-                            "\n\n" );
-                }
+
                 if (somethingWrong[0]) {
                     error.setTextColor(Color.RED);
                     error.setText(errorMessage[0]);
@@ -322,7 +324,7 @@ public class traineeSignUpFragment extends Fragment {
                 } else {
                     error.setTextColor(Color.BLACK);
                     error.setText("Signing up is done successfully!");
-                    Toast toast =Toast.makeText(getActivity(),"Signing up is done successfully!",Toast.LENGTH_SHORT);
+                    Toast toast =Toast.makeText(getActivity(),"Edit is done successfully!",Toast.LENGTH_SHORT);
                     toast.show();
                     AlertDialog.Builder builder = new AlertDialog.Builder(  requireContext());
                     builder.setTitle("Login");
@@ -352,20 +354,18 @@ public class traineeSignUpFragment extends Fragment {
 
                 }
 
+
             }
         });
 
+        byte [] bytes = trineelogin.tr.getPhoto();
+        if(bytes != null ){
+            Bitmap bitmapImageDB = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+            image_view2.setImageBitmap(bitmapImageDB);
+        }
+
 
     }
-
-
-    @Override
-    public View onCreateView (LayoutInflater inflater, ViewGroup container,
-                              Bundle savedInstanceState){
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_trainee_sign_up, container, false);
-    }
-
     static boolean isEmailValid(CharSequence email) {
         return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
     }
@@ -376,5 +376,10 @@ public class traineeSignUpFragment extends Fragment {
         return matcher.find();
     }
 
-
+        @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        return inflater.inflate(R.layout.fragment_edittrainee_profile, container, false);
+    }
 }

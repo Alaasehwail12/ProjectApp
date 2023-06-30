@@ -113,6 +113,7 @@ public class CourseFragment extends Fragment {
         return view;
     }
 
+    public static Course c ;
     @Override
     public void onResume() {
         super.onResume();
@@ -124,15 +125,20 @@ public class CourseFragment extends Fragment {
         secondLinearLayout.removeAllViews();
 
         while(allCourses.moveToNext()){
+            ImageView imageView = new ImageView(requireContext());
+
             TextView textView = new TextView(requireContext());
             TextView textView2 = new TextView(requireContext());
+            imageView.setLayoutParams(new ViewGroup.LayoutParams(300, 300));
 
             byte [] bytes = allCourses.getBlob(4);
             Bitmap bitmapImageDB = null;
             if (bytes != null) {
                 bitmapImageDB = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                imageView.setImageBitmap(bitmapImageDB);
             } else {
-                textView.setText("Photo=" +allCourses.getString(4) +"\n");
+               // textView.setText("Photo=" +allCourses.getString(4) +"\n");
+                imageView.setImageResource(R.drawable.homework);
             }
             textView.append("Course Number= "+allCourses.getInt(0) +
                     "\nCourse Title= "+allCourses.getString(1)
@@ -142,12 +148,8 @@ public class CourseFragment extends Fragment {
                     "\nCourse Start Date= "+allCourses.getString(6)+
                     "\nSchedule= "+allCourses.getString(7)+
                     "\nVenue= "+allCourses.getString(8)+
-                    "\n\n" );
-            ImageView imageView = new ImageView(requireContext());
-            imageView.setLayoutParams(new ViewGroup.LayoutParams(300, 300));
-            imageView.setImageBitmap(bitmapImageDB);
+                    "\n\n");
             secondLinearLayout.addView(imageView);
-
 
             image_view_minus = new ImageView(requireContext());
             image_view_edit = new ImageView(requireContext());
@@ -187,12 +189,21 @@ public class CourseFragment extends Fragment {
                     }
                 }
             });
+          String  title = allCourses.getString(1);
+          String  topice = allCourses.getString(2);
+          String  venu = allCourses.getString(8);
+          String  preq = allCourses.getString(3);
 
+            c = new Course();
             image_view_edit.setOnClickListener(new View.OnClickListener() {
-                
-                Course new_course = new Course();
                 @Override
                 public void onClick(View v) {
+
+                    c.setCtitle(title);
+                    c.setCTopics(topice);
+                    c.setPrerequisites(preq);
+                    c.setVenue(venu);
+
                     FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
                     FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                     fragmentTransaction.replace(R.id.frameLayout, new EditCourseFragment());

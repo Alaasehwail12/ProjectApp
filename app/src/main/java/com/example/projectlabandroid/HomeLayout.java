@@ -40,26 +40,39 @@ public class HomeLayout extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 int id = item.getItemId();
                 drawerLayout.closeDrawer(GravityCompat.START);
-                switch (id) {
-                    case R.id.insprofile:
-                        getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, new ProfileFragment()).commit();
-                        break;
+                switch (id){
+//                    case R.id.profile:
+//                        getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, new ProfileFragment()).commit();
+//                        break;
+//                    case R.id.Apply:
+//                        getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, new student_apply_for_course()).commit();
+//                        break;
                     case R.id.course:
-                        getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, new CreateCourseFragment()).commit();
+                        getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, new CourseFragment()).commit();
                         break;
                     case R.id.history:
                         getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, new HistoryFragment()).commit();
                         break;
                     case R.id.makeavailable:
-                        Toast toast =Toast.makeText(HomeLayout.this,"Entereddddddd",Toast.LENGTH_SHORT);
-                        toast.show();
+
                         getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, new make_courses_avaliableFragment()).commit();
                         break;
+                    case R.id.insprofile:
+
+                        getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, new ViewProfileFragment()).commit();
+                        break;
+                    case R.id.trineeprofile:
+
+                        getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, new ViewTraineeProfileFragment()).commit();
+                        break;
+
                     default:
                         return true;
                 }
-                return false; // Return true to indicate the selection has been handled
+                return false;
             }
         });
+
+
     }
 }

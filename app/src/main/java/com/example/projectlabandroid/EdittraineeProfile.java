@@ -110,237 +110,6 @@ public class EdittraineeProfile extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        EditText emailEditText = (EditText) getActivity().findViewById(R.id.editT);
-        emailEditText.setText(trineelogin.tr.getEmail());
-
-        EditText firstNameEditText = (EditText) getActivity().findViewById(R.id.ft1);
-        firstNameEditText.setText(trineelogin.tr.getFirst_name());
-
-        EditText lastNameEditText = (EditText) getActivity().findViewById(R.id.lt2);
-        lastNameEditText.setText(trineelogin.tr.getLast_name());
-
-        EditText passwordEditText = (EditText) getActivity().findViewById(R.id.passt2);
-        passwordEditText.setText(trineelogin.tr.getPassword());
-
-        EditText confirmPasswordEditText = (EditText) getActivity().findViewById(R.id.confirmptext2);
-        confirmPasswordEditText.setText(trineelogin.tr.getPassword());
-
-        EditText mobileEditText = (EditText) getActivity().findViewById(R.id.mobiltext2);
-        mobileEditText.setText(trineelogin.tr.getMobile_number());
-
-        EditText addressEditText = (EditText) getActivity().findViewById(R.id.addresstext2);
-        addressEditText.setText(trineelogin.tr.getAddress());
-
-        image_view2 = (ImageView) getActivity().findViewById(R.id.saved_image);
-
-        TextView error = (TextView)  getActivity().findViewById(R.id.error2);
-
-        Button up= (Button) getActivity().findViewById(R.id.save_profile);
-        Button canel= (Button) getActivity().findViewById(R.id.cancle);
-        Button photo_button= (Button) getActivity().findViewById(R.id.photoButton2);
-
-
-        photo_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                ByteArrayOutputStream byteoutput;
-                byteoutput = new ByteArrayOutputStream();
-                isButtonNotPressed = true;
-                if(bitmap != null){
-                    bitmap.compress(Bitmap.CompressFormat.JPEG,100,byteoutput);
-                    bytes = byteoutput.toByteArray();
-                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-                        final String base64image = Base64.getEncoder().encodeToString(bytes);
-                        //showphoto.setText(base64image);
-                        //    image_view2.setBackground(d2);
-
-                    }
-                    // Bitmap bitmapImageDB = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-                }
-                else{
-                }
-
-            }
-        });
-
-        canel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
-                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.frameLayout, new TraineeProfile());
-                fragmentTransaction.commit();
-            }
-        });
-
-        up.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                final boolean[] somethingWrong = {false};
-                final String[] errorMessage = new String[1];
-                GradientDrawable drawable = new GradientDrawable();
-                drawable.setShape(GradientDrawable.RECTANGLE);
-                drawable.setStroke(5, Color.RED);
-                drawable.setCornerRadius(10f);
-                GradientDrawable d2 = new GradientDrawable();
-                d2.setShape(GradientDrawable.RECTANGLE);
-                d2.setStroke(5, Color.blue(5));
-                d2.setCornerRadius(10f);
-
-                if (!isButtonNotPressed) {
-                    image_view2.setBackground(drawable);
-
-                } else {
-                    image_view2.setBackground(d2);
-                }
-
-                if (firstNameEditText.getText().toString().trim().length() < 3 || firstNameEditText.getText().toString().trim().length() > 20) {
-                    firstNameEditText.setBackground(drawable);
-                } else {
-                    firstNameEditText.setBackground(d2);
-                }
-
-                if (lastNameEditText.getText().toString().trim().length() < 3 || lastNameEditText.getText().toString().trim().length() > 20) {
-                    lastNameEditText.setBackground(drawable);
-                } else {
-                    lastNameEditText.setBackground(d2);
-                }
-
-                if (!isEmailValid(emailEditText.getText().toString().trim())) {
-                    emailEditText.setBackground(drawable);
-                } else {
-                    emailEditText.setBackground(d2);
-                }
-
-                if (!isPasswordValid(passwordEditText.getText().toString())) {
-                    passwordEditText.setBackground(drawable);
-                } else {
-                    passwordEditText.setBackground(d2);
-                }
-
-                if (!isPasswordValid(confirmPasswordEditText.getText().toString()) || !confirmPasswordEditText.getText().toString().equals(passwordEditText.getText().toString())) {
-                    confirmPasswordEditText.setBackground(drawable);
-                } else {
-                    confirmPasswordEditText.setBackground(d2);
-                }
-
-                if ((mobileEditText.getText().toString()).equals("")) {
-                    mobileEditText.setBackground(drawable);
-                } else {
-                    mobileEditText.setBackground(d2);
-                }
-
-                if ((addressEditText.getText().toString()).equals("")) {
-                    addressEditText.setBackground(drawable);
-                } else {
-                    addressEditText.setBackground(d2);
-                }
-
-
-                DataBaseHelper dbHelper = new DataBaseHelper(requireContext(), "Database", null, 1);
-                trainee user = new trainee();
-
-                if (!isEmailValid(emailEditText.getText().toString().trim())) {
-                    somethingWrong[0] = true;
-                    errorMessage[0] = "Email Address should be in correct format.";
-                } else {
-                    user.setEmail(emailEditText.getText().toString());
-                }
-
-
-                if (!somethingWrong[0]) {
-                    if (firstNameEditText.getText().toString().trim().length() < 3) {
-                        somethingWrong[0] = true;
-                        errorMessage[0] = "First Name should be at least 3 characters.";
-                    } else {
-                        user.setFirst_name(firstNameEditText.getText().toString());
-                    }
-
-                    if (!somethingWrong[0]) {
-                        if (lastNameEditText.getText().toString().trim().length() < 3) {
-                            somethingWrong[0] = true;
-                            errorMessage[0] = "Last Name should be at least 3 characters.";
-                        } else {
-                            user.setLast_name(lastNameEditText.getText().toString());
-                        }
-
-                        if (!somethingWrong[0]) {
-                            if (!isPasswordValid(passwordEditText.getText().toString().trim())) {
-                                somethingWrong[0] = true;
-                                errorMessage[0] = "The password must contain at least one number, one lowercase letter, and one uppercase letter.";
-                            } else {
-                                user.setPassword(passwordEditText.getText().toString());
-                            }
-
-                            if (!somethingWrong[0]) {
-                                if (!confirmPasswordEditText.getText().toString().trim().equals(passwordEditText.getText().toString().trim())) {
-                                    somethingWrong[0] = true;
-                                    errorMessage[0] = "The password does not match the confirmation.";
-                                } else {
-                                    user.setPassword(passwordEditText.getText().toString());
-                                }
-                                if (!somethingWrong[0]) {
-                                    if ((mobileEditText.getText().toString()).equals("")) {
-                                        somethingWrong[0] = true;
-                                        errorMessage[0] = "enter the mobile number please.";
-                                    } else {
-                                        user.setMobile_number(mobileEditText.getText().toString());
-                                    }
-
-                                    if (!somethingWrong[0]) {
-                                        if (addressEditText.getText().toString().equals("")) {
-                                            somethingWrong[0] = true;
-                                            errorMessage[0] = "enter the address please.";
-                                        } else {
-                                            user.setAddress(addressEditText.getText().toString());
-                                        }
-                                        if (!somethingWrong[0]) {
-                                            if (!isButtonNotPressed) {
-                                                somethingWrong[0] = true;
-                                                errorMessage[0] = "You should click on the upload Photo first .";
-                                            } else {
-                                                user.setPhoto(bytes);
-                                                dbHelper.edittrainee(trineelogin.tr, user);
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-
-
-                if (somethingWrong[0]) {
-                    error.setTextColor(Color.RED);
-                    error.setText(errorMessage[0]);
-                    Toast toast = Toast.makeText(getActivity(), "Error in Information", Toast.LENGTH_SHORT);
-                    toast.show();
-                } else {
-                    error.setTextColor(Color.BLACK);
-                    error.setText("Signing up is done successfully!");
-                    Toast toast = Toast.makeText(getActivity(), "Edit is done successfully!", Toast.LENGTH_SHORT);
-                    toast.show();
-
-
-                    firstNameEditText.setText("");
-                    lastNameEditText.setText("");
-                    emailEditText.setText("");
-                    passwordEditText.setText("");
-                    confirmPasswordEditText.setText("");
-                    mobileEditText.setText("");
-                    addressEditText.setText("");
-
-                }
-            }
-
-        });
-                byte[] bytes = trineelogin.tr.getPhoto();
-                if (bytes != null) {
-                    Bitmap bitmapImageDB = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-                    image_view2.setImageBitmap(bitmapImageDB);
-                }
-
 
 
         }
@@ -353,11 +122,244 @@ public class EdittraineeProfile extends Fragment {
         Matcher matcher = pattern.matcher(password);
         return matcher.find();
     }
+     String base64image;
 
         @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_edittrainee_profile, container, false);
+        View v = inflater.inflate(R.layout.fragment_edittrainee_profile, container, false);
+            EditText emailEditText = (EditText) v.findViewById(R.id.editT);
+            emailEditText.setText(trineelogin.tr.getEmail());
+
+            EditText firstNameEditText = (EditText) v.findViewById(R.id.ft1);
+            firstNameEditText.setText(trineelogin.tr.getFirst_name());
+
+            EditText lastNameEditText = (EditText) v.findViewById(R.id.lt2);
+            lastNameEditText.setText(trineelogin.tr.getLast_name());
+
+            EditText passwordEditText = (EditText) v.findViewById(R.id.passt2);
+            passwordEditText.setText(trineelogin.tr.getPassword());
+
+            EditText confirmPasswordEditText = (EditText) v.findViewById(R.id.confirmptext2);
+            confirmPasswordEditText.setText(trineelogin.tr.getPassword());
+
+            EditText mobileEditText = (EditText) v.findViewById(R.id.mobiltext2);
+            mobileEditText.setText(trineelogin.tr.getMobile_number());
+
+            EditText addressEditText = (EditText) v.findViewById(R.id.addresstext2);
+            addressEditText.setText(trineelogin.tr.getAddress());
+
+            image_view2 = (ImageView) v.findViewById(R.id.saved_image);
+
+            TextView error = (TextView)  v.findViewById(R.id.error2);
+
+            Button up= (Button) v.findViewById(R.id.save_profile);
+            Button canel= (Button) v.findViewById(R.id.cancle);
+            Button photo_button= (Button) v.findViewById(R.id.photoButton2);
+            DataBaseHelper dbHelper = new DataBaseHelper(requireContext(), "Database", null, 1);
+
+
+            image_view2.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+                    intent.setData(MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                    activityResultLauncher2.launch(intent);
+                }
+            });
+            photo_button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    ByteArrayOutputStream byteoutput;
+                    byteoutput = new ByteArrayOutputStream();
+                    isButtonNotPressed = true;
+                    if (bitmap != null) {
+                        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteoutput);
+                        bytes = byteoutput.toByteArray();
+                        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                            //  final String base64image = Base64.getEncoder().encodeToString(bytes);
+                          //  base64image = String.valueOf(Base64.getDecoder().decode(bytes));
+                        }// Bitmap bitmapImageDB = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                    }
+                }
+            });
+            byte[] bytes = trineelogin.tr.getPhoto();
+//            if (bytes != null) {
+//                Bitmap bitmapImageDB = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+//                image_view2.setImageBitmap(bitmapImageDB);
+//            }else{
+               // image_view2.setImageResource(R.drawable.upload);
+         //   }
+            canel.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
+                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                    fragmentTransaction.replace(R.id.frameLayout, new TraineeProfile());
+                    fragmentTransaction.commit();
+                }
+            });
+
+            up.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    final boolean[] somethingWrong = {false};
+                    final String[] errorMessage = new String[1];
+                    GradientDrawable drawable = new GradientDrawable();
+                    drawable.setShape(GradientDrawable.RECTANGLE);
+                    drawable.setStroke(5, Color.RED);
+                    drawable.setCornerRadius(10f);
+                    GradientDrawable d2 = new GradientDrawable();
+                    d2.setShape(GradientDrawable.RECTANGLE);
+                    d2.setStroke(5, Color.blue(5));
+                    d2.setCornerRadius(10f);
+
+                    if (!isButtonNotPressed) {
+                        image_view2.setBackground(drawable);
+
+                    } else {
+                        image_view2.setBackground(d2);
+                    }
+
+                    if (firstNameEditText.getText().toString().trim().length() < 3 || firstNameEditText.getText().toString().trim().length() > 20) {
+                        firstNameEditText.setBackground(drawable);
+                    } else {
+                        firstNameEditText.setBackground(d2);
+                    }
+
+                    if (lastNameEditText.getText().toString().trim().length() < 3 || lastNameEditText.getText().toString().trim().length() > 20) {
+                        lastNameEditText.setBackground(drawable);
+                    } else {
+                        lastNameEditText.setBackground(d2);
+                    }
+
+                    if (!isEmailValid(emailEditText.getText().toString().trim())) {
+                        emailEditText.setBackground(drawable);
+                    } else {
+                        emailEditText.setBackground(d2);
+                    }
+
+                    if (!isPasswordValid(passwordEditText.getText().toString())) {
+                        passwordEditText.setBackground(drawable);
+                    } else {
+                        passwordEditText.setBackground(d2);
+                    }
+
+                    if (!isPasswordValid(confirmPasswordEditText.getText().toString()) || !confirmPasswordEditText.getText().toString().equals(passwordEditText.getText().toString())) {
+                        confirmPasswordEditText.setBackground(drawable);
+                    } else {
+                        confirmPasswordEditText.setBackground(d2);
+                    }
+
+                    if ((mobileEditText.getText().toString()).equals("")) {
+                        mobileEditText.setBackground(drawable);
+                    } else {
+                        mobileEditText.setBackground(d2);
+                    }
+
+                    if ((addressEditText.getText().toString()).equals("")) {
+                        addressEditText.setBackground(drawable);
+                    } else {
+                        addressEditText.setBackground(d2);
+                    }
+
+
+                    trainee user = new trainee();
+
+                    if (!isEmailValid(emailEditText.getText().toString().trim())) {
+                        somethingWrong[0] = true;
+                        errorMessage[0] = "Email Address should be in correct format.";
+                    } else {
+                        user.setEmail(emailEditText.getText().toString());
+                    }
+
+
+                    if (!somethingWrong[0]) {
+                        if (firstNameEditText.getText().toString().trim().length() < 3) {
+                            somethingWrong[0] = true;
+                            errorMessage[0] = "First Name should be at least 3 characters.";
+                        } else {
+                            user.setFirst_name(firstNameEditText.getText().toString());
+                        }
+
+                        if (!somethingWrong[0]) {
+                            if (lastNameEditText.getText().toString().trim().length() < 3) {
+                                somethingWrong[0] = true;
+                                errorMessage[0] = "Last Name should be at least 3 characters.";
+                            } else {
+                                user.setLast_name(lastNameEditText.getText().toString());
+                            }
+
+                            if (!somethingWrong[0]) {
+                                if (!isPasswordValid(passwordEditText.getText().toString().trim())) {
+                                    somethingWrong[0] = true;
+                                    errorMessage[0] = "The password must contain at least one number, one lowercase letter, and one uppercase letter.";
+                                } else {
+                                    user.setPassword(passwordEditText.getText().toString());
+                                }
+
+                                if (!somethingWrong[0]) {
+                                    if (!confirmPasswordEditText.getText().toString().trim().equals(passwordEditText.getText().toString().trim())) {
+                                        somethingWrong[0] = true;
+                                        errorMessage[0] = "The password does not match the confirmation.";
+                                    } else {
+                                        user.setPassword(passwordEditText.getText().toString());
+                                    }
+                                    if (!somethingWrong[0]) {
+                                        if ((mobileEditText.getText().toString()).equals("")) {
+                                            somethingWrong[0] = true;
+                                            errorMessage[0] = "enter the mobile number please.";
+                                        } else {
+                                            user.setMobile_number(mobileEditText.getText().toString());
+                                        }
+
+                                        if (!somethingWrong[0]) {
+                                            if (addressEditText.getText().toString().equals("")) {
+                                                somethingWrong[0] = true;
+                                                errorMessage[0] = "enter the address please.";
+                                            } else {
+                                                user.setAddress(addressEditText.getText().toString());
+                                            }
+                                            if (!somethingWrong[0]) {
+                                                if (!isButtonNotPressed) {
+                                                    somethingWrong[0] = true;
+                                                    errorMessage[0] = "You should click on the upload Photo first .";
+                                                } else {
+                                                    user.setPhoto(bytes);
+                                                    dbHelper.edittrainee(trineelogin.tr, user);
+                                                    trineelogin.tr = user;
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+
+                    if (somethingWrong[0]) {
+                        error.setTextColor(Color.RED);
+                        error.setText(errorMessage[0]);
+                        Toast toast = Toast.makeText(getActivity(), "Error in Information", Toast.LENGTH_SHORT);
+                        toast.show();
+                    } else {
+                        error.setTextColor(Color.BLACK);
+                        error.setText("Editing is done successfully!");
+                        Toast toast = Toast.makeText(getActivity(), "Edit is done successfully!", Toast.LENGTH_SHORT);
+                        toast.show();
+
+                        getParentFragmentManager().beginTransaction().replace(R.id.frameLayout, new TraineeProfile()).commit();
+
+                    }
+                }
+
+            });
+
+
+
+
+            return v;
     }
 }

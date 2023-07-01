@@ -64,35 +64,42 @@ public class TraineeProfile extends Fragment {
         }
     }
 
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
 
-        TextView emailEditText = (TextView) getActivity().findViewById(R.id.email_address);
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        View v= inflater.inflate(R.layout.fragment_trainee_profile, container, false);
+
+        TextView emailEditText = (TextView) v.findViewById(R.id.email_address);
         emailEditText.setText(trineelogin.tr.getEmail());
 
-        TextView firstNameEditText = (TextView) getActivity().findViewById(R.id.fisrt_address);
+        TextView firstNameEditText = (TextView) v.findViewById(R.id.fisrt_address);
         firstNameEditText.setText(trineelogin.tr.getFirst_name());
 
-        TextView lastNameEditText = (TextView) getActivity().findViewById(R.id.last_address);
+        TextView lastNameEditText = (TextView) v.findViewById(R.id.last_address);
         lastNameEditText.setText(trineelogin.tr.getLast_name());
 
 
-        TextView mobileEditText = (TextView) getActivity().findViewById(R.id.phone_address);
+        TextView mobileEditText = (TextView) v.findViewById(R.id.phone_address);
         mobileEditText.setText(trineelogin.tr.getMobile_number());
 
-        TextView addressEditText = (TextView) getActivity().findViewById(R.id.address);
+        TextView addressEditText = (TextView) v.findViewById(R.id.address);
         addressEditText.setText(trineelogin.tr.getAddress());
 
-        ImageView image_view2 = (ImageView) getActivity().findViewById(R.id.imageView14);
+        ImageView image_view2 = (ImageView) v.findViewById(R.id.imageView14);
+
 
         byte [] bytes = trineelogin.tr.getPhoto();
-        if(bytes != null ){
+
+        if(bytes != null){
             Bitmap bitmapImageDB = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
             image_view2.setImageBitmap(bitmapImageDB);
+        }else{
+            image_view2.setImageResource(R.drawable.user_phue);
         }
 
-        Button b = (Button) getActivity().findViewById(R.id.edit_profile);
+        Button b = (Button) v.findViewById(R.id.edit_profile);
 
         b.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -103,13 +110,8 @@ public class TraineeProfile extends Fragment {
                 fragmentTransaction.commit();
             }
         });
+
+        return v;
     }
 
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_trainee_profile, container, false);
-    }
 }

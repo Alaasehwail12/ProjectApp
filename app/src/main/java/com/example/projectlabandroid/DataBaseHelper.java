@@ -5,9 +5,13 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.database.sqlite.SQLiteStatement;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 
 import androidx.annotation.Nullable;
 
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -474,11 +478,20 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 newCourse.getPrerequisites(),newCourse.getDeadline(),newCourse.getStartDateCourse(),
                 newCourse.getSchedule(),newCourse.getVenue(), String.valueOf(old.getCNum())});
     }
+
     public void edittrainee(trainee old, trainee newUser) {
         SQLiteDatabase db = getWritableDatabase();
         String sql = "UPDATE traniee SET EMAIL = ?, FIRSTNAME = ?, LASTNAME = ?, PASSWORD = ?,PHOTO = ?,mobile_number=?,ADDRESS=? WHERE EMAIL = ?";
         db.execSQL(sql, new String[]{newUser.getEmail(), newUser.getFirst_name(), newUser.getLast_name(),
-                newUser.getPassword(),newUser.getMobile_number(),newUser.getAddress(), old.getEmail()});
+                newUser.getPassword(),String.valueOf(newUser.getPhoto()),newUser.getMobile_number(),newUser.getAddress(), old.getEmail()});
+    }
+
+
+    private byte[] getByteArrayFromImage(byte [] bytes) {
+        Bitmap bitmapImageDB = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        bitmapImageDB.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
+        return byteArrayOutputStream.toByteArray();
     }
 }
 

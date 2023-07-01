@@ -249,13 +249,20 @@ public class EditInstructorProfile extends Fragment {
 
             }
         });
+        byte [] bytes = trineelogin.tr.getPhoto();
+        if(bytes != null ){
+            Bitmap bitmapImageDB = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+            image_view2.setImageBitmap(bitmapImageDB);
+        }
+
+
 
         canel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.frameLayout, new InstructorViewHisProfile());
+                fragmentTransaction.replace(R.id.frameLayout, new TraineeProfile());
                 fragmentTransaction.commit();
             }
         });
@@ -445,52 +452,21 @@ public class EditInstructorProfile extends Fragment {
                     error.setText(errorMessage[0]);
                     Toast toast =Toast.makeText(getActivity(),"Error in Information",Toast.LENGTH_SHORT);
                     toast.show();
+
                 } else {
                     error.setTextColor(Color.BLACK);
                     error.setText("Signing up is done successfully!");
-                    Toast toast =Toast.makeText(getActivity(),"Edit is done successfully!",Toast.LENGTH_SHORT);
+                    Toast toast = Toast.makeText(getActivity(), "Edit is done successfully!", Toast.LENGTH_SHORT);
                     toast.show();
-                    AlertDialog.Builder builder = new AlertDialog.Builder(  requireContext());
-                    builder.setTitle("Login");
-                    builder.setMessage("Do you want to login in !!");
-                    builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
-                            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                            fragmentTransaction.replace(R.id.frameLayout, new InstructorViewHisProfile());
-                            fragmentTransaction.commit();
-                           /* firstNameEditText.setText("");
-                            lastNameEditText.setText("");
-                            emailEditText.setText("");
-                            passwordEditText.setText("");
-                            confirmPasswordEditText.setText("");
-                            mobileEditText.setText("");
-                            addressEditText.setText("");
-                            specializationEditText.setText("");
-                            listEditText.setText("");*/
-                        }
-                    });
-                    builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            dialogInterface.dismiss();
-                        }
-                    });
-                    builder.show();
-
-
+                    FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
+                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                    fragmentTransaction.replace(R.id.frameLayout, new InstructorViewHisProfile());
+                    fragmentTransaction.commit();
                 }
 
 
             }
         });
-
-        byte [] bytes = trineelogin.tr.getPhoto();
-        if(bytes != null ){
-            Bitmap bitmapImageDB = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-            image_view2.setImageBitmap(bitmapImageDB);
-        }
 
 
     }

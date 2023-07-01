@@ -59,6 +59,7 @@ public class create_course_avaliable_fragment extends Fragment {
         return fragment;
     }
 
+    public static boolean isdone = false;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,6 +73,7 @@ public class create_course_avaliable_fragment extends Fragment {
     public String course_t;
     ArrayAdapter<String> objdegreeArr;
 
+    public static String completedItemTitle;
     Course c;
 
     @Override
@@ -79,6 +81,7 @@ public class create_course_avaliable_fragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
 
         EditText course_title = (EditText) getActivity().findViewById(R.id.editTextTextPersonName);
+        course_title.setText(make_courses_avaliableFragment.coursera.getCtitle());
         Button getnames= (Button) getActivity().findViewById(R.id.button6);
         Button done= (Button) getActivity().findViewById(R.id.button7);
         Button get= (Button) getActivity().findViewById(R.id.button8);
@@ -109,18 +112,19 @@ public class create_course_avaliable_fragment extends Fragment {
         done.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 if(degreeSpinner.getSelectedItem().toString().equals(" ")){
                     Toast toast =Toast.makeText(getActivity(),"No instructors to tech that course",Toast.LENGTH_SHORT);
                     toast.show();
                 }else{
+                    isdone=true;
+                    completedItemTitle=course_title.getText().toString();
                     dbHelper.insertavailableCourse(c,degreeSpinner.getSelectedItem().toString());
-                    FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
-                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                    fragmentTransaction.replace(R.id.frameLayout, new make_courses_avaliableFragment());
-                    fragmentTransaction.commit();
                 }
 
+                FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.frameLayout, new make_courses_avaliableFragment());
+                fragmentTransaction.commit();
 
             }
         });
@@ -135,7 +139,9 @@ public class create_course_avaliable_fragment extends Fragment {
         return inflater.inflate(R.layout.fragment_create_course_avaliable_fragment, container, false);
     }
 
-
+    public static void setCompletedImageForItem(String title) {
+        completedItemTitle = title;
+    }
 
     public List<String> get_names(String name){
         List<String>  instructorNames2;

@@ -8,6 +8,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -88,20 +89,20 @@ public class make_courses_avaliableFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        TextView new_text = (TextView) getActivity().findViewById(R.id.textt);
-        DataBaseHelper dbHelper = new DataBaseHelper(requireContext(), "Database", null, 1);
-        List<String> instructorNames = new ArrayList<>();
-        ImageView imageView = (ImageView) getActivity().findViewById(R.id.imageView3);
-
-        imageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
-                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.frameLayout, new create_course_avaliable_fragment());
-                fragmentTransaction.commit();
-            }
-        });
+//        TextView new_text = (TextView) getActivity().findViewById(R.id.textt);
+//        DataBaseHelper dbHelper = new DataBaseHelper(requireContext(), "Database", null, 1);
+//        List<String> instructorNames = new ArrayList<>();
+//        ImageView imageView = (ImageView) getActivity().findViewById(R.id.imageView3);
+//
+//        imageView.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
+//                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+//                fragmentTransaction.replace(R.id.frameLayout, new create_course_avaliable_fragment());
+//                fragmentTransaction.commit();
+//            }
+//        });
 
        // secondLinearLayout = getActivity().findViewById(R.id.secondLinearLayout);
 
@@ -113,56 +114,80 @@ public class make_courses_avaliableFragment extends Fragment {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_make_courses_avaliable, container, false);
     }
-
+    public static Course coursera;
+    DataBaseHelper dbHelper;
 
     @Override
     public void onResume() {
         super.onResume();
         Toast toast =Toast.makeText(getActivity(),"inside the resume function true",Toast.LENGTH_SHORT);
         toast.show();
-        DataBaseHelper dbHelper = new DataBaseHelper(requireContext(), "Database", null, 1);
+        dbHelper = new DataBaseHelper(requireContext(), "Database", null, 1);
 
-        Cursor allCourses = dbHelper.getAllAvailableCourses();
-        int borderColor = getResources().getColor(R.color.purple_200);
-        GradientDrawable border = new GradientDrawable();
-        border.setStroke(5, borderColor);
-        border.setCornerRadius(25);
+        Cursor allCourses = dbHelper.getAllCourses();
+
         secondLinearLayout.removeAllViews();
-      //  secondLinearLayout.setBackground(border);
-        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(1000, 700);
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(800, 700);
         layoutParams.setMargins(0, 30, 0, 0);
         layoutParams.gravity = Gravity.CENTER;
-       // secondLinearLayout.setLayoutParams(layoutParams);
         while(allCourses.moveToNext()){
             ImageView imageView = new ImageView(requireContext());
             TextView textView = new TextView(requireContext());
-            textView.setBackground(border);
-            byte [] bytes = allCourses.getBlob(5);
+            ImageView applied = new ImageView(requireContext());
+            LinearLayout horizantal = new LinearLayout(requireContext());
+
+            horizantal.setOrientation(LinearLayout.HORIZONTAL);
+            applied.setImageResource(R.drawable.tick);
+
+            applied.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup
+                    .LayoutParams.WRAP_CONTENT));
+            applied.setLayoutParams(new ViewGroup.LayoutParams(140, 200));
+            textView.setLayoutParams(layoutParams);
+
+            horizantal.addView(textView);
+            horizantal.addView(applied);
+
+
+            byte [] bytes = allCourses.getBlob(4);
             imageView.setLayoutParams(new ViewGroup.LayoutParams(300, 300));
             Bitmap bitmapImageDB = null;
             if (bytes != null) {
                 bitmapImageDB = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
                 imageView.setImageBitmap(bitmapImageDB);
             } else {
-               // textView.setText(allCourses.getString(5) +"\n");
                 imageView.setImageResource(R.drawable.online_learning);
             }
-          //  textView.setBackground(border);
-            textView.setGravity(Gravity.CENTER);
-            textView.setTextColor(borderColor);
-        //textView.setLayoutParams(layoutParams);
+
             textView.append("Course Number: "+allCourses.getInt(0) +
-                            "\nInstructor Name: "+allCourses.getString(2)+
                     "\nCourse Title: "+allCourses.getString(1)
-                    +"\nCourse Topics: "+allCourses.getString(3)
-                    +"\nPrerequisites: "+allCourses.getString(4)+
-                    "\nDeadline: "+allCourses.getString(6)+
-                    "\nCourse Start Date: "+allCourses.getString(7)+
-                    "\nSchedule: "+allCourses.getString(8)+
-                    "\nVenue: "+allCourses.getString(9)+
+                    +"\nCourse Topics: "+allCourses.getString(2)
+                    +"\nPrerequisites: "+allCourses.getString(3)+
+                    "\nDeadline: "+allCourses.getString(5)+
+                    "\nCourse Start Date: "+allCourses.getString(6)+
+                    "\nSchedule: "+allCourses.getString(7)+
+                    "\nVenue: "+allCourses.getString(8)+
                     "\n"  );
             textView.setTextSize(22);
 
+            String title = allCourses.getString(1);
+
+
+            applied.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    coursera = new Course();
+                    coursera.setCtitle(title);
+                    textView.setTextSize(22);
+                    if(dbHelper.isCourseTitleAvailable(coursera.getCtitle())){
+                        applied.setImageResource(R.drawable.tick_fill);
+                    }else {
+                        FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
+                        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                        fragmentTransaction.replace(R.id.frameLayout, new create_course_avaliable_fragment());
+                        fragmentTransaction.commit();
+                    }
+                }
+            });
 
             String inputDate =allCourses.getString(6);
             String outputFormat = "yyyy-MM-dd";
@@ -181,9 +206,6 @@ public class make_courses_avaliableFragment extends Fragment {
             String outputDate = outputDateFormat.format(date);
             LocalDate currentDate = LocalDate.now();
 
-//            textView.append(currentDate.toString());
-//            textView.append("\n");
-//            textView.append(outputDate);
 
             if(currentDate.toString().equals(outputDate)){
            //  Toast.makeText(requireContext(), " Deleted !", Toast.LENGTH_SHORT).show();
@@ -196,21 +218,13 @@ public class make_courses_avaliableFragment extends Fragment {
                     Toast.makeText(requireContext(), "Course Number " + courseId + " Deleted !", Toast.LENGTH_SHORT).show();
                 }
             }
-            secondLinearLayout.addView(imageView);
-            secondLinearLayout.addView(textView);
-
-
-
-
-
+            horizantal.setBackground(ContextCompat.getDrawable(requireContext(), R.drawable.border));
+            secondLinearLayout.addView(horizantal);
         }
-
     }
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         secondLinearLayout = view.findViewById(R.id.secondLinearLayout);
     }
-
-
 }

@@ -160,15 +160,14 @@ public class student_apply_for_course extends Fragment {
             apply.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                   if(cretae_applied_student.isapplied == true){
+                    c2 = new Course();
+                    c2.setCtitle(t);
+                    c2.setSchedule(time);
+                   if(dbHelper.isStudentRegesterd(c2.getCtitle())){
                        apply.setImageResource(R.drawable.apply_fill);
                        Toast.makeText(requireContext(), "You already tried to apply!!", Toast.LENGTH_SHORT).show();
-
                   }
                    else {
-                       c2 = new Course();
-                       c2.setCtitle(t);
-                       c2.setSchedule(time);
                        FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
                        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                        fragmentTransaction.replace(R.id.frameLayout, new cretae_applied_student());
@@ -179,7 +178,6 @@ public class student_apply_for_course extends Fragment {
 
             LinearLayout.LayoutParams layoutParam = new LinearLayout.LayoutParams(700, 700);
             layoutParam.setMargins(0, 0, 20, 0);
-
 
             LinearLayout verticalLayout = new LinearLayout(requireContext());
             verticalLayout.setOrientation(LinearLayout.VERTICAL);

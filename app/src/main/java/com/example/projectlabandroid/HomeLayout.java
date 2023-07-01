@@ -65,6 +65,9 @@ public class HomeLayout extends AppCompatActivity {
                     case R.id.viewstudents:
                         getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, new View_student_for_any_course()).commit();
                         break;
+                    case R.id.applied_student:
+                        getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, new applied_reject_student()).commit();
+                        break;
 
                     case R.id.logout:
                         startActivity(new Intent(HomeLayout.this, logIn.class));

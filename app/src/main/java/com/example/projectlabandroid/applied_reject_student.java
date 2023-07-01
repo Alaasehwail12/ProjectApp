@@ -3,10 +3,11 @@ package com.example.projectlabandroid;
 import android.database.Cursor;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
-import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -15,13 +16,14 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link withdraw_course_regestration#newInstance} factory method to
+ * Use the {@link applied_reject_student#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class withdraw_course_regestration extends Fragment {
+public class applied_reject_student extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -32,7 +34,7 @@ public class withdraw_course_regestration extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    public withdraw_course_regestration() {
+    public applied_reject_student() {
         // Required empty public constructor
     }
 
@@ -42,18 +44,17 @@ public class withdraw_course_regestration extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment withdraw_course_regestration.
+     * @return A new instance of fragment applied_reject_student.
      */
     // TODO: Rename and change types and number of parameters
-    public static withdraw_course_regestration newInstance(String param1, String param2) {
-        withdraw_course_regestration fragment = new withdraw_course_regestration();
+    public static applied_reject_student newInstance(String param1, String param2) {
+        applied_reject_student fragment = new applied_reject_student();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
     }
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -63,57 +64,79 @@ public class withdraw_course_regestration extends Fragment {
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
-
-    Course c;
     LinearLayout secondLinearLayout;
-    DataBaseHelper dbHelper;
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+
+        DataBaseHelper dbHelper = new DataBaseHelper(requireContext(), "Database", null, 1);
+        Cursor allCourses2 = dbHelper.getAllAvailableCourses_trinee_foradmin();
+
+        while (allCourses2.moveToNext()) {
+            LinearLayout horizantal = new LinearLayout(requireContext());
+            ImageView image= new ImageView(requireContext());
+            ImageView image2= new ImageView(requireContext());
+
+            horizantal.setOrientation(LinearLayout.HORIZONTAL);
+
+            image.setImageResource(R.drawable.cross);
+            image2.setImageResource(R.drawable.check);
+            image.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup
+                    .LayoutParams.WRAP_CONTENT));
+            image.setLayoutParams(new ViewGroup.LayoutParams(100, 100));
+
+            image2.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup
+                    .LayoutParams.WRAP_CONTENT));
+            image2.setLayoutParams(new ViewGroup.LayoutParams(100, 100));
+
+            TextView text2 = new TextView(requireContext());
+            text2.setText("E-mail: "+allCourses2.getString(2)+
+                    "\nCourse Title: "+allCourses2.getString(1)+
+                    "\nTime: "+allCourses2.getString(3)+
+                    "\n");
+
+            text2.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18); // Adjust the text size as desired
+            LinearLayout.LayoutParams layoutParam = new LinearLayout.LayoutParams(700, 300);
+            LinearLayout.LayoutParams layoutParam2 = new LinearLayout.LayoutParams(150, 150);
+            layoutParam2.setMargins(10, 10, 20, 0);
+            layoutParam.setMargins(0, 20, 20, 0);
+            text2.setLayoutParams(layoutParam);
+            image.setLayoutParams(layoutParam2);
+            image2.setLayoutParams(layoutParam2);
+            horizantal.addView(text2);
+            horizantal.addView(image);
+            horizantal.addView(image2);
+
+            image.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Toast toast = Toast.makeText(getActivity(), "You Rejected Student ", Toast.LENGTH_SHORT);
+                    toast.show();
+                }
+            });
+            image2.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Toast toast = Toast.makeText(getActivity(), "You accepted Student ", Toast.LENGTH_SHORT);
+                    toast.show();
+                }
+            });
+            horizantal.setBackground(ContextCompat.getDrawable(requireContext(), R.drawable.border)); // Set the border as desired (create a drawable XML file)
+            secondLinearLayout.addView(horizantal);
+        }
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View v= inflater.inflate(R.layout.fragment_withdraw_course_regestration, container, false);
-        secondLinearLayout = v.findViewById(R.id.secondLinearLayout80);
-
-        dbHelper = new DataBaseHelper(requireContext(), "Database", null, 1);
-        Cursor allCourses2 = dbHelper.getAllAvailableCourses_trinee(trineelogin.tr);
-
-
-        while (allCourses2.moveToNext()) {
-            LinearLayout horizantal = new LinearLayout(requireContext());
-            ImageView image= new ImageView(requireContext());
-            horizantal.setOrientation(LinearLayout.HORIZONTAL);
-            image.setImageResource(R.drawable.cancel);
-            image.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup
-                    .LayoutParams.WRAP_CONTENT));
-            image.setLayoutParams(new ViewGroup.LayoutParams(200, 200));
-            TextView text2 = new TextView(requireContext());
-            text2.setText("student Name: "+allCourses2.getString(2)+
-                    "\nCourse Title: "+allCourses2.getString(1)+
-                    "\nTime: "+allCourses2.getString(3)+
-                    "\n");
-            text2.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18); // Adjust the text size as desired
-            LinearLayout.LayoutParams layoutParam = new LinearLayout.LayoutParams(600, 300);
-            layoutParam.setMargins(0, 0, 20, 0);
-            text2.setLayoutParams(layoutParam);
-            horizantal.addView(text2);
-            horizantal.addView(image);
-
-            image.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    c=new Course();
-                    c.setCtitle(allCourses2.getString(1));
-                    image.setImageResource(R.drawable.cancel_fill);
-                    dbHelper.removetrinee_byemail(trineelogin.tr,c);
-                }
-            });
-
-            horizantal.setBackground(ContextCompat.getDrawable(requireContext(), R.drawable.border)); // Set the border as desired (create a drawable XML file)
-
-            secondLinearLayout.addView(horizantal);
-        }
-
-        return v;
+        return inflater.inflate(R.layout.fragment_applied_reject_student, container, false);
+    }
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        secondLinearLayout = view.findViewById(R.id.secondLinearL);
     }
 }

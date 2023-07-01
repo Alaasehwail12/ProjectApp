@@ -9,7 +9,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="76dp"
+        android:layout_height="92dp"
         android:layout_marginTop="20dp"
         android:orientation="horizontal">
 
@@ -20,13 +20,6 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:src="@drawable/availablecoursepage" />
-
-        <ImageView
-            android:id="@+id/imageView3"
-            android:layout_width="399dp"
-            android:layout_height="64dp"
-            android:layout_weight="1"
-            android:src="@drawable/add_button" />
 
     </LinearLayout>
 
@@ -43,7 +36,7 @@
             <TextView
                 android:id="@+id/textt"
                 android:layout_width="match_parent"
-                android:layout_height="103dp"
+                android:layout_height="61dp"
                 android:text="" />
 
         </LinearLayout>

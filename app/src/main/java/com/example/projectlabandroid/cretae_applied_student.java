@@ -174,13 +174,8 @@ public class cretae_applied_student extends Fragment {
                     text2.append(trineelogin.tr.getEmail());
                     text2.append("\n");
                     text2.append(student_apply_for_course.c2.getCtitle());
-                        dbHelper.insertcourse_trinee(trineelogin.tr,student_apply_for_course.c2);
+                    dbHelper.insertcourse_trinee(trineelogin.tr,student_apply_for_course.c2);
 
-                    // text2.append("The contents of the texts are the same.");
-//                    FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
-//                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-//                    fragmentTransaction.replace(R.id.frameLayout, new student_apply_for_course());
-//                    fragmentTransaction.commit();
                 } else if(time_conflict == true){
                     Toast.makeText(requireContext(), "there is a time conflict", Toast.LENGTH_SHORT).show();
                     FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
@@ -195,7 +190,6 @@ public class cretae_applied_student extends Fragment {
                 fragmentTransaction.commit();
             }
         });
-
     }
 
 

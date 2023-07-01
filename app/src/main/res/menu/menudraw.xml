@@ -22,6 +22,11 @@
                         android:title="View Student for any Course" />
 
                     <item
+                        android:id="@+id/applied_student"
+                        android:icon="@drawable/baseline_person_24"
+                        android:title="Applied Student " />
+
+                    <item
                         android:id="@+id/history"
                         android:icon="@drawable/baseline_history_24"
                         android:title="History" />

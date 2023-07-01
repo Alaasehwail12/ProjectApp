@@ -90,7 +90,6 @@ public class withdraw_course_regestration extends Fragment {
             TextView text2 = new TextView(requireContext());
             text2.setText("student Name: "+allCourses2.getString(2)+
                     "\nCourse Title: "+allCourses2.getString(1)+
-                    "\nTime: "+allCourses2.getString(3)+
                     "\n");
             text2.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18); // Adjust the text size as desired
             LinearLayout.LayoutParams layoutParam = new LinearLayout.LayoutParams(600, 300);

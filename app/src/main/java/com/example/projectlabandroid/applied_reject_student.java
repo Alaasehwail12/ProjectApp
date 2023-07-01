@@ -65,7 +65,9 @@ public class applied_reject_student extends Fragment {
         }
     }
     LinearLayout secondLinearLayout;
-
+    Course c;
+    Course c2;
+    trainee t;
     @Override
     public void onResume() {
         super.onResume();
@@ -90,40 +92,61 @@ public class applied_reject_student extends Fragment {
             image2.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup
                     .LayoutParams.WRAP_CONTENT));
             image2.setLayoutParams(new ViewGroup.LayoutParams(100, 100));
-
+            String email = allCourses2.getString(2);
+            String title = allCourses2.getString(1);
             TextView text2 = new TextView(requireContext());
-            text2.setText("E-mail: "+allCourses2.getString(2)+
-                    "\nCourse Title: "+allCourses2.getString(1)+
-                    "\nTime: "+allCourses2.getString(3)+
-                    "\n");
 
-            text2.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18); // Adjust the text size as desired
-            LinearLayout.LayoutParams layoutParam = new LinearLayout.LayoutParams(700, 300);
-            LinearLayout.LayoutParams layoutParam2 = new LinearLayout.LayoutParams(150, 150);
-            layoutParam2.setMargins(10, 10, 20, 0);
-            layoutParam.setMargins(0, 20, 20, 0);
-            text2.setLayoutParams(layoutParam);
-            image.setLayoutParams(layoutParam2);
-            image2.setLayoutParams(layoutParam2);
-            horizantal.addView(text2);
-            horizantal.addView(image);
-            horizantal.addView(image2);
+            c2 = new Course();
+            c2.setCtitle(title);
+//            if(dbHelper.isStudentappliedbyadmin(c2.getCtitle().toString())){
+//                text2.setText("");
+//                horizantal.addView(text2);
+//                secondLinearLayout.addView(horizantal);
+//            }
+                text2.setText("E-mail: " + allCourses2.getString(2) +
+                        "\nCourse Title: " + allCourses2.getString(1) +
+                        "\nTime: " + allCourses2.getString(3) +
+                        "\n");
+                text2.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18); // Adjust the text size as desired
+                LinearLayout.LayoutParams layoutParam = new LinearLayout.LayoutParams(700, 300);
+                LinearLayout.LayoutParams layoutParam2 = new LinearLayout.LayoutParams(150, 150);
+                layoutParam2.setMargins(10, 10, 20, 0);
+                layoutParam.setMargins(0, 20, 20, 0);
+                text2.setLayoutParams(layoutParam);
+                image.setLayoutParams(layoutParam2);
+                image2.setLayoutParams(layoutParam2);
+                horizantal.addView(text2);
+                horizantal.addView(image);
+                horizantal.addView(image2);
 
-            image.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Toast toast = Toast.makeText(getActivity(), "You Rejected Student ", Toast.LENGTH_SHORT);
-                    toast.show();
-                }
-            });
-            image2.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Toast toast = Toast.makeText(getActivity(), "You accepted Student ", Toast.LENGTH_SHORT);
-                    toast.show();
-                }
-            });
-            horizantal.setBackground(ContextCompat.getDrawable(requireContext(), R.drawable.border)); // Set the border as desired (create a drawable XML file)
+                image.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Toast toast = Toast.makeText(getActivity(), "You Rejected Student ", Toast.LENGTH_SHORT);
+                        toast.show();
+                        secondLinearLayout.removeView(horizantal);
+
+                    }
+                });
+
+
+
+                image2.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Toast toast = Toast.makeText(getActivity(), "You accepted Student ", Toast.LENGTH_SHORT);
+                        toast.show();
+                        c=new Course();
+                        c.setCtitle(title);
+                        t=new trainee();
+                        t.setEmail(email);
+                        dbHelper.insertcourse_trinee_admin(t,c);
+                        secondLinearLayout.removeView(horizantal);
+
+                    }
+                });
+                horizantal.setBackground(ContextCompat.getDrawable(requireContext(), R.drawable.border));
+
             secondLinearLayout.addView(horizantal);
         }
     }

@@ -16,6 +16,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -32,7 +33,7 @@ public class search_for_course extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-    LinearLayout second;
+
 
     public search_for_course() {
         // Required empty public constructor
@@ -83,6 +84,12 @@ public class search_for_course extends Fragment {
             @Override
             public void onClick(View view) {
                 Cursor allCourses = dbHelper.getAllAvailableCourses_bytitle(course_search.getText().toString());
+
+
+                if(allCourses == null){
+                    Toast.makeText(requireContext(), "The course you search is not Exist!", Toast.LENGTH_SHORT).show();
+
+                }
                 while(allCourses.moveToNext()) {
                     byte [] bytes = allCourses.getBlob(5);
                     imageView.setLayoutParams(new ViewGroup.LayoutParams(300, 300));
@@ -90,10 +97,12 @@ public class search_for_course extends Fragment {
                     if (bytes != null) {
                         bitmapImageDB = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
                         imageView.setImageBitmap(bitmapImageDB);
+                        secondLinearLayout.addView(imageView);
                     } else {
                         imageView.setImageResource(R.drawable.online_learning);
+                        secondLinearLayout.addView(imageView);
                     }
-                    second.addView(imageView);
+
                     course_text.append("Course Number: "+allCourses.getInt(0) +
                             "\nInstructor Name: "+allCourses.getString(2)+
                             "\nCourse Title: "+allCourses.getString(1)

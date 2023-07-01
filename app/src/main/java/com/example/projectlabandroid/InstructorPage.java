@@ -60,8 +60,7 @@ public class InstructorPage extends AppCompatActivity {
                         getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, new InstructorViewHisProfile()).commit();
                         break;
                     case R.id.logout:
-
-                        getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, new instructorsignin()).commit();
+                        startActivity(new Intent(InstructorPage.this, logIn.class));
                         break;
 
                     default:

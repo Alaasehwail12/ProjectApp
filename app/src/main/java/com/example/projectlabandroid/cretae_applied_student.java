@@ -159,7 +159,10 @@ public class cretae_applied_student extends Fragment {
             public void onClick(View view) {
 
                 String preq = dbHelper.preq(student_apply_for_course.c2.getCtitle());
-
+                text2.append(preq);
+                text2.append("\n");
+                text2.append(string);
+                text2.append("\n");
                 preq =preq.replaceAll("\\s+", "").replaceAll(",", "");
                 string = string.replaceAll("\\s+", "").replaceAll(",", "");
                 text2Elements = string.split(",");
@@ -168,12 +171,12 @@ public class cretae_applied_student extends Fragment {
                 Set<String> set1 = new HashSet<>(Arrays.asList(text1Elements));
                 Set<String> set2 = new HashSet<>(Arrays.asList(text2Elements));
 
+                text2.append(trineelogin.tr.getEmail());
+                text2.append("\n");
+                text2.append(student_apply_for_course.c2.getCtitle());
                 if (set1.equals(set2) && time_conflict == false) {
-                    isapplied=true;
                     Toast.makeText(requireContext(), "You  applied to this course", Toast.LENGTH_SHORT).show();
-                    text2.append(trineelogin.tr.getEmail());
-                    text2.append("\n");
-                    text2.append(student_apply_for_course.c2.getCtitle());
+
                     dbHelper.insertcourse_trinee(trineelogin.tr,student_apply_for_course.c2);
 
                 } else if(time_conflict == true){

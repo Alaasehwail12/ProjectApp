@@ -87,7 +87,6 @@ public class student_apply_for_course extends Fragment {
 
         DataBaseHelper dbHelper = new DataBaseHelper(requireContext(), "Database", null, 1);
 
-        secondLinearLayout = getActivity().findViewById(R.id.secondLinearLayout);
     }
 
     @Override

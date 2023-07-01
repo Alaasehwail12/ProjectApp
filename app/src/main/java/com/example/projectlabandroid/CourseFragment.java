@@ -232,5 +232,7 @@ public class CourseFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         secondLinearLayout = view.findViewById(R.id.secondLinearLayout);
     }
+
+
 }
 

@@ -31,7 +31,7 @@ public class InstructorPage extends AppCompatActivity {
         DrawerLayout drawerLayout = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.navigation_view);
 
-        getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, new ProfileFragment()).commit();
+       // getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, new ProfileFragment()).commit();
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -54,22 +54,15 @@ public class InstructorPage extends AppCompatActivity {
                     case R.id.liststudent:
                         getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, new student_for_instuctore()).commit();
                         break;
-                    case R.id.logout:
-                        startActivity(new Intent(InstructorPage.this, logIn.class));
-                        break;
 
-                   /* case R.id.liststudent:
-
-                        getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, new make_courses_avaliableFragment()).commit();
-                        break;
                     case R.id.profile:
 
-                        getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, new ViewProfileFragment()).commit();
+                        getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, new InstructorViewHisProfile()).commit();
                         break;
                     case R.id.logout:
 
-                        getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, new ViewTraineeProfileFragment()).commit();
-                        break;*/
+                        getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, new instructorsignin()).commit();
+                        break;
 
                     default:
                         return true;

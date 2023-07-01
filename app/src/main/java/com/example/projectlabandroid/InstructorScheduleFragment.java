@@ -5,6 +5,7 @@ import android.database.Cursor;
 import android.graphics.Color;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
@@ -65,7 +66,6 @@ public class InstructorScheduleFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        secondLinearLayout=getActivity().findViewById(R.id.secondLinearLayout);
 
     }
 
@@ -113,4 +113,10 @@ public class InstructorScheduleFragment extends Fragment {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_instructor_schedule, container, false);
     }
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        secondLinearLayout = view.findViewById(R.id.secondLinearLayout);
+    }
+
 }

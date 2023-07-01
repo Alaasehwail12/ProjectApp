@@ -32,6 +32,7 @@ public class search_for_course extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+    LinearLayout second;
 
     public search_for_course() {
         // Required empty public constructor
@@ -74,7 +75,6 @@ public class search_for_course extends Fragment {
         EditText course_search = (EditText) getActivity().findViewById(R.id.search) ;
         TextView course_text = (TextView) getActivity().findViewById(R.id.textView14) ;
         ImageView im = (ImageView) getActivity().findViewById(R.id.imageView9);
-        LinearLayout second = (LinearLayout) getActivity().findViewById(R.id.secondlinear);
 
         DataBaseHelper dbHelper = new DataBaseHelper(requireContext(), "Database", null, 1);
         ImageView imageView = new ImageView(requireContext());
@@ -123,4 +123,7 @@ public class search_for_course extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         secondLinearLayout = view.findViewById(R.id.second);
     }
+
+
+
 }

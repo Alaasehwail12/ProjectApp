@@ -71,8 +71,6 @@ public class ViewTraineeProfileFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        secondLinearLayout = getActivity().findViewById(R.id.secondLinearLayout);
-
     }
 
     @Override
@@ -131,4 +129,6 @@ public class ViewTraineeProfileFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         secondLinearLayout = view.findViewById(R.id.secondLinearLayout);
     }
+
+
 }

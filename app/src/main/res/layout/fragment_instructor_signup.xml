@@ -169,16 +169,29 @@
                     android:layout_height="match_parent" />
             </LinearLayout>
 
-            <EditText
-                android:id="@+id/editTextText11"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="65dp"
-                android:layout_marginTop="5dp"
-                android:ems="10"
-                android:textSize="20sp"
-                android:hint="List of Courses"
-                android:inputType="text"
-                android:textColor="#857373" />
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:id="@+id/editTextText11"
+                    android:layout_width="198dp"
+                    android:layout_height="65dp"
+                    android:layout_marginTop="5dp"
+                    android:ems="10"
+                    android:hint="List of Courses"
+                    android:inputType="text"
+                    android:textColor="#857373"
+                    android:textSize="20sp" />
+
+                <ImageView
+                    android:id="@+id/imageView12"
+                    android:layout_width="231dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:src="@drawable/arrow" />
+            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="wrap_content"

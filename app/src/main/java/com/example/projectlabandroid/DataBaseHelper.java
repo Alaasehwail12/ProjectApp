@@ -493,5 +493,14 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         bitmapImageDB.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
         return byteArrayOutputStream.toByteArray();
     }
+
+    public void editinstructor(instructor newUser,String email) {
+        SQLiteDatabase db = getWritableDatabase();
+        String sql = "UPDATE instructor SET EMAIL = ?, FIRSTNAME = ?, LASTNAME = ?, PASSWORD = ?," +
+                "PHOTO = ?,mobile_number=?,ADDRESS=?,DEGREE=?,SPECIALIZATION=? WHERE EMAIL = ?";
+        db.execSQL(sql, new String[]{newUser.getEmail(), newUser.getFirst_name(), newUser.getLast_name(),
+                newUser.getPassword(), String.valueOf(newUser.getPhoto()),newUser.getMobile_number(),newUser.getAddress(),newUser.getDegree(),newUser.getSpecialization(),email});
+        db.execSQL("UPDATE instructor SET EMAIL = '" + newUser.getEmail() + "' WHERE EMAIL = '" + email + "';");
+    }
 }
 

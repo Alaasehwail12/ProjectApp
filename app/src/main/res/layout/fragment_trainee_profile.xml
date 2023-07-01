@@ -155,7 +155,7 @@
                         android:id="@+id/image_address"
                         android:layout_width="133dp"
                         android:layout_height="47dp"
-                        android:layout_marginTop="30dp"
+                        android:layout_marginTop="10dp"
                         android:layout_weight="1"
                         android:src="@drawable/location" />
 

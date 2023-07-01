@@ -4,8 +4,8 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.net.Uri;
@@ -17,18 +17,17 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -44,10 +43,10 @@ import java.util.regex.Pattern;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link instructorSignupFragment#newInstance} factory method to
+ * Use the {@link EditInstructorProfile#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class instructorSignupFragment extends Fragment {
+public class EditInstructorProfile extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -57,12 +56,19 @@ public class instructorSignupFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-    private  ImageView image ;
 
+    private ImageView image_view2 ;
+    private ActivityResultLauncher<Intent> activityResultLauncher2;
+    boolean isButtonNotPressed = false;
+
+    private Bitmap bitmap;
+    private byte [] bytes;
     public static instructor user = new instructor();
 
+    public static instructor newuser = new instructor();
 
-    public instructorSignupFragment() {
+
+    public EditInstructorProfile() {
         // Required empty public constructor
     }
 
@@ -72,23 +78,17 @@ public class instructorSignupFragment extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment instructorSignup.
+     * @return A new instance of fragment EditInstructorProfile.
      */
     // TODO: Rename and change types and number of parameters
-    public static instructorSignupFragment newInstance(String param1, String param2) {
-        instructorSignupFragment fragment = new instructorSignupFragment();
+    public static EditInstructorProfile newInstance(String param1, String param2) {
+        EditInstructorProfile fragment = new EditInstructorProfile();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
     }
-    private ActivityResultLauncher<Intent> activityResultLauncher2;
-    boolean isButtonNotPressed = false;
-
-    private Bitmap bitmap;
-    private byte [] bytes;
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -105,7 +105,7 @@ public class instructorSignupFragment extends Fragment {
                     Uri uri = data.getData();
                     try {
                         bitmap = MediaStore.Images.Media.getBitmap(requireContext().getContentResolver(), uri);
-                        image.setImageBitmap(bitmap);
+                        image_view2.setImageBitmap(bitmap);
                     }catch (IOException a){
                         a.printStackTrace();
 
@@ -113,57 +113,70 @@ public class instructorSignupFragment extends Fragment {
                 }
             }
         });
-    }
 
+    }
     public static String list_string = "";
-    public static TextView listText;
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-
         EditText emailEditText = (EditText) getActivity().findViewById(R.id.editTextText4);
+        emailEditText.setText(instructorsignin.ins.getEmail());
+
         EditText firstNameEditText = (EditText) getActivity().findViewById(R.id.firstname);
+        firstNameEditText.setText(instructorsignin.ins.getFirst_name());
+
         EditText lastNameEditText = (EditText) getActivity().findViewById(R.id.lastname);
+        lastNameEditText.setText(instructorsignin.ins.getLast_name());
+
         EditText passwordEditText = (EditText) getActivity().findViewById(R.id.password);
+        passwordEditText.setText(instructorsignin.ins.getPassword());
+
         EditText confirmPasswordEditText = (EditText) getActivity().findViewById(R.id.cpassword);
+        confirmPasswordEditText.setText(instructorsignin.ins.getPassword());
+
         EditText mobileEditText = (EditText) getActivity().findViewById(R.id.phone);
+        mobileEditText.setText(instructorsignin.ins.getMobile_number());
+
         EditText addressEditText = (EditText) getActivity().findViewById(R.id.address1);
-        EditText specilazationEditText = (EditText) getActivity().findViewById(R.id.specialliaztion);
-        listText = (TextView) getActivity().findViewById(R.id.editTextText11);
-        Button photo_button = (Button) getActivity().findViewById(R.id.button3);
-        image = (ImageView) getActivity().findViewById(R.id.imageupload1);
-        Button signUpButton = (Button) getActivity().findViewById(R.id.signupbtn);
-        String[] options = { " ","BSc", "MSc" , "PhD" };
+        addressEditText.setText(instructorsignin.ins.getAddress());
+
+        EditText specializationEditText = (EditText) getActivity().findViewById(R.id.specialliaztion);
+        specializationEditText.setText(instructorsignin.ins.getSpecialization());
+
+        EditText listEditText = (EditText) getActivity().findViewById(R.id.editTextText11);
+        String listCourses= instructorSignupFragment.list_string;
+        listEditText.append(listCourses);
+
+        ImageView listimg = (ImageView) getActivity().findViewById(R.id.imageView13);
+
+
+        image_view2 = (ImageView) getActivity().findViewById(R.id.imageupload1);
+        TextView error = (TextView)  getActivity().findViewById(R.id.error1);
+
+        String[] options = { "BSc", "MSc" , "PhD" };
         final Spinner degreeSpinner =(Spinner)getActivity().findViewById(R.id.spinner);
         ArrayAdapter<String> objdegreeArr = new ArrayAdapter<>(requireContext(),android.R.layout.simple_spinner_item, options);
         degreeSpinner.setAdapter(objdegreeArr);
-        TextView error = (TextView) getActivity().findViewById(R.id.error1);
-
-        ImageView list = (ImageView)getActivity().findViewById(R.id.imageView12);
 
         String [] courses = {"Java programming", "C programming", "C++ programming", "Python", "AI", "Project Management", "C#","Javascript","Frontend","Web","Backend","DataEngineering"};
         String[] updatedCourses = new String[courses.length + 1];
 
         boolean[] selectedCoures = new boolean[updatedCourses.length];
-        ArrayList <Integer> coursesList = new ArrayList<>();
+        ArrayList<Integer> coursesList = new ArrayList<>();
 
 
-        list.setOnClickListener(new View.OnClickListener() {
+        Button up= (Button) getActivity().findViewById(R.id.save_profile);
+        Button canel= (Button) getActivity().findViewById(R.id.cancle);
+        Button photo_button= (Button) getActivity().findViewById(R.id.button3);
+
+        listimg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
                 builder.setTitle("Choose the Courses you want to teach:");
                 builder.setCancelable(false);
 
-                // Create a ScrollView
-//                ScrollView scrollView = new ScrollView(requireContext());
-//
-//                // Create a LinearLayout to hold the content inside the ScrollView
-//                LinearLayout linearLayout = new LinearLayout(requireContext());
-//                linearLayout.setOrientation(LinearLayout.VERTICAL);
-
-                // Create the inputEditText
                 final EditText inputEditText = new EditText(requireContext());
                 inputEditText.setHint("Others: Enter course");
                 inputEditText.setTextSize(20);
@@ -171,20 +184,13 @@ public class instructorSignupFragment extends Fragment {
                 System.arraycopy(courses, 0, updatedCourses, 0, courses.length);
                 updatedCourses[courses.length] = inputEditText.getText().toString();
 
-                //   courses;
-
-                // Add the inputEditText to the LinearLayout
-//                linearLayout.addView(inputEditText);
-
                 builder.setMultiChoiceItems(updatedCourses, selectedCoures, new DialogInterface.OnMultiChoiceClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which, boolean isChecked) {
                         if (isChecked) {
-                            // Item selected
                             coursesList.add(which);
                             Collections.sort(coursesList);
                         } else {
-                            // Item deselected
                             coursesList.remove(Integer.valueOf(which));
                         }
                     }
@@ -198,7 +204,7 @@ public class instructorSignupFragment extends Fragment {
                                 list_string += updatedCourses[i]+" , ";
                             }
                         }
-                        listText.append(list_string);
+                         listEditText.append(list_string);
                         dialog.dismiss();
                     }
                 });
@@ -217,23 +223,10 @@ public class instructorSignupFragment extends Fragment {
                         coursesList.clear();
                     }
                 });
-
                 builder.show();
             }
 
         });
-
-
-
-        image.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-                intent.setData(MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                activityResultLauncher2.launch(intent);
-            }
-        });
-        DataBaseHelper dbHelper = new DataBaseHelper(requireContext(), "Database", null, 1);
 
         photo_button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -247,6 +240,7 @@ public class instructorSignupFragment extends Fragment {
                     if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
                         final String base64image = Base64.getEncoder().encodeToString(bytes);
 
+
                     }
                     // Bitmap bitmapImageDB = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
                 }
@@ -255,7 +249,18 @@ public class instructorSignupFragment extends Fragment {
 
             }
         });
-        signUpButton.setOnClickListener(new View.OnClickListener() {
+
+        canel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.frameLayout, new TraineeProfile());
+                fragmentTransaction.commit();
+            }
+        });
+
+        up.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 final boolean[] somethingWrong = {false};
@@ -266,27 +271,19 @@ public class instructorSignupFragment extends Fragment {
                 drawable.setCornerRadius(10f);
                 GradientDrawable d2 = new GradientDrawable();
                 d2.setShape(GradientDrawable.RECTANGLE);
-                d2.setStroke(3, Color.blue(5));
+                d2.setStroke(5, Color.blue(5));
                 d2.setCornerRadius(10f);
 
-                if(degreeSpinner.getSelectedItem().toString() == " "){
-                    degreeSpinner.setBackground(drawable);
-                }
-                else{
-                    degreeSpinner.setBackground(d2);
-                }
-
-
                 if (!isButtonNotPressed) {
-                    image.setBackground(drawable);
+                    image_view2.setBackground(drawable);
+
                 }
                 else{
-                    image.setBackground(d2);
+                    image_view2.setBackground(d2);
                 }
 
                 if (firstNameEditText.getText().toString().trim().length() < 3 || firstNameEditText.getText().toString().trim().length() > 20) {
                     firstNameEditText.setBackground(drawable);
-
                 }else {
                     firstNameEditText.setBackground(d2);
                 }
@@ -327,26 +324,21 @@ public class instructorSignupFragment extends Fragment {
                     addressEditText.setBackground(d2);
                 }
 
-                if ((specilazationEditText.getText().toString()).equals("")) {
-                    specilazationEditText.setBackground(drawable);
+                if ((specializationEditText.getText().toString()).equals("")) {
+                    specializationEditText.setBackground(drawable);
                 } else {
-                    specilazationEditText.setBackground(d2);
+                    specializationEditText.setBackground(d2);
                 }
-//                if ((listEditText.getText().toString()).equals("")) {
-//                    listEditText.setBackground(drawable);
-//                } else {
-//                    listEditText.setBackground(d2);
-//                }
 
 
 
-
+                DataBaseHelper dbHelper = new DataBaseHelper(requireContext(), "Database", null, 1);
 
                 if (!isEmailValid(emailEditText.getText().toString().trim())) {
                     somethingWrong[0] = true;
                     errorMessage[0] = "Email Address should be in correct format.";
                 } else {
-                    user.setEmail(emailEditText.getText().toString().trim());
+                    newuser.setEmail(emailEditText.getText().toString());
                 }
 
 
@@ -355,7 +347,7 @@ public class instructorSignupFragment extends Fragment {
                         somethingWrong[0] = true;
                         errorMessage[0] = "First Name should be at least 3 characters.";
                     } else {
-                        user.setFirst_name(firstNameEditText.getText().toString());
+                        newuser.setFirst_name(firstNameEditText.getText().toString());
                     }
 
                     if (!somethingWrong[0]) {
@@ -363,7 +355,7 @@ public class instructorSignupFragment extends Fragment {
                             somethingWrong[0] = true;
                             errorMessage[0] = "Last Name should be at least 3 characters.";
                         } else {
-                            user.setLast_name(lastNameEditText.getText().toString());
+                            newuser.setLast_name(lastNameEditText.getText().toString());
                         }
 
                         if (!somethingWrong[0]) {
@@ -371,7 +363,7 @@ public class instructorSignupFragment extends Fragment {
                                 somethingWrong[0] = true;
                                 errorMessage[0] = "The password must contain at least one number, one lowercase letter, and one uppercase letter.";
                             } else {
-                                user.setPassword(passwordEditText.getText().toString());
+                                newuser.setPassword(passwordEditText.getText().toString());
                             }
 
                             if (!somethingWrong[0]) {
@@ -379,14 +371,14 @@ public class instructorSignupFragment extends Fragment {
                                     somethingWrong[0] = true;
                                     errorMessage[0] = "The password does not match the confirmation.";
                                 } else {
-                                    user.setPassword(confirmPasswordEditText.getText().toString());
+                                    newuser.setPassword(confirmPasswordEditText.getText().toString());
                                 }
                                 if (!somethingWrong[0]) {
                                     if ((mobileEditText.getText().toString()).equals("")) {
                                         somethingWrong[0] = true;
                                         errorMessage[0] = "Enter the Mobile Number please.";
                                     } else {
-                                        user.setMobile_number(mobileEditText.getText().toString());
+                                        newuser.setMobile_number(mobileEditText.getText().toString());
                                     }
 
 
@@ -395,21 +387,21 @@ public class instructorSignupFragment extends Fragment {
                                             somethingWrong[0] = true;
                                             errorMessage[0] = "Enter the Address please.";
                                         } else {
-                                            user.setAddress(addressEditText.getText().toString());
+                                            newuser.setAddress(addressEditText.getText().toString());
                                         }
                                         if (!somethingWrong[0]) {
-                                            if (specilazationEditText.getText().toString().equals("")) {
+                                            if (specializationEditText.getText().toString().equals("")) {
                                                 somethingWrong[0] = true;
                                                 errorMessage[0] = "Enter the Specialization please.";
                                             } else {
-                                                user.setSpecialization(specilazationEditText.getText().toString());
+                                                newuser.setSpecialization(specializationEditText.getText().toString());
                                             }
                                             if (!somethingWrong[0]) {
                                                 if (degreeSpinner.getSelectedItem().toString() == " ") {
                                                     somethingWrong[0] = true;
                                                     errorMessage[0] = "You should select a degree .";
                                                 } else {
-                                                    user.setDegree(degreeSpinner.getSelectedItem().toString());
+                                                    newuser.setDegree(degreeSpinner.getSelectedItem().toString());
                                                 }
                                                 if (!somethingWrong[0]) {
                                                     if (coursesList.size() < 1) {
@@ -418,7 +410,9 @@ public class instructorSignupFragment extends Fragment {
                                                     } else {
                                                         for (int i = 0; i < updatedCourses.length; i++) {
                                                             if (selectedCoures[i]){
-                                                                dbHelper.insert_instructor_courses(user, updatedCourses[i]);
+                                                                String email = instructorsignin.ins.getEmail();
+                                                                dbHelper.editinstructor(newuser,email);
+                                                                instructorsignin.ins=newuser;
                                                             }
                                                         }
                                                     }
@@ -428,9 +422,10 @@ public class instructorSignupFragment extends Fragment {
                                                             somethingWrong[0] = true;
                                                             errorMessage[0] = "You should click on the upload Photo first .";
                                                         } else {
-                                                            user.setPhoto(bytes);
-                                                            dbHelper.insertinstructor(user);
-
+                                                            newuser.setPhoto(bytes);
+                                                            String email = instructorsignin.ins.getEmail();
+                                                            dbHelper.editinstructor(newuser,email);
+                                                            instructorsignin.ins=newuser;
                                                         }
                                                     }
 
@@ -445,19 +440,6 @@ public class instructorSignupFragment extends Fragment {
                     }
                 }
 
-                Cursor allInstructorCursor = dbHelper.getAllInstructors();
-                while (allInstructorCursor.moveToNext()){ //this function allow me to move between data
-
-                    System.out.println("Email= "+allInstructorCursor.getString(0) +"\nFirstName= "+allInstructorCursor.getString(1)
-                            +"\nLastName= "+allInstructorCursor.getString(2)
-                            +"\nPassword= "+allInstructorCursor.getString(3)
-                            +"\nPhoto= "+allInstructorCursor.getBlob(4)+
-                            "\nMobile Number= "+allInstructorCursor.getString(5)+
-                            "\nAddress= "+allInstructorCursor.getString(6)+
-                            "\nSpecialization= "+allInstructorCursor.getString(7)+
-                            "\nDegree= "+allInstructorCursor.getString(8)+
-                            "\n\n" );
-                }
                 if (somethingWrong[0]) {
                     error.setTextColor(Color.RED);
                     error.setText(errorMessage[0]);
@@ -466,7 +448,7 @@ public class instructorSignupFragment extends Fragment {
                 } else {
                     error.setTextColor(Color.BLACK);
                     error.setText("Signing up is done successfully!");
-                    Toast toast =Toast.makeText(getActivity(),"Signing up is done successfully!",Toast.LENGTH_SHORT);
+                    Toast toast =Toast.makeText(getActivity(),"Edit is done successfully!",Toast.LENGTH_SHORT);
                     toast.show();
                     AlertDialog.Builder builder = new AlertDialog.Builder(  requireContext());
                     builder.setTitle("Login");
@@ -476,13 +458,15 @@ public class instructorSignupFragment extends Fragment {
                         public void onClick(DialogInterface dialogInterface, int i) {
                             startActivity(new Intent(requireContext(), logIn.class));
 
-                            firstNameEditText.setText("");
+                           /* firstNameEditText.setText("");
                             lastNameEditText.setText("");
                             emailEditText.setText("");
                             passwordEditText.setText("");
                             confirmPasswordEditText.setText("");
                             mobileEditText.setText("");
                             addressEditText.setText("");
+                            specializationEditText.setText("");
+                            listEditText.setText("");*/
                         }
                     });
                     builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -496,18 +480,17 @@ public class instructorSignupFragment extends Fragment {
 
                 }
 
+
             }
         });
 
+        byte [] bytes = trineelogin.tr.getPhoto();
+        if(bytes != null ){
+            Bitmap bitmapImageDB = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+            image_view2.setImageBitmap(bitmapImageDB);
+        }
 
-    }
 
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_instructor_signup, container, false);
     }
 
     static boolean isEmailValid(CharSequence email) {
@@ -520,4 +503,10 @@ public class instructorSignupFragment extends Fragment {
         return matcher.find();
     }
 
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        return inflater.inflate(R.layout.fragment_edit_instructor_profile, container, false);
+    }
 }

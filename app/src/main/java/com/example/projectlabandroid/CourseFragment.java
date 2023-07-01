@@ -8,11 +8,13 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -151,6 +153,11 @@ public class CourseFragment extends Fragment {
                     "\nVenue= "+allCourses.getString(8)+
                     "\n\n");
             secondLinearLayout.addView(imageView);
+
+            textView.setBackground(ContextCompat.getDrawable(requireContext(), R.drawable.border)); // Set the border as desired (create a drawable XML file)
+            textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18); // Adjust the text size as desired
+            textView.setGravity(Gravity.CENTER); // Set the text alignment to center
+
 
             image_view_minus = new ImageView(requireContext());
             image_view_edit = new ImageView(requireContext());

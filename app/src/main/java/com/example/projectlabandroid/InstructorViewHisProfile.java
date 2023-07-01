@@ -72,7 +72,7 @@ public class InstructorViewHisProfile extends Fragment {
         mobileEditText.setText(instructorsignin.ins.getMobile_number());
 
         TextView addressEditText = (TextView) getActivity().findViewById(R.id.address3);
-        addressEditText.setText(trineelogin.tr.getAddress());
+        addressEditText.setText(instructorsignin.ins.getAddress());
 
         ImageView image_view2 = (ImageView) getActivity().findViewById(R.id.imageView15);
 

@@ -255,7 +255,7 @@ public class EditInstructorProfile extends Fragment {
             public void onClick(View view) {
                 FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.frameLayout, new TraineeProfile());
+                fragmentTransaction.replace(R.id.frameLayout, new InstructorViewHisProfile());
                 fragmentTransaction.commit();
             }
         });
@@ -456,8 +456,10 @@ public class EditInstructorProfile extends Fragment {
                     builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
-                            startActivity(new Intent(requireContext(), logIn.class));
-
+                            FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
+                            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                            fragmentTransaction.replace(R.id.frameLayout, new InstructorViewHisProfile());
+                            fragmentTransaction.commit();
                            /* firstNameEditText.setText("");
                             lastNameEditText.setText("");
                             emailEditText.setText("");

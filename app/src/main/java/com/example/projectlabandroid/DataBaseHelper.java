@@ -31,6 +31,49 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL("CREATE TABLE Course_instructor( EMAIL TEXT , Ctitle TEXT, PRIMARY KEY(EMAIL, Ctitle), FOREIGN KEY (EMAIL) REFERENCES instructor(EMAIL) ON DELETE CASCADE ON UPDATE CASCADE, FOREIGN KEY (Ctitle) REFERENCES Course(Ctitle))");
     }
 
+    public Cursor history() {
+        SQLiteDatabase sqLiteDatabase = getReadableDatabase();
+        String s = "SELECT available_Course.CNum, available_Course.Ctitle, available_Course.COURSESTARTDATE, " +
+                "available_Course.COURSEVENUE, available_Course.Name, COUNT(trainee_Course.EMAIL) " +
+                "FROM available_Course " +
+                "JOIN trainee_Course ON trainee_Course.Ctitle = available_Course.Ctitle " +
+                "GROUP BY available_Course.CNum, available_Course.Ctitle, available_Course.COURSESTARTDATE, " +
+                "available_Course.COURSEVENUE, available_Course.Name " +
+                "ORDER BY available_Course.COURSESTARTDATE ASC";
+
+        return sqLiteDatabase.rawQuery(s, null);
+    }
+
+    public Cursor view_courses_tougth(trainee t) {
+        SQLiteDatabase sqLiteDatabase = getReadableDatabase();
+        String s = "SELECT trainee_Course.Ctitle " +
+                "FROM trainee_Course " +
+                "where trainee_Course.EMAIL = \""+t.getEmail()+"\";";
+
+        return sqLiteDatabase.rawQuery(s, null);
+    }
+
+    public Cursor view_student_for_any_course(String c) {
+        SQLiteDatabase sqLiteDatabase = getReadableDatabase();
+        String s = "SELECT traniee.FIRSTNAME, traniee.LASTNAME " +
+                "FROM traniee " +
+                "JOIN trainee_Course ON traniee.EMAIL = trainee_Course.EMAIL " +
+                "WHERE trainee_Course.Ctitle = \"" + c + "\";";
+        return sqLiteDatabase.rawQuery(s, null);
+
+    }
+
+    public Cursor view_student_for_any_ins(instructor c) {
+        SQLiteDatabase sqLiteDatabase = getReadableDatabase();
+        String name = c.getFirst_name()+" "+c.getLast_name();
+        String s = "SELECT traniee.FIRSTNAME, traniee.LASTNAME " +
+                "FROM traniee " +
+                "JOIN trainee_Course ON traniee.EMAIL = trainee_Course.EMAIL " +
+                "JOIN available_Course ON available_Course.Ctitle = trainee_Course.Ctitle " +
+                "WHERE available_Course.Name = \"" + name + "\";";
+        return sqLiteDatabase.rawQuery(s, null);
+    }
+
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
 
@@ -98,7 +141,10 @@ public class DataBaseHelper extends SQLiteOpenHelper {
             contentValues.put("EMAIL", user.getEmail());
             contentValues.put("SCHEDULE_COURSE", course.getSchedule());
             sqLiteDatabase.insert("trainee_Course", null, contentValues);
+
     }
+
+
 
     public boolean insertCourse(Course course) {
 
@@ -317,6 +363,8 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase sqLiteDatabase = getReadableDatabase();
         return sqLiteDatabase.rawQuery("SELECT * FROM Course", null); //null value returned when an error ocurred
     }
+
+
 
     public Course getAllCoursesbytitel(String title) { //read from database it returns cursor object
         SQLiteDatabase sqLiteDatabase = getReadableDatabase();

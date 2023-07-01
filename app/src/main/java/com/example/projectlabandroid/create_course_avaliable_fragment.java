@@ -2,6 +2,7 @@ package com.example.projectlabandroid;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -133,6 +134,8 @@ public class create_course_avaliable_fragment extends Fragment {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_create_course_avaliable_fragment, container, false);
     }
+
+
 
     public List<String> get_names(String name){
         List<String>  instructorNames2;

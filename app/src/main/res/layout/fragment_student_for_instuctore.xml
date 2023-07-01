@@ -5,11 +5,11 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="#F7E4F4"
-    tools:context=".HistoryFragment">
+    tools:context=".student_for_instuctore" >
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="164dp"
+        android:layout_height="195dp"
         android:layout_marginTop="20dp"
         android:orientation="vertical">
 
@@ -18,7 +18,7 @@
             android:layout_width="match_parent"
             android:layout_height="88dp"
             android:layout_weight="1"
-            android:text="History "
+            android:text="Name Of Student You Teach"
             android:textAlignment="center"
             android:textColor="#FF07185A"
             android:textSize="28sp" />
@@ -26,10 +26,10 @@
         <ImageView
             android:id="@+id/imageView11"
             android:layout_width="match_parent"
-            android:layout_height="124dp"
+            android:layout_height="159dp"
             android:layout_marginBottom="20dp"
             android:layout_weight="1"
-            android:src="@drawable/parchment" />
+            android:src="@drawable/audience" />
     </LinearLayout>
 
     <ScrollView
@@ -38,12 +38,10 @@
         android:background="#F7E4F4">
 
         <LinearLayout
-            android:id="@+id/secondLinearLayout2"
+            android:id="@+id/secondLinearLayout20"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical" />
     </ScrollView>
 
 </LinearLayout>
-
-

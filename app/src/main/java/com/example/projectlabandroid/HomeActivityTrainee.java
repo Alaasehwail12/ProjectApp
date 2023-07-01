@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -47,21 +48,17 @@ public class HomeActivityTrainee extends AppCompatActivity {
                     case R.id.profile:
                         getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, new TraineeProfile()).commit();
                         break;
+                    case R.id.history:
+                        getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, new HistoryFragment()).commit();
+                        break;
+                    case R.id.donecourses:
+                        getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, new View_studied_courses()).commit();
+                        break;
 
-//                    case R.id.insprofile:
-//                        getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, new ProfileFragment()).commit();
-//                        break;
-//                    case R.id.course:
-//                        getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, new CreateCourseFragment()).commit();
-//                        break;
-//                    case R.id.history:
-//                        getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, new HistoryFragment()).commit();
-//                        break;
-//                    case R.id.makeavailable:
-//                        Toast toast = Toast.makeText(HomeActivityTrainee.this, "Entereddddddd", Toast.LENGTH_SHORT);
-//                        toast.show();
-//                        getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, new make_courses_avaliableFragment()).commit();
-//                        break;
+                    case R.id.logout:
+                        startActivity(new Intent(HomeActivityTrainee.this, logIn.class));
+                        break;
+
                     default:
                         return true;
                 }

@@ -6,6 +6,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -102,7 +103,7 @@ public class make_courses_avaliableFragment extends Fragment {
             }
         });
 
-        secondLinearLayout = getActivity().findViewById(R.id.secondLinearLayout);
+       // secondLinearLayout = getActivity().findViewById(R.id.secondLinearLayout);
 
     }
 
@@ -204,6 +205,10 @@ public class make_courses_avaliableFragment extends Fragment {
 
         }
 
-
+    }
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        secondLinearLayout = view.findViewById(R.id.secondLinearLayout);
     }
 }

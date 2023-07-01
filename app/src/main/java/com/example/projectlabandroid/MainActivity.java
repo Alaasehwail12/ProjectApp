@@ -20,7 +20,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-//
+
 ////        MaterialToolbar toolbar = findViewById(R.id.topAppBar);
 ////        DrawerLayout drawerLayout = findViewById(R.id.drawer_layout);
 ////        NavigationView navigationView = findViewById(R.id.navigation_view);
@@ -51,10 +51,13 @@ public class MainActivity extends AppCompatActivity {
 //                    case R.id.profile:
 //                        getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, new TraineeProfile()).commit();
 //                        break;
+//                    case R.id.history:
+//                        getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, new HistoryFragment()).commit();
+//                        break;
 //
-////                    case R.id.course:
-////                        getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, new CourseFragment()).commit();
-////                        break;
+//                    case R.id.logout:
+//                        startActivity(new Intent(MainActivity.this, logIn.class));
+//                        break;
 ////                    case R.id.history:
 ////                        getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, new HistoryFragment()).commit();
 ////                        break;
@@ -77,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
 //                return false;
 //            }
 //        });
-
+//
 
         Button startButton =(Button) findViewById(R.id.startButton);
         startButton.setOnClickListener(new View.OnClickListener() {

@@ -8,6 +8,7 @@ import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.TransitionDrawable;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -164,10 +165,7 @@ public class student_apply_for_course extends Fragment {
                        apply.setImageResource(R.drawable.apply_fill);
                        Toast.makeText(requireContext(), "You already tried to apply!!", Toast.LENGTH_SHORT).show();
 
-                  }else if(cretae_applied_student.time_conflict == true){
-                       Toast.makeText(requireContext(), "there is a time conflict!!", Toast.LENGTH_SHORT).show();
-
-                   }
+                  }
                    else {
                        c2 = new Course();
                        c2.setCtitle(t);
@@ -198,21 +196,25 @@ public class student_apply_for_course extends Fragment {
             secondLinearLayout.addView(horizontalLayout);
 
         }
-//
-//        Cursor allCourses2 = dbHelper.getAllAvailableCourses_trinee();
-//        while (allCourses2.moveToNext()) {
-//            TextView text2 = new TextView(requireContext());
-//
-//            text2.setText("\nstudent Name: "+allCourses2.getString(2)+
-//                    "\nCourse Title: "+allCourses2.getString(1)+
-//                    "\n Time: "+allCourses2.getString(3)+
-//                    "\n");
-//            ImageView apply = new ImageView(requireContext());
-//            apply.setImageResource(R.drawable.apply);
-//            secondLinearLayout.addView(text2);
-//
-//        }
 
+        Cursor allCourses2 = dbHelper.getAllAvailableCourses_trinee();
+        while (allCourses2.moveToNext()) {
+            TextView text2 = new TextView(requireContext());
 
+            text2.setText("\nstudent Name: "+allCourses2.getString(2)+
+                    "\nCourse Title: "+allCourses2.getString(1)+
+                    "\n Time: "+allCourses2.getString(3)+
+                    "\n");
+            ImageView apply = new ImageView(requireContext());
+            apply.setImageResource(R.drawable.apply);
+            secondLinearLayout.addView(text2);
+
+        }
+
+    }
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        secondLinearLayout = view.findViewById(R.id.secondLinearLayout);
     }
 }

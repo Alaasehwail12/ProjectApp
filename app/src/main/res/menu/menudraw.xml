@@ -16,6 +16,10 @@
                         android:id="@+id/makeavailable"
                         android:icon="@drawable/baseline_check_circle_outline_24"
                         android:title="make available courses" />
+                    <item
+                        android:id="@+id/viewstudents"
+                        android:icon="@drawable/baseline_view_list_24"
+                        android:title="View Student for any Course" />
 
                     <item
                         android:id="@+id/history"

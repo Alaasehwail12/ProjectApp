@@ -171,13 +171,19 @@ public class cretae_applied_student extends Fragment {
                 if (set1.equals(set2) && time_conflict == false) {
                     isapplied=true;
                     Toast.makeText(requireContext(), "You  applied to this course", Toast.LENGTH_SHORT).show();
-//                   text2.append(trineelogin.tr.getEmail());
-//                    text2.append("\n");
-//                    text2.append(student_apply_for_course.c2.getCtitle());
-                     dbHelper.insertcourse_trinee(trineelogin.tr,student_apply_for_course.c2);
+                    text2.append(trineelogin.tr.getEmail());
+                    text2.append("\n");
+                    text2.append(student_apply_for_course.c2.getCtitle());
+                        dbHelper.insertcourse_trinee(trineelogin.tr,student_apply_for_course.c2);
+
                     // text2.append("The contents of the texts are the same.");
+//                    FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
+//                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+//                    fragmentTransaction.replace(R.id.frameLayout, new student_apply_for_course());
+//                    fragmentTransaction.commit();
                 } else if(time_conflict == true){
                     Toast.makeText(requireContext(), "there is a time conflict", Toast.LENGTH_SHORT).show();
+                    FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
                 }
                 else {
                     Toast.makeText(requireContext(), "You cant applied to this course,You did not finish the prerequisites", Toast.LENGTH_SHORT).show();
@@ -218,7 +224,9 @@ public class cretae_applied_student extends Fragment {
 //            text2.append(student_apply_for_course.c2.getSchedule());
 //            text2.append("\n");
 //            text2.append(allCourses.getString(3));
-            if(allCourses.getString(3).equals(student_apply_for_course.c2.getSchedule())){
+            String current = allCourses.getString(3);
+
+            if(current == student_apply_for_course.c2.getSchedule() && trineelogin.tr.getEmail()==allCourses.getString(2) && student_apply_for_course.c2 != null ){
                 time_conflict=true;
             }
        }

@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -87,7 +88,7 @@ public class CourseFragment extends Fragment {
 
         ImageView image_view_plues = (ImageView) getActivity().findViewById(R.id.imageView3);
 
-        secondLinearLayout=getActivity().findViewById(R.id.secondLinearLayout);
+    //    secondLinearLayout=getActivity().findViewById(R.id.secondLinearLayout);
 
 
         image_view_plues.setOnClickListener(new View.OnClickListener() {
@@ -225,6 +226,11 @@ public class CourseFragment extends Fragment {
             secondLinearLayout.addView(textView2);
 
         }
+    }
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        secondLinearLayout = view.findViewById(R.id.secondLinearLayout);
     }
 }
 

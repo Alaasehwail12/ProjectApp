@@ -1,5 +1,6 @@
 package com.example.projectlabandroid;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import com.google.android.material.appbar.MaterialToolbar;
@@ -50,6 +51,13 @@ public class InstructorPage extends AppCompatActivity {
                     case R.id.schedule:
                         getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, new InstructorScheduleFragment()).commit();
                         break;
+                    case R.id.liststudent:
+                        getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, new student_for_instuctore()).commit();
+                        break;
+                    case R.id.logout:
+                        startActivity(new Intent(InstructorPage.this, logIn.class));
+                        break;
+
                    /* case R.id.liststudent:
 
                         getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, new make_courses_avaliableFragment()).commit();

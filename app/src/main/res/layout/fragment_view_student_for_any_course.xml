@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="#F7E4F4"
-    tools:context=".HistoryFragment">
 
+    tools:context=".View_student_for_any_course" >
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="164dp"
@@ -18,7 +19,7 @@
             android:layout_width="match_parent"
             android:layout_height="88dp"
             android:layout_weight="1"
-            android:text="History "
+            android:text="View Student For Any Course "
             android:textAlignment="center"
             android:textColor="#FF07185A"
             android:textSize="28sp" />
@@ -29,7 +30,7 @@
             android:layout_height="124dp"
             android:layout_marginBottom="20dp"
             android:layout_weight="1"
-            android:src="@drawable/parchment" />
+            android:src="@drawable/file" />
     </LinearLayout>
 
     <ScrollView
@@ -38,10 +39,32 @@
         android:background="#F7E4F4">
 
         <LinearLayout
-            android:id="@+id/secondLinearLayout2"
+            android:id="@+id/secondLinearLayout5"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical" />
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <EditText
+                android:id="@+id/ctitle"
+                android:layout_width="346dp"
+                android:layout_height="77dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="20dp"
+                android:ems="10"
+                android:inputType="textPersonName"
+                android:hint="Ctitle"
+                android:textSize="24sp" />
+
+            <Button
+                android:id="@+id/button10"
+                android:layout_width="324dp"
+                android:layout_height="66dp"
+                android:backgroundTint="#03A9F4"
+                android:text="Show Student"
+                android:textSize="20sp" />
+
+        </LinearLayout>
     </ScrollView>
 
 </LinearLayout>

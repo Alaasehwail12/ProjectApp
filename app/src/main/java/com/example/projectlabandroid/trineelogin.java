@@ -87,6 +87,8 @@ public class trineelogin extends Fragment {
                         sharedPrefManager.writeString("email", email.getText().toString().trim());
                     else
                         sharedPrefManager.writeString("email", "noValue");
+
+                    //email.setText("alaa@gmail.com");
                     tr= dbHelper.gettraineeByEmail(email.getText().toString().trim());
                     Toast.makeText(requireContext(), "the login procsess succesfull for trainee!", Toast.LENGTH_SHORT).show();
                     startActivity(new Intent(requireContext(), HomeActivityTrainee.class));

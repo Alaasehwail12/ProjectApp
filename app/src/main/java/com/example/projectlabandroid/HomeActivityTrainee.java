@@ -54,6 +54,9 @@ public class HomeActivityTrainee extends AppCompatActivity {
                     case R.id.donecourses:
                         getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, new View_studied_courses()).commit();
                         break;
+                    case R.id.viewApplied:
+                        getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, new withdraw_course_regestration()).commit();
+                        break;
 
                     case R.id.logout:
                         startActivity(new Intent(HomeActivityTrainee.this, logIn.class));

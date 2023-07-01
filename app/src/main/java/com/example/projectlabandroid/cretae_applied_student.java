@@ -214,7 +214,7 @@ public class cretae_applied_student extends Fragment {
         Toast toast = Toast.makeText(getActivity(), "inside the resume function true", Toast.LENGTH_SHORT);
         toast.show();
         DataBaseHelper dbHelper = new DataBaseHelper(requireContext(), "Database", null, 1);
-        Cursor allCourses = dbHelper.getAllAvailableCourses_trinee();
+        Cursor allCourses = dbHelper.getAllAvailableCourses_trinee(trineelogin.tr);
 
         while (allCourses.moveToNext()) {
 //            text2.setText("\nstudent Name: "+allCourses.getString(2)+

@@ -407,9 +407,9 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         return sqLiteDatabase.rawQuery("SELECT * FROM available_Course ", null); //null value returned when an error ocurred
     }
 
-    public Cursor getAllAvailableCourses_trinee() { //read from database it returns cursor object
+    public Cursor getAllAvailableCourses_trinee(trainee t) { //read from database it returns cursor object
         SQLiteDatabase sqLiteDatabase = getReadableDatabase();
-        return sqLiteDatabase.rawQuery("SELECT * FROM trainee_Course ", null); //null value returned when an error ocurred
+        return sqLiteDatabase.rawQuery("SELECT * FROM trainee_Course WHERE trainee_Course.EMAIL = \""+t.getEmail()+  "\";", null); //null value returned when an error ocurred
     }
 
     public Cursor getAllAvailableCourses_bytitle(String title) { //read from database it returns cursor object
@@ -454,6 +454,15 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         Cursor cursor = sqLiteDatabaseR.rawQuery("SELECT * FROM available_Course "+ ";", null);
         if (cursor.moveToFirst()) {
             sqLiteDatabase.execSQL("DELETE FROM available_Course WHERE CNum = " + id +  ";");
+        }
+    }
+
+    public void removetrinee_byemail(trainee t,Course c) {
+        SQLiteDatabase sqLiteDatabaseR = getReadableDatabase();
+        SQLiteDatabase sqLiteDatabase = getWritableDatabase();
+        Cursor cursor = sqLiteDatabaseR.rawQuery("SELECT * FROM trainee_Course "+ ";", null);
+        if (cursor.moveToFirst()) {
+            sqLiteDatabase.execSQL("DELETE FROM trainee_Course WHERE trainee_Course.EMAIL = '" + t.getEmail() + "'trainee_Course.Ctitle = \""+c.getCtitle()+";");
         }
     }
 

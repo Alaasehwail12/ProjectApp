@@ -197,19 +197,19 @@ public class student_apply_for_course extends Fragment {
 
         }
 
-        Cursor allCourses2 = dbHelper.getAllAvailableCourses_trinee();
-        while (allCourses2.moveToNext()) {
-            TextView text2 = new TextView(requireContext());
-
-            text2.setText("\nstudent Name: "+allCourses2.getString(2)+
-                    "\nCourse Title: "+allCourses2.getString(1)+
-                    "\n Time: "+allCourses2.getString(3)+
-                    "\n");
-            ImageView apply = new ImageView(requireContext());
-            apply.setImageResource(R.drawable.apply);
-            secondLinearLayout.addView(text2);
-
-        }
+//        Cursor allCourses2 = dbHelper.getAllAvailableCourses_trinee();
+//        while (allCourses2.moveToNext()) {
+//            TextView text2 = new TextView(requireContext());
+//
+//            text2.setText("\nstudent Name: "+allCourses2.getString(2)+
+//                    "\nCourse Title: "+allCourses2.getString(1)+
+//                    "\n Time: "+allCourses2.getString(3)+
+//                    "\n");
+//            ImageView apply = new ImageView(requireContext());
+//            apply.setImageResource(R.drawable.apply);
+//            secondLinearLayout.addView(text2);
+//
+//        }
 
     }
     @Override

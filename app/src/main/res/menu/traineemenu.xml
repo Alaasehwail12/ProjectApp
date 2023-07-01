@@ -18,6 +18,11 @@
                         android:title="Search for courses" />
 
                     <item
+                        android:id="@+id/viewApplied"
+                        android:icon="@drawable/baseline_preview_24"
+                        android:title="Applied Courses" />
+
+                    <item
                         android:id="@+id/donecourses"
                         android:icon="@drawable/baseline_done_24"
                         android:title="Studied Courses" />

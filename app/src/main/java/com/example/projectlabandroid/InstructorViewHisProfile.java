@@ -1,14 +1,19 @@
 package com.example.projectlabandroid;
 
+import android.annotation.SuppressLint;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -73,6 +78,28 @@ public class InstructorViewHisProfile extends Fragment {
 
         TextView addressEditText = (TextView) getActivity().findViewById(R.id.address3);
         addressEditText.setText(instructorsignin.ins.getAddress());
+
+        TextView degreeEditText = (TextView) getActivity().findViewById(R.id.degree);
+        degreeEditText.setText(instructorsignin.ins.getDegree());
+
+        TextView specialEditText = (TextView) getActivity().findViewById(R.id.graduate);
+        specialEditText.setText(instructorsignin.ins.getSpecialization());
+
+        DataBaseHelper dbHelper = new DataBaseHelper(requireContext(), "Database", null, 1);
+        String email = instructorsignin.ins.getEmail();
+        Cursor cursor = dbHelper.getAllCoursesforInstructor(email);
+        TextView corsesEditText = (TextView) getActivity().findViewById(R.id.list);
+        corsesEditText.setText("");
+
+
+        while (cursor.moveToNext()) {
+            @SuppressLint("Range") String cTitle = cursor.getString(cursor.getColumnIndex("Ctitle"));
+            String currentText = corsesEditText.getText().toString();
+            String newText = currentText + cTitle + ", \n";
+            corsesEditText.setText(newText);
+        }
+
+        cursor.close();
 
         ImageView image_view2 = (ImageView) getActivity().findViewById(R.id.imageView15);
 

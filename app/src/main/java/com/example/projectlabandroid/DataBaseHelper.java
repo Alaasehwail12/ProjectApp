@@ -139,14 +139,15 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
     public void insertcourse_trinee(trainee user , Course course) {
 
-            SQLiteDatabase sqLiteDatabase = getWritableDatabase();
-            ContentValues contentValues = new ContentValues();
-            contentValues.put("CNum", course.getCNum());
-            contentValues.put("Ctitle", course.getCtitle());
-            contentValues.put("EMAIL", user.getEmail());
-            contentValues.put("SCHEDULE_COURSE", course.getSchedule());
-            sqLiteDatabase.insert("trainee_Course", null, contentValues);
+        SQLiteDatabase sqLiteDatabase = getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("CNum", course.getCNum());
+        contentValues.put("Ctitle", course.getCtitle());
+        contentValues.put("EMAIL", user.getEmail());
+        contentValues.put("SCHEDULE_COURSE", course.getSchedule());
+        sqLiteDatabase.insert("trainee_Course", null, contentValues);
     }
+
 
     public void insertcourse_trinee_admin(trainee user , Course course) {
 
@@ -433,31 +434,46 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 //        cursor.close();
 //        return false;
 //    }
-        public boolean isCourseTitleAvailable(String title) {
-            SQLiteDatabase sqLiteDatabase = getReadableDatabase();
-            boolean isAvailable = false;
 
-            // Use placeholders in the query to prevent SQL injection
-            String query = "SELECT * FROM available_Course WHERE Ctitle = ?";
-            String[] selectionArgs = {title};
 
-            Cursor cursor = null;
-            try {
-                cursor = sqLiteDatabase.rawQuery(query, selectionArgs);
-                if (cursor != null && cursor.getCount() > 0) {
-                    isAvailable = true; // Title exists in the table
-                }
-            } catch (SQLException e) {
-                // Handle any potential exceptions here
-                e.printStackTrace();
-            } finally {
-                if (cursor != null) {
-                    cursor.close();
-                }
+
+
+    //    public boolean getAllAvailableCoursesbytitle(String title) { //read from database it returns cursor object
+//        SQLiteDatabase sqLiteDatabase = getReadableDatabase();
+//
+//        Cursor cursor = sqLiteDatabase.rawQuery("SELECT * FROM available_Course where available_Course.Ctitle = \"" +title+ "\";", null); //null value returned when an error ocurred
+//
+//        while(cursor.moveToNext()) {
+//                    return true;
+//        }
+//        cursor.close();
+//        return false;
+//    }
+    public boolean isCourseTitleAvailable(String title) {
+        SQLiteDatabase sqLiteDatabase = getReadableDatabase();
+        boolean isAvailable = false;
+
+        // Use placeholders in the query to prevent SQL injection
+        String query = "SELECT * FROM available_Course WHERE Ctitle = ?";
+        String[] selectionArgs = {title};
+
+        Cursor cursor = null;
+        try {
+            cursor = sqLiteDatabase.rawQuery(query, selectionArgs);
+            if (cursor != null && cursor.getCount() > 0) {
+                isAvailable = true; // Title exists in the table
             }
-
-            return isAvailable;
+        } catch (SQLException e) {
+            // Handle any potential exceptions here
+            e.printStackTrace();
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
         }
+
+        return isAvailable;
+    }
 
     public boolean isStudentRegesterd(String title) {
         SQLiteDatabase sqLiteDatabase = getReadableDatabase();
@@ -505,15 +521,15 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
 
 
-
-    public Cursor getAllinstroucter_course() { //read from database it returns cursor object
+    public Cursor getAllInstructorCourses(String instructorEmail) {
         SQLiteDatabase sqLiteDatabase = getReadableDatabase();
-        return sqLiteDatabase.rawQuery("SELECT * FROM Course_instructor", null); //null value returned when an error ocurred
+        String query = "SELECT ci.Ctitle FROM Course_instructor ci JOIN Course c ON ci.Ctitle = c.Ctitle WHERE ci.EMAIL = ?";
+        return sqLiteDatabase.rawQuery(query, new String[]{instructorEmail});
     }
+
 
     public Cursor getAllCoursesforInstructor(String email){
         SQLiteDatabase sqLiteDatabase = getReadableDatabase();
-
         String query = "SELECT Ctitle FROM Course_instructor WHERE EMAIL = ?";
         return sqLiteDatabase.rawQuery(query, new String[]{email});
     }
@@ -583,5 +599,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 newUser.getPassword(), String.valueOf(newUser.getPhoto()),newUser.getMobile_number(),newUser.getAddress(),newUser.getDegree(),newUser.getSpecialization(),email});
         db.execSQL("UPDATE instructor SET EMAIL = '" + newUser.getEmail() + "' WHERE EMAIL = '" + email + "';");
     }
+
+
 }
 

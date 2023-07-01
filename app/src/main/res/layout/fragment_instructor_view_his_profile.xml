@@ -37,7 +37,7 @@ tools:context=".InstructorViewHisProfile" >
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="521dp"
+            android:layout_height="819dp"
             android:orientation="vertical">
 
             <LinearLayout
@@ -169,6 +169,83 @@ tools:context=".InstructorViewHisProfile" >
                     android:hint="Address"
                     android:inputType="textPersonName"
                     android:textSize="34sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="102dp"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/image_special3"
+                    android:layout_width="133dp"
+                    android:layout_height="47dp"
+                    android:layout_marginTop="30dp"
+                    android:layout_weight="1"
+                    android:src="@drawable/graduate" />
+
+                <TextView
+                    android:id="@+id/graduate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:layout_weight="1"
+                    android:ems="10"
+                    android:hint="Specialization"
+                    android:inputType="textPersonName"
+                    android:textSize="34sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="102dp"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/image_degree"
+                    android:layout_width="133dp"
+                    android:layout_height="47dp"
+                    android:layout_marginTop="30dp"
+                    android:layout_weight="1"
+                    android:src="@drawable/bachelor" />
+
+                <TextView
+                    android:id="@+id/degree"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:layout_weight="1"
+                    android:ems="10"
+                    android:hint="Degree"
+                    android:inputType="textPersonName"
+                    android:textSize="34sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="102dp"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/image_list3"
+                    android:layout_width="133dp"
+                    android:layout_height="47dp"
+                    android:layout_marginTop="30dp"
+                    android:layout_weight="1"
+                    android:src="@drawable/checklist" />
+
+                <TextView
+                    android:id="@+id/list"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:layout_weight="1"
+                    android:ems="10"
+                    android:hint="List Of Courses"
+                    android:inputType="textPersonName"
+                    android:textSize="34sp" />
+
 
             </LinearLayout>
 

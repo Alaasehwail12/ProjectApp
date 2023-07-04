@@ -27,16 +27,15 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL("CREATE TABLE traniee(EMAIL TEXT PRIMARY KEY, FIRSTNAME TEXT, LASTNAME TEXT, PASSWORD TEXT NOT NULL,PHOTO BLOB,mobile_number TEXT,ADDRESS TEXT)");
         sqLiteDatabase.execSQL("CREATE TABLE instructor(EMAIL TEXT PRIMARY KEY, FIRSTNAME TEXT, LASTNAME TEXT, PASSWORD TEXT NOT NULL,PHOTO BLOB,mobile_number TEXT,ADDRESS TEXT,DEGREE TEXT,SPECIALIZATION TEXT )");
         sqLiteDatabase.execSQL("CREATE TABLE Course(CNum INTEGER  PRIMARY KEY AUTOINCREMENT, Ctitle TEXT , CTopics TEXT, prerequisites TEXT, PHOTO BLOB, DEADLINECOURSE DATE, COURSESTARTDATE DATE, SCHEDULE_COURSE TIME, COURSEVENUE TEXT)");
+
         sqLiteDatabase.execSQL("CREATE TABLE available_Course(CNum INTEGER PRIMARY KEY , Ctitle TEXT,Name TEXT ,CTopics TEXT, prerequisites TEXT, PHOTO BLOB, DEADLINECOURSE DATE, COURSESTARTDATE DATE, SCHEDULE_COURSE TIME, COURSEVENUE TEXT, FOREIGN KEY (CNum) REFERENCES Course(CNum) ON DELETE CASCADE ON UPDATE CASCADE, FOREIGN KEY (Ctitle) REFERENCES Course(Ctitle) ON DELETE CASCADE ON UPDATE CASCADE" +
                 ",FOREIGN KEY (CTopics) REFERENCES Course(CTopics) ON DELETE CASCADE ON UPDATE CASCADE," +
                 "FOREIGN KEY (DEADLINECOURSE) REFERENCES Course(DEADLINECOURSE) ON DELETE CASCADE ON UPDATE CASCADE," +
                 "FOREIGN KEY (COURSESTARTDATE) REFERENCES Course(COURSESTARTDATE) ON DELETE CASCADE ON UPDATE CASCADE," +
                 "FOREIGN KEY (SCHEDULE_COURSE) REFERENCES Course(SCHEDULE_COURSE) ON DELETE CASCADE ON UPDATE CASCADE)");
-
-        sqLiteDatabase.execSQL("CREATE TABLE trainee_Course(CNum INTEGER PRIMARY KEY, Ctitle TEXT,EMAIL TEXT,SCHEDULE_COURSE TIME, FOREIGN KEY (CNum) REFERENCES Course(CNum) ,FOREIGN KEY (Ctitle) REFERENCES Course(Ctitle),FOREIGN KEY (EMAIL) REFERENCES traniee(EMAIL),FOREIGN KEY (SCHEDULE_COURSE) REFERENCES Course(SCHEDULE_COURSE))");
-        sqLiteDatabase.execSQL("CREATE TABLE accepted_trainee_Course(CNum INTEGER PRIMARY KEY, Ctitle TEXT,EMAIL TEXT, FOREIGN KEY (CNum) REFERENCES Course(CNum) ,FOREIGN KEY (Ctitle) REFERENCES Course(Ctitle),FOREIGN KEY (EMAIL) REFERENCES traniee(EMAIL))");
-
-        sqLiteDatabase.execSQL("CREATE TABLE Course_instructor(EMAIL TEXT , Ctitle TEXT, PRIMARY KEY(EMAIL, Ctitle), FOREIGN KEY (EMAIL) REFERENCES instructor(EMAIL) ON DELETE CASCADE ON UPDATE CASCADE, FOREIGN KEY (Ctitle) REFERENCES Course(Ctitle))");
+        sqLiteDatabase.execSQL("CREATE TABLE trainee_Course(CNum INTEGER PRIMARY KEY, Ctitle TEXT,EMAIL TEXT,SCHEDULE_COURSE TIME, FOREIGN KEY (CNum) REFERENCES Course(CNum) ,FOREIGN KEY (Ctitle) REFERENCES Course(Ctitle) ON DELETE CASCADE ON UPDATE CASCADE,FOREIGN KEY (EMAIL) REFERENCES traniee(EMAIL) ON DELETE CASCADE ON UPDATE CASCADE,FOREIGN KEY (SCHEDULE_COURSE) REFERENCES Course(SCHEDULE_COURSE) ON DELETE CASCADE ON UPDATE CASCADE)");
+        sqLiteDatabase.execSQL("CREATE TABLE accepted_trainee_Course(CNum INTEGER PRIMARY KEY, Ctitle TEXT,EMAIL TEXT, FOREIGN KEY (CNum) REFERENCES Course(CNum) ON DELETE CASCADE ON UPDATE CASCADE ,FOREIGN KEY (Ctitle) REFERENCES Course(Ctitle) ON DELETE CASCADE ON UPDATE CASCADE,FOREIGN KEY (EMAIL) REFERENCES traniee(EMAIL) ON DELETE CASCADE ON UPDATE CASCADE)");
+        sqLiteDatabase.execSQL("CREATE TABLE Course_instructor(EMAIL TEXT , Ctitle TEXT, PRIMARY KEY(EMAIL, Ctitle), FOREIGN KEY (EMAIL) REFERENCES instructor(EMAIL) ON DELETE CASCADE ON UPDATE CASCADE, FOREIGN KEY (Ctitle) REFERENCES Course(Ctitle) ON DELETE CASCADE ON UPDATE CASCADE)");
     }
 
     public Cursor history() {
@@ -51,15 +50,24 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
         return sqLiteDatabase.rawQuery(s, null);
     }
+    @Override
+    public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
+
+    }
 
     public Cursor view_courses_tougth(trainee t) {
         SQLiteDatabase sqLiteDatabase = getReadableDatabase();
+        long currentTimeMillis = System.currentTimeMillis() / 1000;
+
         String s = "SELECT accepted_trainee_Course.Ctitle " +
                 "FROM accepted_trainee_Course " +
-                "where accepted_trainee_Course.EMAIL = \""+t.getEmail()+"\";";
+                "JOIN available_Course ON available_Course.Ctitle = accepted_trainee_Course.Ctitle " +
+                "WHERE accepted_trainee_Course.EMAIL = \"" + t.getEmail() + "\" AND " +
+                "available_Course.COURSESTARTDATE = " + currentTimeMillis + ";";
 
         return sqLiteDatabase.rawQuery(s, null);
     }
+
 
     public Cursor view_student_for_any_course(String c) {
         SQLiteDatabase sqLiteDatabase = getReadableDatabase();
@@ -82,10 +90,6 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         return sqLiteDatabase.rawQuery(s, null);
     }
 
-    @Override
-    public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
-
-    }
 
     public List<String> make_course_avalabile(String courseTitle) {
         List<String> instructorNames = new ArrayList<>();
@@ -575,6 +579,15 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         Cursor cursor = sqLiteDatabaseR.rawQuery("SELECT * FROM Course "+ ";", null);
         if (cursor.moveToFirst()) {
             sqLiteDatabase.execSQL("DELETE FROM Course WHERE CNum = " + id +  ";");
+        }
+    }
+
+    public void removeCourse_instructor() {
+        SQLiteDatabase sqLiteDatabaseR = getReadableDatabase();
+        SQLiteDatabase sqLiteDatabase = getWritableDatabase();
+        Cursor cursor = sqLiteDatabaseR.rawQuery("SELECT * FROM Course_instructor "+ ";", null);
+        if (cursor.moveToFirst()) {
+            sqLiteDatabase.execSQL("DELETE FROM Course_instructor;");
         }
     }
 

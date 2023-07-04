@@ -77,7 +77,7 @@ public class View_studied_courses extends Fragment {
 
         DataBaseHelper dbHelper = new DataBaseHelper(requireContext(), "Database", null, 1);
 
-        dbHelper = new DataBaseHelper(requireContext(), "Database", null, 1);
+      //  dbHelper = new DataBaseHelper(requireContext(), "Database", null, 1);
 
         Cursor allCourses = dbHelper.view_courses_tougth(trineelogin.tr);
         secondLinearLayout.removeAllViews();

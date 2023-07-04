@@ -2,11 +2,19 @@ package com.example.projectlabandroid;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
@@ -26,7 +34,14 @@ public class HomeActivityTrainee extends AppCompatActivity {
         DrawerLayout drawerLayout = findViewById(R.id.drawer_layout1);
         NavigationView navigationView = findViewById(R.id.navigation_view1);
 
-        getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, new ProfileFragment()).commit();
+        for(int i = 100 ; i < applied_reject_student.accept ;i++){
+        createNotification(i,applied_reject_student.NOTIFICATION_TITLE_accepet, applied_reject_student.NOTIFICATION_BODY_accept[i-100]);
+            }
+        for(int i = 200 ; i < applied_reject_student.reject ;i++) {
+            createNotification(i ,applied_reject_student.NOTIFICATION_TITLE_reject, applied_reject_student.NOTIFICATION_BODY_reject[i-200]);
+        }
+
+        //getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, new ProfileFragment()).commit();
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -57,7 +72,9 @@ public class HomeActivityTrainee extends AppCompatActivity {
                     case R.id.viewApplied:
                         getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, new withdraw_course_regestration()).commit();
                         break;
-
+                    case R.id.notification:
+                        getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, new Notifiaction()).commit();
+                        break;
                     case R.id.logout:
                         startActivity(new Intent(HomeActivityTrainee.this, logIn.class));
                         break;
@@ -70,5 +87,43 @@ public class HomeActivityTrainee extends AppCompatActivity {
         });
     }
 
+    private static final String MY_CHANNEL_ID = "my_channel_1";
+    private static final String MY_CHANNEL_NAME = "My channel";
 
+    private void createNotificationChannel() {
+        int importance = NotificationManager.IMPORTANCE_DEFAULT;
+        NotificationChannel channel = new NotificationChannel(MY_CHANNEL_ID, MY_CHANNEL_NAME, importance);
+        NotificationManager notificationManager = getSystemService(NotificationManager.class);
+        if (notificationManager != null) {
+            notificationManager.createNotificationChannel(channel);
+        }
+    }
+
+    public void createNotification(int notificationId, String title, String body) {
+        String notificationTag = "my_notification_tag_" + notificationId;
+        Intent intent = new Intent(this, MainActivity.class);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        createNotificationChannel();
+
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, MY_CHANNEL_ID)
+                .setSmallIcon(R.mipmap.ic_launcher)
+                .setContentTitle(title)
+                .setContentText(body)
+                .setStyle(new NotificationCompat.BigTextStyle().bigText(body))
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                .setContentIntent(pendingIntent);
+
+        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
+        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
+        notificationManager.notify(notificationTag,notificationId, builder.build());
+    }
 }

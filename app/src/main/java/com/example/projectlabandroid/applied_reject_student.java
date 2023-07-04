@@ -9,7 +9,6 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import android.util.TypedValue;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -68,6 +67,19 @@ public class applied_reject_student extends Fragment {
     Course c;
     Course c2;
     trainee t;
+
+    public static int reject = 200;
+    public static int accept = 100;
+    public static String NOTIFICATION_TITLE_accepet = "";
+    public static String NOTIFICATION_BODY_accept []  = new String [20];
+
+    public static String NOTIFICATION_TITLE_reject = "";
+    public static String NOTIFICATION_BODY_reject [] = new String [20];
+
+
+
+
+
     @Override
     public void onResume() {
         super.onResume();
@@ -98,11 +110,7 @@ public class applied_reject_student extends Fragment {
 
             c2 = new Course();
             c2.setCtitle(title);
-//            if(dbHelper.isStudentappliedbyadmin(c2.getCtitle().toString())){
-//                text2.setText("");
-//                horizantal.addView(text2);
-//                secondLinearLayout.addView(horizantal);
-//            }
+
                 text2.setText("E-mail: " + allCourses2.getString(2) +
                         "\nCourse Title: " + allCourses2.getString(1) +
                         "\nTime: " + allCourses2.getString(3) +
@@ -119,16 +127,26 @@ public class applied_reject_student extends Fragment {
                 horizantal.addView(image);
                 horizantal.addView(image2);
 
+            Course c1=new Course();
+            c1.setCtitle(title);
+
+
                 image.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         Toast toast = Toast.makeText(getActivity(), "You Rejected Student ", Toast.LENGTH_SHORT);
                         toast.show();
-                        secondLinearLayout.removeView(horizantal);
+                        c=new Course();
+                        c.setCtitle(title);
+                        t=new trainee();
+                        t.setEmail(email);
 
+                        secondLinearLayout.removeView(horizantal);
+                        NOTIFICATION_TITLE_reject = "YOU ARE REJECTED!!";
+                        NOTIFICATION_BODY_reject [reject-200] = "YOU ARE REJECTED IN "+c.getCtitle()+" COURSE!!";
+                        ++reject;
                     }
                 });
-
 
 
                 image2.setOnClickListener(new View.OnClickListener() {
@@ -140,9 +158,12 @@ public class applied_reject_student extends Fragment {
                         c.setCtitle(title);
                         t=new trainee();
                         t.setEmail(email);
+
                         dbHelper.insertcourse_trinee_admin(t,c);
                         secondLinearLayout.removeView(horizantal);
-
+                        NOTIFICATION_TITLE_accepet = "YOU ARE ACCEPTED!!";
+                        NOTIFICATION_BODY_accept[accept-100] = "YOU ARE ACCEPTED IN "+c.getCtitle()+" COURSE!!";
+                        ++accept;
                     }
                 });
                 horizantal.setBackground(ContextCompat.getDrawable(requireContext(), R.drawable.border));

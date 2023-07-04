@@ -249,11 +249,22 @@ public class EditInstructorProfile extends Fragment {
 
             }
         });
+
+        image_view2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+                intent.setData(MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                activityResultLauncher2.launch(intent);
+            }
+        });
+
         byte [] bytes = trineelogin.tr.getPhoto();
         if(bytes != null ){
             Bitmap bitmapImageDB = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
             image_view2.setImageBitmap(bitmapImageDB);
         }
+
 
 
 
@@ -411,15 +422,15 @@ public class EditInstructorProfile extends Fragment {
                                                     newuser.setDegree(degreeSpinner.getSelectedItem().toString());
                                                 }
                                                 if (!somethingWrong[0]) {
+                                                    dbHelper.removeCourse_instructor();
                                                     if (coursesList.size() < 1) {
                                                         somethingWrong[0] = true;
                                                         errorMessage[0] = "You should select at least one course .";
                                                     } else {
                                                         for (int i = 0; i < updatedCourses.length; i++) {
                                                             if (selectedCoures[i]){
-                                                                String email = instructorsignin.ins.getEmail();
-                                                                dbHelper.editinstructor(newuser,email);
-                                                                instructorsignin.ins=newuser;
+                                                               // String email = instructorsignin.ins.getEmail();
+                                                                dbHelper.insert_instructor_courses(newuser,updatedCourses[i]);
                                                             }
                                                         }
                                                     }

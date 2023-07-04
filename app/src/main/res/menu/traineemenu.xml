@@ -28,6 +28,11 @@
                         android:title="Studied Courses" />
 
                     <item
+                        android:id="@+id/notification"
+                        android:icon="@drawable/baseline_notifications_active_24"
+                        android:title="Notification" />
+
+                    <item
                         android:id="@+id/history"
                         android:icon="@drawable/baseline_history_24"
                         android:title="History" />

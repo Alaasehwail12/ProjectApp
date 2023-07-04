@@ -78,19 +78,24 @@ public class search_for_course extends Fragment {
         ImageView im = (ImageView) getActivity().findViewById(R.id.imageView9);
 
         DataBaseHelper dbHelper = new DataBaseHelper(requireContext(), "Database", null, 1);
-        ImageView imageView = new ImageView(requireContext());
+
 
         im.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Cursor allCourses = dbHelper.getAllAvailableCourses_bytitle(course_search.getText().toString());
+                int columnIndex = allCourses.getColumnIndexOrThrow("Ctitle");
 
 
-                if(allCourses == null){
-                    Toast.makeText(requireContext(), "The course you search is not Exist!", Toast.LENGTH_SHORT).show();
-
-                }
                 while(allCourses.moveToNext()) {
+                    String columnValue = allCourses.getString(columnIndex);
+
+                if(columnValue==null){
+                    Toast.makeText(requireContext(), "The course you search for does not exist!!", Toast.LENGTH_SHORT).show();
+                    course_text.setText("");
+                }
+
+                    ImageView imageView = new ImageView(requireContext());
                     byte [] bytes = allCourses.getBlob(5);
                     imageView.setLayoutParams(new ViewGroup.LayoutParams(300, 300));
                     Bitmap bitmapImageDB = null;
@@ -103,7 +108,7 @@ public class search_for_course extends Fragment {
                         secondLinearLayout.addView(imageView);
                     }
 
-                    course_text.append("Course Number: "+allCourses.getInt(0) +
+                    course_text.setText("Course Number: "+allCourses.getInt(0) +
                             "\nInstructor Name: "+allCourses.getString(2)+
                             "\nCourse Title: "+allCourses.getString(1)
                             +"\nCourse Topics: "+allCourses.getString(3)
@@ -114,6 +119,7 @@ public class search_for_course extends Fragment {
                             "\nVenue: "+allCourses.getString(9)+
                             "\n"  );
                     course_text.setTextSize(22);
+
 
                 }
             }
@@ -132,7 +138,4 @@ public class search_for_course extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         secondLinearLayout = view.findViewById(R.id.second);
     }
-
-
-
 }

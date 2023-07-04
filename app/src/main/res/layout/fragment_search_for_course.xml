@@ -46,7 +46,7 @@
             <TextView
                 android:id="@+id/textView14"
                 android:layout_width="match_parent"
-                android:layout_height="497dp"
+                android:layout_height="232dp"
                 android:textSize="20sp" />
         </LinearLayout>
     </ScrollView>

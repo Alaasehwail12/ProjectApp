@@ -88,13 +88,12 @@ public class create_course_avaliable_fragment extends Fragment {
         final Spinner degreeSpinner =(Spinner)getActivity().findViewById(R.id.spinner2);
 
         DataBaseHelper dbHelper = new DataBaseHelper(requireContext(), "Database", null, 1);
-
+        instructorNames.add(" ");
         get.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 course_t = course_title.getText().toString();
                 instructorNames = get_names(course_t);
-                instructorNames.add(" ");
                 options=instructorNames.toArray(new String[instructorNames.size()]);
             }
         });

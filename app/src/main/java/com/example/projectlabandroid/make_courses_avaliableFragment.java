@@ -171,7 +171,36 @@ public class make_courses_avaliableFragment extends Fragment {
 
             String title = allCourses.getString(1);
 
-
+//            String inputDate = allCourses.getString(5);
+//
+//            String outputFormat = "yyyy-MM-dd";
+//            if(inputDate == null){
+//                inputDate ="00/0/0000";
+//            }
+//
+//            SimpleDateFormat inputDateFormat = new SimpleDateFormat("dd/M/yyyy");
+//            SimpleDateFormat outputDateFormat = new SimpleDateFormat(outputFormat);
+//            Date date = null;
+//            try {
+//                date = inputDateFormat.parse(inputDate);
+//            } catch (ParseException e) {
+//                throw new RuntimeException(e);
+//            }
+//            String outputDate = outputDateFormat.format(date);
+//            LocalDate currentDate = LocalDate.now();
+//            textView.append(currentDate.toString());
+//            textView.append("\n");
+//            textView.append(outputDate);
+//
+//            if(currentDate.toString().equals(outputDate)){
+//                if (allCourses.moveToFirst()) {
+//                    int courseIdIndex = allCourses.getColumnIndex("CNum");
+//                    int courseId = allCourses.getInt(courseIdIndex);
+//                    dbHelper.removeavailableCoursebyCnum(courseId);
+//                    textView.setText("");
+//                    Toast.makeText(requireContext(), "Course Number " + courseId + " Deleted !", Toast.LENGTH_SHORT).show();
+//                }
+//            }
             applied.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -186,38 +215,14 @@ public class make_courses_avaliableFragment extends Fragment {
                         fragmentTransaction.replace(R.id.frameLayout, new create_course_avaliable_fragment());
                         fragmentTransaction.commit();
                     }
+
+
                 }
             });
 
-            String inputDate =allCourses.getString(6);
-            String outputFormat = "yyyy-MM-dd";
-            if(inputDate == null){
-                inputDate="00/0/0000";
-            }
-
-            SimpleDateFormat inputDateFormat = new SimpleDateFormat("dd/M/yyyy");
-            SimpleDateFormat outputDateFormat = new SimpleDateFormat(outputFormat);
-            Date date = null;
-            try {
-                date = inputDateFormat.parse(inputDate);
-            } catch (ParseException e) {
-                throw new RuntimeException(e);
-            }
-            String outputDate = outputDateFormat.format(date);
-            LocalDate currentDate = LocalDate.now();
 
 
-            if(currentDate.toString().equals(outputDate)){
-           //  Toast.makeText(requireContext(), " Deleted !", Toast.LENGTH_SHORT).show();
 
-                if (allCourses.moveToFirst()) {
-                    int courseIdIndex = allCourses.getColumnIndex("CNum");
-                    int courseId = allCourses.getInt(courseIdIndex);
-                    dbHelper.removeavailableCoursebyCnum(courseId);
-                    textView.setText("");
-                    Toast.makeText(requireContext(), "Course Number " + courseId + " Deleted !", Toast.LENGTH_SHORT).show();
-                }
-            }
             horizantal.setBackground(ContextCompat.getDrawable(requireContext(), R.drawable.border));
             secondLinearLayout.addView(horizantal);
         }

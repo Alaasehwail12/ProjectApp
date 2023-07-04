@@ -93,7 +93,7 @@ public class withdraw_course_regestration extends Fragment {
                     "\n");
             text2.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18); // Adjust the text size as desired
             LinearLayout.LayoutParams layoutParam = new LinearLayout.LayoutParams(600, 300);
-            layoutParam.setMargins(0, 0, 20, 0);
+            layoutParam.setMargins(0, 0, 40, 0);
             text2.setLayoutParams(layoutParam);
             horizantal.addView(text2);
             horizantal.addView(image);

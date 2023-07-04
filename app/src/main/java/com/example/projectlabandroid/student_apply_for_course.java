@@ -10,6 +10,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -119,7 +120,7 @@ public class student_apply_for_course extends Fragment {
       //  border.setCornerRadius(25);
         secondLinearLayout.removeAllViews();
         //  secondLinearLayout.setBackground(border);
-        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(1000, 700);
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(600, 600);
         layoutParams.setMargins(0, 30, 0, 0);
         //layoutParams.gravity = Gravity.CENTER;
         // secondLinearLayout.setLayoutParams(layoutParams);
@@ -142,6 +143,7 @@ public class student_apply_for_course extends Fragment {
             //  textView.setBackground(border);
            // textView.setGravity(Gravity.CENTER);
             textView.setTextColor(borderColor);
+            textView.setGravity(Gravity.CENTER);
             //textView.setLayoutParams(layoutParams);
             textView.append("\nInstructor Name: "+allCourses.getString(2)+
                             "\nCourse Title: "+allCourses.getString(1)+
@@ -163,7 +165,7 @@ public class student_apply_for_course extends Fragment {
                     c2 = new Course();
                     c2.setCtitle(t);
                     c2.setSchedule(time);
-                   if(dbHelper.isStudentRegesterd(c2.getCtitle())){
+                   if(dbHelper.isStudentRegesterd(c2.getCtitle(),trineelogin.tr.getEmail())){
                        apply.setImageResource(R.drawable.apply_fill);
                        Toast.makeText(requireContext(), "You already tried to apply!!", Toast.LENGTH_SHORT).show();
                   }
@@ -189,6 +191,7 @@ public class student_apply_for_course extends Fragment {
             horizontalLayout.setOrientation(LinearLayout.HORIZONTAL);
 
             horizontalLayout.addView(verticalLayout);
+            horizontalLayout.setBackground(ContextCompat.getDrawable(requireContext(), R.drawable.border));
             horizontalLayout.addView(apply);
             secondLinearLayout.addView(horizontalLayout);
 

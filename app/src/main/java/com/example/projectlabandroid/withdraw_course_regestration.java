@@ -88,7 +88,7 @@ public class withdraw_course_regestration extends Fragment {
                     .LayoutParams.WRAP_CONTENT));
             image.setLayoutParams(new ViewGroup.LayoutParams(200, 200));
             TextView text2 = new TextView(requireContext());
-            text2.setText("student Name: "+allCourses2.getString(2)+
+            text2.setText("Email: "+allCourses2.getString(2)+
                     "\nCourse Title: "+allCourses2.getString(1)+
                     "\n");
             text2.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18); // Adjust the text size as desired

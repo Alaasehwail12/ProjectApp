@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -125,9 +126,9 @@ public class make_courses_avaliableFragment extends Fragment {
         dbHelper = new DataBaseHelper(requireContext(), "Database", null, 1);
 
         Cursor allCourses = dbHelper.getAllCourses();
-
+        int borderColor = getResources().getColor(R.color.purple_700);
         secondLinearLayout.removeAllViews();
-        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(800, 700);
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(600, 700);
         layoutParams.setMargins(0, 30, 0, 0);
         layoutParams.gravity = Gravity.CENTER;
         while(allCourses.moveToNext()){
@@ -135,17 +136,15 @@ public class make_courses_avaliableFragment extends Fragment {
             TextView textView = new TextView(requireContext());
             ImageView applied = new ImageView(requireContext());
             LinearLayout horizantal = new LinearLayout(requireContext());
-
             horizantal.setOrientation(LinearLayout.HORIZONTAL);
+            horizantal.setGravity(Gravity.CENTER); // Set the gravity to center horizontally
+
             applied.setImageResource(R.drawable.tick);
 
             applied.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup
                     .LayoutParams.WRAP_CONTENT));
             applied.setLayoutParams(new ViewGroup.LayoutParams(140, 200));
             textView.setLayoutParams(layoutParams);
-
-            horizantal.addView(textView);
-            horizantal.addView(applied);
 
 
             byte [] bytes = allCourses.getBlob(4);
@@ -167,7 +166,15 @@ public class make_courses_avaliableFragment extends Fragment {
                     "\nSchedule: "+allCourses.getString(7)+
                     "\nVenue: "+allCourses.getString(8)+
                     "\n"  );
-            textView.setTextSize(22);
+
+            horizantal.addView(imageView);
+            horizantal.addView(textView);
+            horizantal.addView(applied);
+
+            textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20); // Adjust the text size as desired
+            textView.setTextColor(borderColor);
+            textView.setGravity(Gravity.CENTER);
+
 
             String title = allCourses.getString(1);
 
@@ -219,9 +226,6 @@ public class make_courses_avaliableFragment extends Fragment {
 
                 }
             });
-
-
-
 
             horizantal.setBackground(ContextCompat.getDrawable(requireContext(), R.drawable.border));
             secondLinearLayout.addView(horizantal);

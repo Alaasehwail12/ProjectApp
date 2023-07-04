@@ -7,8 +7,11 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
+import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -84,13 +87,20 @@ public class search_for_course extends Fragment {
             @Override
             public void onClick(View view) {
                 Cursor allCourses = dbHelper.getAllAvailableCourses_bytitle(course_search.getText().toString());
+                int borderColor = getResources().getColor(R.color.purple_200);
                 int columnIndex = allCourses.getColumnIndexOrThrow("Ctitle");
-
+                secondLinearLayout.removeAllViews();
+                secondLinearLayout.setGravity(Gravity.CENTER);
+                LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(1000, 700);
+                layoutParams.setMargins(0, 30, 0, 0);
 
                 while(allCourses.moveToNext()) {
                     String columnValue = allCourses.getString(columnIndex);
+                    LinearLayout horizantal = new LinearLayout(requireContext());
+                    horizantal.setOrientation(LinearLayout.HORIZONTAL);
+                    horizantal.setGravity(Gravity.CENTER); // Set the gravity to center horizontally
 
-                if(columnValue==null){
+                    if(columnValue==null){
                     Toast.makeText(requireContext(), "The course you search for does not exist!!", Toast.LENGTH_SHORT).show();
                     course_text.setText("");
                 }
@@ -102,10 +112,10 @@ public class search_for_course extends Fragment {
                     if (bytes != null) {
                         bitmapImageDB = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
                         imageView.setImageBitmap(bitmapImageDB);
-                        secondLinearLayout.addView(imageView);
+                       // secondLinearLayout.addView(imageView);
                     } else {
                         imageView.setImageResource(R.drawable.online_learning);
-                        secondLinearLayout.addView(imageView);
+                      //  secondLinearLayout.addView(imageView);
                     }
 
                     course_text.setText("Course Number: "+allCourses.getInt(0) +
@@ -118,7 +128,14 @@ public class search_for_course extends Fragment {
                             "\nSchedule: "+allCourses.getString(8)+
                             "\nVenue: "+allCourses.getString(9)+
                             "\n"  );
-                    course_text.setTextSize(22);
+                    course_text.setTextColor(borderColor);
+                    horizantal.addView(imageView);
+                    horizantal.addView(course_text);
+                    horizantal.setBackground(ContextCompat.getDrawable(requireContext(), R.drawable.border)); // Set the border as desired (create a drawable XML file)
+                    secondLinearLayout.addView(horizantal);
+                    course_text.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20); // Adjust the text size as desired
+                    course_text.setGravity(Gravity.CENTER); // Set the text alignment to center
+
 
 
                 }

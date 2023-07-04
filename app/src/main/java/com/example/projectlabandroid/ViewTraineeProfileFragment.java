@@ -8,8 +8,10 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -91,20 +93,24 @@ public class ViewTraineeProfileFragment extends Fragment {
             TextView textView = new TextView(requireContext());
             ImageView imageView = new ImageView(requireContext());
             imageView.setLayoutParams(new ViewGroup.LayoutParams(300, 300));
+            LinearLayout horizantal = new LinearLayout(requireContext());
+            horizantal.setOrientation(LinearLayout.HORIZONTAL);
+            horizantal.setGravity(Gravity.CENTER); // Set the gravity to center horizontally
+
 
             byte [] bytes = allCourses.getBlob(4);
             Bitmap bitmapImageDB = null;
             if (bytes != null) {
                 bitmapImageDB = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
                 imageView.setImageBitmap(bitmapImageDB);
-                secondLinearLayout.addView(imageView);
+                //secondLinearLayout.addView(imageView);
 
             } else {
                 imageView.setImageResource(R.drawable.profile);
-                secondLinearLayout.addView(imageView);
+                //secondLinearLayout.addView(imageView);
             }
-            textView.setBackground(border);
-            textView.setGravity(Gravity.CENTER);
+//            textView.setBackground(border);
+//            textView.setGravity(Gravity.CENTER);
             textView.setTextColor(borderColor);
             textView.append("Email: "+allCourses.getString(0) +
                     "\nFirst Name: "+allCourses.getString(1)+
@@ -112,8 +118,16 @@ public class ViewTraineeProfileFragment extends Fragment {
                     +"\nMobile Number: "+allCourses.getString(5)
                     +"\nAddress: "+allCourses.getString(6)+
                     "\n"  );
-            textView.setTextSize(22);
-            secondLinearLayout.addView(textView);
+
+            horizantal.addView(imageView);
+            horizantal.addView(textView);
+            horizantal.setBackground(ContextCompat.getDrawable(requireContext(), R.drawable.border)); // Set the border as desired (create a drawable XML file)
+            secondLinearLayout.addView(horizantal);
+            textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20); // Adjust the text size as desired
+            textView.setGravity(Gravity.CENTER); // Set the text alignment to center
+
+//            textView.setTextSize(22);
+//            secondLinearLayout.addView(textView);
         }
     }
 

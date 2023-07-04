@@ -133,6 +133,9 @@ public class CourseFragment extends Fragment {
             TextView textView = new TextView(requireContext());
             TextView textView2 = new TextView(requireContext());
             imageView.setLayoutParams(new ViewGroup.LayoutParams(300, 300));
+            LinearLayout horizantal = new LinearLayout(requireContext());
+            horizantal.setOrientation(LinearLayout.HORIZONTAL);
+            horizantal.setGravity(Gravity.CENTER); // Set the gravity to center horizontally
 
             byte [] bytes = allCourses.getBlob(4);
             Bitmap bitmapImageDB ;
@@ -152,8 +155,12 @@ public class CourseFragment extends Fragment {
                     "\nSchedule= "+allCourses.getString(7)+
                     "\nVenue= "+allCourses.getString(8)+
                     "\n\n");
-            secondLinearLayout.addView(imageView);
+           // secondLinearLayout.addView(imageView);
 
+            horizantal.addView(imageView);
+            horizantal.addView(textView);
+            horizantal.setBackground(ContextCompat.getDrawable(requireContext(), R.drawable.border)); // Set the border as desired (create a drawable XML file)
+            secondLinearLayout.addView(horizantal);
             textView.setBackground(ContextCompat.getDrawable(requireContext(), R.drawable.border)); // Set the border as desired (create a drawable XML file)
             textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18); // Adjust the text size as desired
             textView.setGravity(Gravity.CENTER); // Set the text alignment to center
@@ -180,7 +187,7 @@ public class CourseFragment extends Fragment {
             textView.setTextSize(20);
             horizontalLayout.addView(image_view_minus);
             horizontalLayout.addView(image_view_edit);
-            secondLinearLayout.addView(textView);
+            //secondLinearLayout.addView(textView);
             horizontalLayout.setGravity(Gravity.CENTER);
             secondLinearLayout.addView(horizontalLayout);
 
@@ -191,8 +198,9 @@ public class CourseFragment extends Fragment {
                     if (allCourses.moveToFirst()) {
                         int courseIdIndex = allCourses.getColumnIndex("CNum");
                         int courseId = allCourses.getInt(courseIdIndex);
-                        dbHelper.removeCoursebyCnum(courseId);
+                        dbHelper.deleteCourseByCNum(courseId);
                         textView.setText("");
+                        imageView.setImageDrawable(null);
                         Toast.makeText(requireContext(), "Course Number " + courseId + " Deleted !", Toast.LENGTH_SHORT).show();
                     }
                 }

@@ -8,10 +8,12 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -88,9 +90,9 @@ public class ViewProfileFragment extends Fragment {
 
         Cursor allCourses = dbHelper.getAllInstructors();
         int borderColor = getResources().getColor(R.color.purple_200);
-        GradientDrawable border = new GradientDrawable();
-        border.setStroke(5, borderColor);
-        border.setCornerRadius(25);
+       // GradientDrawable border = new GradientDrawable();
+       // border.setStroke(5, borderColor);
+      //  border.setCornerRadius(25);
         secondLinearLayout.removeAllViews();
         secondLinearLayout.setGravity(Gravity.CENTER);
         // secondLinearLayout.setBackground(border);
@@ -101,20 +103,22 @@ public class ViewProfileFragment extends Fragment {
             TextView textView = new TextView(requireContext());
             ImageView imageView = new ImageView(requireContext());
             imageView.setLayoutParams(new ViewGroup.LayoutParams(300, 300));
+            LinearLayout horizantal = new LinearLayout(requireContext());
+            horizantal.setOrientation(LinearLayout.HORIZONTAL);
+            horizantal.setGravity(Gravity.CENTER); // Set the gravity to center horizontally
 
             byte [] bytes = allCourses.getBlob(4);
             Bitmap bitmapImageDB = null;
             if (bytes != null) {
                 bitmapImageDB = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
                 imageView.setImageBitmap(bitmapImageDB);
-                secondLinearLayout.addView(imageView);
+               // secondLinearLayout.addView(imageView);
 
             } else {
                 imageView.setImageResource(R.drawable.profile);
-                secondLinearLayout.addView(imageView);
+                //secondLinearLayout.addView(imageView);
             }
-            textView.setBackground(border);
-            textView.setGravity(Gravity.CENTER);
+
             textView.setTextColor(borderColor);
             //textView.setLayoutParams(layoutParams);
             textView.append("Email: "+allCourses.getString(0) +
@@ -123,9 +127,16 @@ public class ViewProfileFragment extends Fragment {
                     +"\nMobile Number: "+allCourses.getString(5)
                     +"\nAddress: "+allCourses.getString(6)+
                     "\n"  );
-            textView.setTextSize(22);
 
-            secondLinearLayout.addView(textView);
+            horizantal.addView(imageView);
+            horizantal.addView(textView);
+            horizantal.setBackground(ContextCompat.getDrawable(requireContext(), R.drawable.border)); // Set the border as desired (create a drawable XML file)
+            secondLinearLayout.addView(horizantal);
+            textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20); // Adjust the text size as desired
+            textView.setGravity(Gravity.CENTER); // Set the text alignment to center
+
+
+           // secondLinearLayout.addView(textView);
         }
     }
 

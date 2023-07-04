@@ -483,19 +483,20 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         return isAvailable;
     }
 
-    public boolean isStudentRegesterd(String title) {
+
+    public boolean isStudentRegesterd(String title, String email) {
         SQLiteDatabase sqLiteDatabase = getReadableDatabase();
-        boolean isAvailable = false;
+        boolean isRegistered = false;
 
         // Use placeholders in the query to prevent SQL injection
-        String query = "SELECT * FROM trainee_Course WHERE Ctitle = ?";
-        String[] selectionArgs = {title};
+        String query = "SELECT * FROM trainee_Course WHERE Ctitle = ? AND EMAIL = ?";
+        String[] selectionArgs = {title, email};
 
         Cursor cursor = null;
         try {
             cursor = sqLiteDatabase.rawQuery(query, selectionArgs);
             if (cursor != null && cursor.getCount() > 0) {
-                isAvailable = true; // Title exists in the table
+                isRegistered = true; // Student is registered for the course
             }
         } catch (SQLException e) {
             // Handle any potential exceptions here
@@ -505,7 +506,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 cursor.close();
             }
         }
-        return isAvailable;
+        return isRegistered;
     }
 
     public boolean isStudentappliedbyadmin(String title) {
@@ -573,14 +574,6 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         return sqLiteDatabase.rawQuery(query, new String[]{email});
     }
 
-    public void removeCoursebyCnum(int id) {
-        SQLiteDatabase sqLiteDatabaseR = getReadableDatabase();
-        SQLiteDatabase sqLiteDatabase = getWritableDatabase();
-        Cursor cursor = sqLiteDatabaseR.rawQuery("SELECT * FROM Course "+ ";", null);
-        if (cursor.moveToFirst()) {
-            sqLiteDatabase.execSQL("DELETE FROM Course WHERE CNum = " + id +  ";");
-        }
-    }
 
     public void removeCourse_instructor() {
         SQLiteDatabase sqLiteDatabaseR = getReadableDatabase();
@@ -641,6 +634,16 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 newUser.getPassword(), String.valueOf(newUser.getPhoto()),newUser.getMobile_number(),newUser.getAddress(),newUser.getDegree(),newUser.getSpecialization(),email});
         db.execSQL("UPDATE instructor SET EMAIL = '" + newUser.getEmail() + "' WHERE EMAIL = '" + email + "';");
     }
+
+
+    public void deleteCourseByCNum(int cnum) {
+        SQLiteDatabase db = getWritableDatabase();
+        String sql = "DELETE FROM Course WHERE CNum = ?";
+        db.execSQL(sql, new Object[]{cnum});
+        db.close();
+    }
+
+
 
 
 }

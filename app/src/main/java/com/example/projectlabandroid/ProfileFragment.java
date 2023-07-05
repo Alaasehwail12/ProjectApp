@@ -1,5 +1,7 @@
 package com.example.projectlabandroid;
 
+import android.annotation.SuppressLint;
+import android.database.Cursor;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -7,6 +9,7 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -59,6 +62,30 @@ public class ProfileFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_admin, container, false);
+        //return inflater.inflate(R.layout.fragment_admin, container, false);
+
+        View rootView = inflater.inflate(R.layout.fragment_profile, container, false);
+        DataBaseHelper dbHelper = new DataBaseHelper(requireContext(), "Database", null, 1);
+
+        TextView textView = rootView.findViewById(R.id.textt); // Get a reference to the TextView
+
+        // Call the getRecentlyAddedCourses() function to retrieve the Cursor
+        Cursor cursor = dbHelper.getRecentlyAddedCourses();
+
+        if (cursor != null && cursor.moveToFirst()) {
+            StringBuilder coursesBuilder = new StringBuilder();
+
+            do {
+                @SuppressLint("Range") String courseTitle = cursor.getString(cursor.getColumnIndex("Ctitle"));
+                coursesBuilder.append(courseTitle).append("\n");
+            } while (cursor.moveToNext());
+
+            cursor.close();
+
+            // Set the retrieved course titles to the TextView
+            textView.setText(coursesBuilder.toString());
+        }
+
+        return rootView;
     }
 }

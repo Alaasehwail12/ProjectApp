@@ -41,7 +41,7 @@ public class HomeActivityTrainee extends AppCompatActivity {
             createNotification(i ,applied_reject_student.NOTIFICATION_TITLE_reject, applied_reject_student.NOTIFICATION_BODY_reject[i-200]);
         }
 
-        //getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, new ProfileFragment()).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, new ProfileFragment()).commit();
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

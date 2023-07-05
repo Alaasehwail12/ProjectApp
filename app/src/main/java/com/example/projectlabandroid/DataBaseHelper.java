@@ -643,6 +643,13 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         db.close();
     }
 
+    public Cursor getRecentlyAddedCourses() {
+        SQLiteDatabase sqLiteDatabase = getReadableDatabase();
+        return sqLiteDatabase.rawQuery("SELECT Ctitle FROM available_Course ORDER BY ROWID DESC LIMIT 5", null);
+    }
+
+
+
 
 
 

@@ -1,14 +1,54 @@
-<?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".ProfileFragment">
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:orientation="vertical"
+tools:context=".ProfileFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="209dp"
+        android:layout_marginTop="20dp"
+        android:orientation="vertical">
 
-</FrameLayout>
+        <ImageView
+            android:id="@+id/imageView21"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/welcome" />
+
+        <TextView
+            android:id="@+id/textView8"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:text="Courses Available For Registration"
+            android:textAlignment="center"
+            android:textColor="#D720AF"
+            android:textSize="24sp"
+            android:textStyle="bold|italic" />
+    </LinearLayout>
+
+<ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:id="@+id/secondLinearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/textt"
+            android:layout_width="match_parent"
+            android:layout_height="216dp"
+            android:text=""
+            android:textSize="20sp" />
+
+    </LinearLayout>
+
+</ScrollView>
+
+
+</LinearLayout>

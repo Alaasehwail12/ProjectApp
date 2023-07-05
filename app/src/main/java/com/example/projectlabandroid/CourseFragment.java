@@ -83,6 +83,14 @@ public class CourseFragment extends Fragment {
     //Button updateButton;
     DataBaseHelper dbHelper ;
 
+    public static int j_edit = 400;
+    public static String NOTIFICATION_TITLE_edit = "";
+    public static String NOTIFICATION_BODY_edit []  = new String [20];
+
+    public static int j_delete = 500;
+    public static String NOTIFICATION_TITLE_delete = "";
+    public static String NOTIFICATION_BODY_delete []  = new String [20];
+
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -191,36 +199,54 @@ public class CourseFragment extends Fragment {
             horizontalLayout.setGravity(Gravity.CENTER);
             secondLinearLayout.addView(horizontalLayout);
 
+
+            int  num = allCourses.getInt(0);
+            String  title = allCourses.getString(1);
+            String  topice = allCourses.getString(2);
+            String  venu = allCourses.getString(8);
+            String  preq = allCourses.getString(3);
+            byte [] bytes2 = allCourses.getBlob(4);
+            String Start_date = allCourses.getString(6);
+            String dedline = allCourses.getString(5);
+            String schedual = allCourses.getString(7);
+
+
+
+
             image_view_minus.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
 
                     if (allCourses.moveToFirst()) {
+                        c = new Course();
+
+                        c.setCtitle(title);
+                        c.setCNum(String.valueOf(num));
+
                         int courseIdIndex = allCourses.getColumnIndex("CNum");
                         int courseId = allCourses.getInt(courseIdIndex);
-                        dbHelper.deleteCourseByCNum(courseId);
+
+                        dbHelper.deleteCourseByCNum(Integer.parseInt(c.getCNum()));
+                        dbHelper.deleteavailableCourseByCNum(Integer.parseInt(c.getCNum()));
+                        dbHelper.deletetrineeCourseByCNum(Integer.parseInt(c.getCNum()));
+                        dbHelper.deletetracceptedineeCourseByCNum(Integer.parseInt(c.getCNum()));
+
+                        NOTIFICATION_TITLE_delete = "The Course You applied Deleted!!!!";
+                        NOTIFICATION_BODY_delete[j_delete-500] = "The "+c.getCtitle()+" COURSE Canceled!!";
+                        ++j_delete;
+
                         textView.setText("");
                         imageView.setImageDrawable(null);
-                        Toast.makeText(requireContext(), "Course Number " + courseId + " Deleted !", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(requireContext(), "Course Number " + Integer.parseInt(c.getCNum())+ " Deleted !", Toast.LENGTH_SHORT).show();
                     }
                 }
             });
 
-          int  num = allCourses.getInt(0);
-          String  title = allCourses.getString(1);
-          String  topice = allCourses.getString(2);
-          String  venu = allCourses.getString(8);
-          String  preq = allCourses.getString(3);
-          byte [] bytes2 = allCourses.getBlob(4);
-          String Start_date = allCourses.getString(6);
-          String dedline = allCourses.getString(5);
-          String schedual = allCourses.getString(7);
 
-
-            c = new Course();
             image_view_edit.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    c = new Course();
                     c.setCNum(String.valueOf(num));
                     c.setDeadline(dedline);
                     c.setStartDateCourse(Start_date);
@@ -231,11 +257,14 @@ public class CourseFragment extends Fragment {
                     c.setVenue(venu);
                     c.setPhoto(bytes2);
 
+                    NOTIFICATION_TITLE_edit = "There is changes in course you applied!!";
+                    NOTIFICATION_BODY_edit[j_edit-400] = "There is a changes in "+c.getCtitle()+" COURSE!!";
+                    ++j_edit;
+
                     FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
                     FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                     fragmentTransaction.replace(R.id.frameLayout, new EditCourseFragment());
                     fragmentTransaction.commit();
-
                 }
             });
             secondLinearLayout.addView(textView2);

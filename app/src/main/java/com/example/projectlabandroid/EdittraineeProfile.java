@@ -323,6 +323,8 @@ public class EdittraineeProfile extends Fragment {
                                                 } else {
                                                     user.setPhoto(bytes);
                                                     dbHelper.edittrainee(trineelogin.tr, user);
+                                                    dbHelper.edittraineeemail(trineelogin.tr, user);
+                                                    dbHelper.editacceptedtraineeemail(trineelogin.tr, user);
                                                     trineelogin.tr = user;
                                                 }
                                             }

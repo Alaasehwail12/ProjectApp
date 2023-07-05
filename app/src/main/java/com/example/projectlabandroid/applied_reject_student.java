@@ -111,7 +111,8 @@ public class applied_reject_student extends Fragment {
             c2 = new Course();
             c2.setCtitle(title);
 
-                text2.setText("E-mail: " + allCourses2.getString(2) +
+                text2.setText("CNum: " + allCourses2.getInt(0) +
+                        "\nE-mail: " + allCourses2.getString(2) +
                         "\nCourse Title: " + allCourses2.getString(1) +
                         "\nTime: " + allCourses2.getString(3) +
                         "\n");
@@ -127,6 +128,8 @@ public class applied_reject_student extends Fragment {
                 horizantal.addView(image);
                 horizantal.addView(image2);
 
+                int cnum = allCourses2.getInt(0);
+
             Course c1=new Course();
             c1.setCtitle(title);
 
@@ -140,6 +143,7 @@ public class applied_reject_student extends Fragment {
                         c.setCtitle(title);
                         t=new trainee();
                         t.setEmail(email);
+                        c.setCNum(String.valueOf(cnum));
                         dbHelper.removewaitingtrinee_byemail(t,c);
 
                         secondLinearLayout.removeView(horizantal);
@@ -159,9 +163,11 @@ public class applied_reject_student extends Fragment {
                         c.setCtitle(title);
                         t=new trainee();
                         t.setEmail(email);
+                        c.setCNum(String.valueOf(cnum));
 
                         dbHelper.insertcourse_trinee_admin(t,c);
                         dbHelper.removewaitingtrinee_byemail(t,c);
+
                         secondLinearLayout.removeView(horizantal);
                         NOTIFICATION_TITLE_accepet = "YOU ARE ACCEPTED!!";
                         NOTIFICATION_BODY_accept[accept-100] = "YOU ARE ACCEPTED IN "+c.getCtitle()+" COURSE!!";

@@ -75,7 +75,7 @@ public class withdraw_course_regestration extends Fragment {
         secondLinearLayout = v.findViewById(R.id.secondLinearLayout80);
 
         dbHelper = new DataBaseHelper(requireContext(), "Database", null, 1);
-        Cursor allCourses2 = dbHelper.getAllAvailableCourses_trinee(trineelogin.tr);
+        Cursor allCourses2 = dbHelper.getAllAvailableacceptedCourses_trinee(trineelogin.tr);
 
 
         while (allCourses2.moveToNext()) {

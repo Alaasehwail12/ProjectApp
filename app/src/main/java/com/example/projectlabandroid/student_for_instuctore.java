@@ -75,8 +75,8 @@ public class student_for_instuctore extends Fragment {
         secondLinearLayout.removeAllViews();
         while (allCourses.moveToNext()) {
             TextView textView = new TextView(requireContext());
-            textView.append("Name : "+allCourses.getString(0) +" "+allCourses.getString(1)+
-                    "\n");
+            textView.append("Course : "+allCourses.getString(2) +
+                    "\n\nName : "+allCourses.getString(0) +" "+allCourses.getString(1));
             textView.setBackground(ContextCompat.getDrawable(requireContext(), R.drawable.border)); // Set the border as desired (create a drawable XML file)
             textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 22); // Adjust the text size as desired
             textView.setGravity(Gravity.CENTER);

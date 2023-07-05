@@ -158,7 +158,7 @@ public class make_courses_avaliableFragment extends Fragment {
                 bitmapImageDB = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
                 imageView.setImageBitmap(bitmapImageDB);
             } else {
-                imageView.setImageResource(R.drawable.online_learning);
+                imageView.setImageResource(R.drawable.onlinelearning);
             }
 
             textView.append("Course Number: "+allCourses.getInt(0) +
@@ -179,50 +179,51 @@ public class make_courses_avaliableFragment extends Fragment {
             textView.setTextColor(borderColor);
             textView.setGravity(Gravity.CENTER);
 
-
             String title = allCourses.getString(1);
+            int cnum = allCourses.getInt(0);
 
-//            String inputDate = allCourses.getString(5);
-//
-//            String outputFormat = "yyyy-MM-dd";
-//            if(inputDate == null){
-//                inputDate ="00/0/0000";
-//            }
-//
-//            SimpleDateFormat inputDateFormat = new SimpleDateFormat("dd/M/yyyy");
-//            SimpleDateFormat outputDateFormat = new SimpleDateFormat(outputFormat);
-//            Date date = null;
-//            try {
-//                date = inputDateFormat.parse(inputDate);
-//            } catch (ParseException e) {
-//                throw new RuntimeException(e);
-//            }
-//            String outputDate = outputDateFormat.format(date);
-//            LocalDate currentDate = LocalDate.now();
+
+            String inputDate = allCourses.getString(5);
+
+
+            String outputFormat = "yyyy-MM-dd";
+            if(inputDate == null){
+                inputDate ="00/0/0000";
+            }
+
+            SimpleDateFormat inputDateFormat = new SimpleDateFormat("dd/M/yyyy");
+            SimpleDateFormat outputDateFormat = new SimpleDateFormat(outputFormat);
+            Date date = null;
+            try {
+                date = inputDateFormat.parse(inputDate);
+            } catch (ParseException e) {
+                throw new RuntimeException(e);
+            }
+            String outputDate = outputDateFormat.format(date);
+            LocalDate currentDate = LocalDate.now();
 //            textView.append(currentDate.toString());
 //            textView.append("\n");
 //            textView.append(outputDate);
-//
-//            if(currentDate.toString().equals(outputDate)){
-//                if (allCourses.moveToFirst()) {
-//                    int courseIdIndex = allCourses.getColumnIndex("CNum");
-//                    int courseId = allCourses.getInt(courseIdIndex);
-//                    dbHelper.removeavailableCoursebyCnum(courseId);
-//                    textView.setText("");
-//                    Toast.makeText(requireContext(), "Course Number " + courseId + " Deleted !", Toast.LENGTH_SHORT).show();
-//                }
-//            }
+
+
             applied.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     coursera = new Course();
                     coursera.setCtitle(title);
+                    coursera.setCNum(String.valueOf(cnum));
                     textView.setTextSize(22);
+                    NOTIFICATION_TITLE ="New Course is available";
+                    NOTIFICATION_BODY[i-300]= "The Course "+coursera.getCtitle()+"is available now! ";
+                    ++i;
                     if(dbHelper.isCourseTitleAvailable(coursera.getCtitle())){
                         applied.setImageResource(R.drawable.tick_fill);
-                        NOTIFICATION_TITLE ="New Course is available";
-                        NOTIFICATION_BODY[i-300]= "The Course "+coursera.getCtitle()+"is available now! ";
-                        ++i;
+
+                    }else if(currentDate.toString().compareTo(outputDate) == 0){
+                            Toast.makeText(requireContext(), "The Deadline Ended!", Toast.LENGTH_SHORT).show();
+                            dbHelper.deleteavailableCourseByCNum(cnum);
+                            applied.setImageResource(R.drawable.tick_fill);
+
                     }else {
                         FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
                         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();

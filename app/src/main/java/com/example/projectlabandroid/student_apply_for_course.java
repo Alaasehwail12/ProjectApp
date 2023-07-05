@@ -116,14 +116,11 @@ public class student_apply_for_course extends Fragment {
         Cursor allCourses = dbHelper.getAllAvailableCourses();
         int borderColor = getResources().getColor(R.color.purple_200);
         GradientDrawable border = new GradientDrawable();
-       // border.setStroke(5, borderColor);
-      //  border.setCornerRadius(25);
+
         secondLinearLayout.removeAllViews();
-        //  secondLinearLayout.setBackground(border);
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(600, 600);
         layoutParams.setMargins(0, 30, 0, 0);
-        //layoutParams.gravity = Gravity.CENTER;
-        // secondLinearLayout.setLayoutParams(layoutParams);
+
         while(allCourses.moveToNext()){
             ImageView imageView = new ImageView(requireContext());
             TextView textView = new TextView(requireContext());
@@ -135,7 +132,7 @@ public class student_apply_for_course extends Fragment {
                 imageView.setLayoutParams(new ViewGroup.LayoutParams(300, 300));
                 imageView.setImageBitmap(bitmapImageDB);
             } else {
-                imageView.setImageResource(R.drawable.online_learning);
+                imageView.setImageResource(R.drawable.onlinelearning);
 
                 imageView.setLayoutParams(new ViewGroup.LayoutParams(200, 200));
                 // textView.setText(allCourses.getString(5) +"\n");
@@ -145,9 +142,11 @@ public class student_apply_for_course extends Fragment {
             textView.setTextColor(borderColor);
             textView.setGravity(Gravity.CENTER);
             //textView.setLayoutParams(layoutParams);
-            textView.append("\nInstructor Name: "+allCourses.getString(2)+
+            textView.append("\nCNum: "+allCourses.getInt(0)+
+                    "\nInstructor Name: "+allCourses.getString(2)+
                             "\nCourse Title: "+allCourses.getString(1)+
                     "\nCourse Topics: "+allCourses.getString(3)+
+                    "\nTime : "+allCourses.getString(8)+
                     "\n"  );
             textView.setTextSize(20);
             ImageView apply = new ImageView(requireContext());
@@ -158,6 +157,8 @@ public class student_apply_for_course extends Fragment {
 
             String t = allCourses.getString(1);
             String time = allCourses.getString(8);
+            int cnum = allCourses.getInt(0);
+
 
             apply.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -165,10 +166,13 @@ public class student_apply_for_course extends Fragment {
                     c2 = new Course();
                     c2.setCtitle(t);
                     c2.setSchedule(time);
+                    c2.setCNum(String.valueOf(cnum));
+
                    if(dbHelper.isStudentRegesterd(c2.getCtitle(),trineelogin.tr.getEmail())){
                        apply.setImageResource(R.drawable.apply_fill);
                        Toast.makeText(requireContext(), "You already tried to apply!!", Toast.LENGTH_SHORT).show();
-                  }
+
+                   }
                    else {
                        FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
                        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();

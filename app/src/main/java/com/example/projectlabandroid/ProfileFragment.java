@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -66,6 +67,10 @@ public class ProfileFragment extends Fragment {
 
         View rootView = inflater.inflate(R.layout.fragment_profile, container, false);
         DataBaseHelper dbHelper = new DataBaseHelper(requireContext(), "Database", null, 1);
+
+//        if(dbHelper.returntitlesfortrainee(trineelogin.tr.getEmail()) == EditCourseFragment.newCourse.getCtitle() ){
+//            Toast.makeText(requireContext(), "it is right", Toast.LENGTH_SHORT).show();
+//        }
 
         TextView textView = rootView.findViewById(R.id.textt); // Get a reference to the TextView
 

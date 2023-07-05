@@ -1,5 +1,6 @@
 package com.example.projectlabandroid;
 
+import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -13,7 +14,11 @@ import android.graphics.BitmapFactory;
 import androidx.annotation.Nullable;
 
 import java.io.ByteArrayOutputStream;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class DataBaseHelper extends SQLiteOpenHelper {
@@ -26,17 +31,74 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL("CREATE TABLE admin(EMAIL TEXT PRIMARY KEY, FIRSTNAME TEXT, LASTNAME TEXT, PASSWORD TEXT NOT NULL,PHOTO BLOB)");
         sqLiteDatabase.execSQL("CREATE TABLE traniee(EMAIL TEXT PRIMARY KEY, FIRSTNAME TEXT, LASTNAME TEXT, PASSWORD TEXT NOT NULL,PHOTO BLOB,mobile_number TEXT,ADDRESS TEXT)");
         sqLiteDatabase.execSQL("CREATE TABLE instructor(EMAIL TEXT PRIMARY KEY, FIRSTNAME TEXT, LASTNAME TEXT, PASSWORD TEXT NOT NULL,PHOTO BLOB,mobile_number TEXT,ADDRESS TEXT,DEGREE TEXT,SPECIALIZATION TEXT )");
-        sqLiteDatabase.execSQL("CREATE TABLE Course(CNum INTEGER  PRIMARY KEY AUTOINCREMENT, Ctitle TEXT , CTopics TEXT, prerequisites TEXT, PHOTO BLOB, DEADLINECOURSE DATE, COURSESTARTDATE DATE, SCHEDULE_COURSE TIME, COURSEVENUE TEXT)");
 
         sqLiteDatabase.execSQL("CREATE TABLE available_Course(CNum INTEGER PRIMARY KEY , Ctitle TEXT,Name TEXT ,CTopics TEXT, prerequisites TEXT, PHOTO BLOB, DEADLINECOURSE DATE, COURSESTARTDATE DATE, SCHEDULE_COURSE TIME, COURSEVENUE TEXT, FOREIGN KEY (CNum) REFERENCES Course(CNum) ON DELETE CASCADE ON UPDATE CASCADE, FOREIGN KEY (Ctitle) REFERENCES Course(Ctitle) ON DELETE CASCADE ON UPDATE CASCADE" +
                 ",FOREIGN KEY (CTopics) REFERENCES Course(CTopics) ON DELETE CASCADE ON UPDATE CASCADE," +
                 "FOREIGN KEY (DEADLINECOURSE) REFERENCES Course(DEADLINECOURSE) ON DELETE CASCADE ON UPDATE CASCADE," +
                 "FOREIGN KEY (COURSESTARTDATE) REFERENCES Course(COURSESTARTDATE) ON DELETE CASCADE ON UPDATE CASCADE," +
                 "FOREIGN KEY (SCHEDULE_COURSE) REFERENCES Course(SCHEDULE_COURSE) ON DELETE CASCADE ON UPDATE CASCADE)");
+        sqLiteDatabase.execSQL("CREATE TABLE Course(CNum INTEGER  PRIMARY KEY AUTOINCREMENT, Ctitle TEXT , CTopics TEXT, prerequisites TEXT, PHOTO BLOB, DEADLINECOURSE DATE, COURSESTARTDATE DATE, SCHEDULE_COURSE TIME, COURSEVENUE TEXT)");
         sqLiteDatabase.execSQL("CREATE TABLE trainee_Course(CNum INTEGER PRIMARY KEY, Ctitle TEXT,EMAIL TEXT,SCHEDULE_COURSE TIME, FOREIGN KEY (CNum) REFERENCES Course(CNum) ON DELETE CASCADE ON UPDATE CASCADE,FOREIGN KEY (Ctitle) REFERENCES Course(Ctitle) ON DELETE CASCADE ON UPDATE CASCADE,FOREIGN KEY (EMAIL) REFERENCES traniee(EMAIL) ON DELETE CASCADE ON UPDATE CASCADE,FOREIGN KEY (SCHEDULE_COURSE) REFERENCES Course(SCHEDULE_COURSE) ON DELETE CASCADE ON UPDATE CASCADE)");
-        sqLiteDatabase.execSQL("CREATE TABLE accepted_trainee_Course(CNum INTEGER PRIMARY KEY, Ctitle TEXT,EMAIL TEXT, FOREIGN KEY (CNum) REFERENCES Course(CNum) ON DELETE CASCADE ON UPDATE CASCADE ,FOREIGN KEY (Ctitle) REFERENCES Course(Ctitle) ON DELETE CASCADE ON UPDATE CASCADE,FOREIGN KEY (EMAIL) REFERENCES traniee(EMAIL) ON DELETE CASCADE ON UPDATE CASCADE)");
+        sqLiteDatabase.execSQL("CREATE TABLE accepted_trainee_Course(CNum INTEGER PRIMARY KEY, Ctitle TEXT,EMAIL TEXT,SCHEDULE_COURSE TIME, FOREIGN KEY (CNum) REFERENCES Course(CNum) ON DELETE CASCADE ON UPDATE CASCADE ,FOREIGN KEY (Ctitle) REFERENCES Course(Ctitle) ON DELETE CASCADE ON UPDATE CASCADE,FOREIGN KEY (EMAIL) REFERENCES traniee(EMAIL) ON DELETE CASCADE ON UPDATE CASCADE,FOREIGN KEY (SCHEDULE_COURSE) REFERENCES Course(SCHEDULE_COURSE) ON DELETE CASCADE ON UPDATE CASCADE)");
         sqLiteDatabase.execSQL("CREATE TABLE Course_instructor(EMAIL TEXT , Ctitle TEXT, PRIMARY KEY(EMAIL, Ctitle), FOREIGN KEY (EMAIL) REFERENCES instructor(EMAIL) ON DELETE CASCADE ON UPDATE CASCADE, FOREIGN KEY (Ctitle) REFERENCES Course(Ctitle) ON DELETE CASCADE ON UPDATE CASCADE)");
     }
+
+    public void editavailabeCoursebyCnum(Course old, Course newCourse) {
+        SQLiteDatabase db = getWritableDatabase();
+        String sql = "UPDATE available_Course SET CTitle = ?, CTopics = ?, prerequisites = ?, " +
+                "DEADLINECOURSE = ?, COURSESTARTDATE = ?, SCHEDULE_COURSE = ?, " +
+                "COURSEVENUE = ?, photo = ? WHERE CNum = ?";
+        db.execSQL(sql, new Object[]{
+                newCourse.getCtitle(),
+                newCourse.getCTopics(),
+                newCourse.getPrerequisites(),
+                newCourse.getDeadline(),
+                newCourse.getStartDateCourse(),
+                newCourse.getSchedule(),
+                newCourse.getVenue(),
+                newCourse.getPhoto(),  // Set the byte array as the parameter
+                old.getCNum()
+        });
+    }
+
+    public void edittraineeemail(trainee old, trainee newUser) {
+        SQLiteDatabase db = getWritableDatabase();
+        String sql = "UPDATE trainee_Course SET EMAIL = ? WHERE EMAIL = ?";
+
+        db.execSQL(sql, new Object[]{
+                newUser.getEmail(),
+                old.getEmail()
+        });
+    }
+
+    public void editacceptedtraineeemail(trainee old, trainee newUser) {
+        SQLiteDatabase db = getWritableDatabase();
+        String sql = "UPDATE accepted_trainee_Course SET EMAIL = ? WHERE EMAIL = ?";
+
+        db.execSQL(sql, new Object[]{
+                newUser.getEmail(),
+                old.getEmail()
+        });
+    }
+    public void edittrineecoursebyCnum(Course old, Course newCourse) {
+        SQLiteDatabase db = getWritableDatabase();
+        String sql = "UPDATE trainee_Course SET CTitle = ?, SCHEDULE_COURSE = ? WHERE CNum = ?";
+        db.execSQL(sql, new Object[]{
+                newCourse.getCtitle(),
+                newCourse.getSchedule(),
+                old.getCNum()
+        });
+    }
+
+//    public void editaccepted_trineecoursebyCnum(Course old, Course newCourse) {
+//        SQLiteDatabase db = getWritableDatabase();
+//        String sql = "UPDATE accepted_trainee_Course SET CTitle = ?, SCHEDULE_COURSE = ? WHERE CNum = ?";
+//        db.execSQL(sql, new Object[]{
+//                newCourse.getCtitle(),
+//                newCourse.getSchedule(),
+//                old.getCNum()
+//        });
+//    }
 
     public Cursor history() {
         SQLiteDatabase sqLiteDatabase = getReadableDatabase();
@@ -55,15 +117,46 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
     }
 
+    public String get_inputdate(){
+        String date = null;
+        SQLiteDatabase sqLiteDatabase = getReadableDatabase();
+        String inputDate = "SELECT available_Course.COURSESTARTDATE FROM available_Course ";
+        Cursor c =sqLiteDatabase.rawQuery(inputDate, null);
+        while (c.moveToNext()){
+            date=c.getString(0);
+        }
+
+        c.close();
+        return date;
+
+    }
     public Cursor view_courses_tougth(trainee t) {
         SQLiteDatabase sqLiteDatabase = getReadableDatabase();
-        long currentTimeMillis = System.currentTimeMillis() / 1000;
 
+        String inputDate = get_inputdate();
+       // sqLiteDatabase.execSQL(inputDate);
+        String outputFormat = "yyyy-MM-dd";
+            if(inputDate == null){
+                inputDate ="00/0/0000";
+            }
+
+            SimpleDateFormat inputDateFormat = new SimpleDateFormat("dd/M/yyyy");
+            SimpleDateFormat outputDateFormat = new SimpleDateFormat(outputFormat);
+            Date date = null;
+            try {
+                date = inputDateFormat.parse(inputDate);
+            } catch (ParseException e) {
+                throw new RuntimeException(e);
+            }
+
+         String outputDate = outputDateFormat.format(date);
+         LocalDate currentDate = LocalDate.now();
         String s = "SELECT accepted_trainee_Course.Ctitle " +
                 "FROM accepted_trainee_Course " +
                 "JOIN available_Course ON available_Course.Ctitle = accepted_trainee_Course.Ctitle " +
-                "WHERE accepted_trainee_Course.EMAIL = \"" + t.getEmail() + "\" AND " +
-                "available_Course.COURSESTARTDATE <= " + currentTimeMillis + ";";
+                "WHERE accepted_trainee_Course.EMAIL = '" + t.getEmail() + "' AND " +
+                "'" + outputDate + "' < '" + currentDate + "';";
+
 
         return sqLiteDatabase.rawQuery(s, null);
     }
@@ -82,7 +175,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     public Cursor view_student_for_any_ins(instructor c) {
         SQLiteDatabase sqLiteDatabase = getReadableDatabase();
         String name = c.getFirst_name()+" "+c.getLast_name();
-        String s = "SELECT traniee.FIRSTNAME, traniee.LASTNAME " +
+        String s = "SELECT traniee.FIRSTNAME, traniee.LASTNAME,available_Course.Ctitle  " +
                 "FROM traniee " +
                 "JOIN accepted_trainee_Course ON traniee.EMAIL = accepted_trainee_Course.EMAIL " +
                 "JOIN available_Course ON available_Course.Ctitle = accepted_trainee_Course.Ctitle " +
@@ -101,10 +194,14 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 "JOIN Course ON Course_instructor.Ctitle = Course.Ctitle " +
                 "WHERE Course.Ctitle = ?";
 
-        Cursor cursor = sqLiteDatabaseR.rawQuery(sql_query2, new String[]{courseTitle});
+//        String sql_query2 = "SELECT Course_instructor.EMAIL FROM Course_instructor " +
+//                "JOIN Course ON Course_instructor.Ctitle = Course.Ctitle " +
+//                "WHERE Course.Ctitle = ?";
+
+       Cursor cursor = sqLiteDatabaseR.rawQuery(sql_query2, new String[]{courseTitle});
 
         while (cursor.moveToNext()) {
-            String instructorName = cursor.getString(0) +" "+ cursor.getString(1);
+            String instructorName = cursor.getString(0) /*+" "+ cursor.getString(1)*/;
             instructorNames.add(instructorName);
         }
 
@@ -115,7 +212,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     public String preq(String title) { //read from database it returns cursor object
         String preq = null;
         SQLiteDatabase sqLiteDatabase = getReadableDatabase();
-        String q ="SELECT prerequisites FROM Course where Course.Ctitle = ?";
+        String q ="SELECT prerequisites FROM available_Course where available_Course.Ctitle = ?";
         Cursor cursor = sqLiteDatabase.rawQuery(q , new String[]{title}); //null value returned when an error ocurred
         while (cursor.moveToNext()) {
             preq = cursor.getString(0);
@@ -123,6 +220,19 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         cursor.close();
         return preq;
     }
+
+    public String returntitlesfortrainee(String email) {
+        String preq = null;
+        SQLiteDatabase sqLiteDatabase = getReadableDatabase();
+        String q ="SELECT Ctitle FROM accepted_trainee_Course where accepted_trainee_Course.EMAIL = ?";
+        Cursor cursor = sqLiteDatabase.rawQuery(q , new String[]{email});
+        while (cursor.moveToNext()) {
+            preq = cursor.getString(0);
+        }
+        cursor.close();
+        return preq;
+    }
+
 
 
     public boolean insertadmin(admin user) {
@@ -162,6 +272,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
             contentValues.put("CNum", course.getCNum());
             contentValues.put("Ctitle", course.getCtitle());
             contentValues.put("EMAIL", user.getEmail());
+            contentValues.put("SCHEDULE_COURSE", course.getSchedule());
             sqLiteDatabase.insert("accepted_trainee_Course", null, contentValues);
             return true;
         }
@@ -194,10 +305,10 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         return false;
     }
 
-    public boolean insertavailableCourse(Course course,String name) {
-        SQLiteDatabase sqLiteDatabaseR = getReadableDatabase();
-        Cursor cursor = sqLiteDatabaseR.rawQuery("SELECT * FROM available_Course WHERE Ctitle = \"" + course.getCtitle() + "\";", null);
-        if(!cursor.moveToFirst()) {
+    public void insertavailableCourse(Course course,String name) {
+//        SQLiteDatabase sqLiteDatabaseR = getReadableDatabase();
+//        Cursor cursor = sqLiteDatabaseR.rawQuery("SELECT * FROM available_Course WHERE Ctitle = \"" + course.getCtitle() + "\";", null);
+//        if(!cursor.moveToFirst()) {
             SQLiteDatabase sqLiteDatabase = getWritableDatabase();
             ContentValues contentValues = new ContentValues();
             contentValues.put("CNum", course.getCNum());
@@ -212,9 +323,9 @@ public class DataBaseHelper extends SQLiteOpenHelper {
             contentValues.put("COURSEVENUE", course.getVenue());
 
             sqLiteDatabase.insert("available_Course", null, contentValues);
-            return true;
-        }
-        return false;
+//            return true;
+//        }
+//        return false;
         // course.setCNum(String.valueOf(newRowId)); // Set the generated CNum value in the Course object
     }
 
@@ -535,6 +646,11 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
     public Cursor getAllAvailableCourses_trinee(trainee t) { //read from database it returns cursor object
         SQLiteDatabase sqLiteDatabase = getReadableDatabase();
+        return sqLiteDatabase.rawQuery("SELECT * FROM trainee_Course WHERE trainee_Course.EMAIL = \""+t.getEmail()+  "\";", null); //null value returned when an error ocurred
+    }
+
+    public Cursor getAllAvailableacceptedCourses_trinee(trainee t) { //read from database it returns cursor object
+        SQLiteDatabase sqLiteDatabase = getReadableDatabase();
         return sqLiteDatabase.rawQuery("SELECT * FROM accepted_trainee_Course WHERE accepted_trainee_Course.EMAIL = \""+t.getEmail()+  "\";", null); //null value returned when an error ocurred
     }
     public Cursor getAllAvailableCourses_trinee_foradmin() { //read from database it returns cursor object
@@ -638,6 +754,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     }
 
 
+
     public void edittrainee(trainee old, trainee newUser) {
         SQLiteDatabase db = getWritableDatabase();
         String sql = "UPDATE traniee SET EMAIL = ?, FIRSTNAME = ?, LASTNAME = ?, PASSWORD = ?, PHOTO = ?, mobile_number = ?, ADDRESS = ? WHERE EMAIL = ?";
@@ -668,12 +785,44 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         return null;
     }
 
-    public void deleteCourseByCNum(int cnum) {
+        public void deleteavailableCourseByCNum(int cnum) {
         SQLiteDatabase db = getWritableDatabase();
-        String sql = "DELETE FROM Course WHERE CNum = ?";
+        String sql = "DELETE FROM available_Course WHERE CNum = ?";
         db.execSQL(sql, new Object[]{cnum});
         db.close();
     }
+
+    public void deletetrineeCourseByCNum(int cnum) {
+        SQLiteDatabase db = getWritableDatabase();
+        String sql = "DELETE FROM trainee_Course WHERE CNum = ?";
+        db.execSQL(sql, new Object[]{cnum});
+        db.close();
+    }
+
+    public void deletetracceptedineeCourseByCNum(int cnum) {
+        SQLiteDatabase db = getWritableDatabase();
+        String sql = "DELETE FROM accepted_trainee_Course WHERE CNum = ?";
+        db.execSQL(sql, new Object[]{cnum});
+        db.close();
+    }
+
+
+
+    public boolean deleteCourseByCNum(int cnum) {
+        SQLiteDatabase db = getWritableDatabase();
+        String sql = "DELETE FROM Course WHERE CNum = ?";
+
+        try {
+            db.execSQL(sql, new Object[]{cnum});
+            return true; // Delete operation was successful
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false; // Delete operation failed
+        } finally {
+            db.close();
+        }
+    }
+
 
     public Cursor getRecentlyAddedCourses() {
         SQLiteDatabase sqLiteDatabase = getReadableDatabase();

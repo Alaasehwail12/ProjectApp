@@ -113,6 +113,8 @@ public class create_course_avaliable_fragment extends Fragment {
         done.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                c.setCNum(make_courses_avaliableFragment.coursera.getCNum());
                 if(degreeSpinner.getSelectedItem().toString().equals(" ")){
                     Toast toast =Toast.makeText(getActivity(),"No instructors to tech that course",Toast.LENGTH_SHORT);
                     toast.show();

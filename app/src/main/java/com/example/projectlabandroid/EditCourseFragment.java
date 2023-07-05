@@ -62,6 +62,8 @@ public class EditCourseFragment extends Fragment {
     private byte [] bytes;
    public static Course newCourse = new Course();
 
+   public static boolean isedited = false;
+
 
     private ActivityResultLauncher<Intent> activityResultLauncher;
 
@@ -129,6 +131,8 @@ public class EditCourseFragment extends Fragment {
         imagephoto = (ImageView) getActivity().findViewById(R.id.imageView6);
         Button uploadphoto = (Button) getActivity().findViewById(R.id.button4);
         Button editcourse = (Button) getActivity().findViewById(R.id.button5);
+
+
 
         CalendarView deadline =(CalendarView) getActivity().findViewById(R.id.etDeadline);
         CalendarView courseStartDate =(CalendarView) getActivity().findViewById(R.id.etStartDate);
@@ -270,11 +274,15 @@ public class EditCourseFragment extends Fragment {
                 newCourse.setPhoto(bytes);
                 Toast toast =Toast.makeText(getActivity(),"You edit a course successfully!",Toast.LENGTH_SHORT);
                 toast.show();
-
+                isedited=true;
                 if (allCourses.moveToFirst()) {
                     int courseIdIndex = allCourses.getColumnIndex("CNum");
                     int courseId = allCourses.getInt(courseIdIndex);
                     dbHelper.editCoursebyCnum(CourseFragment.c, newCourse,courseId,newCourse.getPhoto());
+                    dbHelper.editavailabeCoursebyCnum(CourseFragment.c, newCourse);
+                    dbHelper.edittrineecoursebyCnum(CourseFragment.c, newCourse);
+//                    dbHelper.editaccepted_trineecoursebyCnum(CourseFragment.c, newCourse);
+
                     CreateCourseFragment.course = newCourse;
 
                 }

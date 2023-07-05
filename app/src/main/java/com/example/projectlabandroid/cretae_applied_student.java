@@ -75,7 +75,7 @@ public class cretae_applied_student extends Fragment {
 
     public static String string = "";
     TextView course_titel;
-    String[] text2Elements;
+  //  String[] text2Elements;
     String preq;
     public static boolean isapplied= false;
     public static boolean time_conflict= false;
@@ -158,29 +158,26 @@ public class cretae_applied_student extends Fragment {
             @Override
             public void onClick(View view) {
 
+
                 String preq = dbHelper.preq(student_apply_for_course.c2.getCtitle());
 
                 preq =preq.replaceAll("\\s+", "").replaceAll(",", "");
                 string = string.replaceAll("\\s+", "").replaceAll(",", "");
-                text2Elements = string.split(",");
+                String[] text2Elements = string.split(",");
                 String[] text1Elements = preq.split(",");
 
                 Set<String> set1 = new HashSet<>(Arrays.asList(text1Elements));
                 Set<String> set2 = new HashSet<>(Arrays.asList(text2Elements));
-                text2.append(preq);
-                text2.append("\n");
-                text2.append(string);
-                text2.append("\n");
+                text2.setText(preq +"\n" + string +"\n");
+//                text2.append("\n");
+//                text2.append(string);
+//                text2.append("\n");
 
-                text2.append(trineelogin.tr.getEmail());
-                text2.append("\n");
-                text2.append(student_apply_for_course.c2.getCtitle());
                 if (set1.equals(set2) && time_conflict == false) {
                     Toast.makeText(requireContext(), "You  applied to this course", Toast.LENGTH_SHORT).show();
-
                     dbHelper.insertcourse_trinee(trineelogin.tr,student_apply_for_course.c2);
-
-                } else if(time_conflict == true){
+                }
+                else if(time_conflict == true){
                     Toast.makeText(requireContext(), "there is a time conflict", Toast.LENGTH_SHORT).show();
                     FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
                 }
@@ -188,10 +185,11 @@ public class cretae_applied_student extends Fragment {
                     Toast.makeText(requireContext(), "You cant applied to this course,You did not finish the prerequisites", Toast.LENGTH_SHORT).show();
                   //  text2.append("The contents of the texts are not the same.");
                 }
-//                FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
-//                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-//                fragmentTransaction.replace(R.id.frameLayout, new student_apply_for_course());
-//                fragmentTransaction.commit();
+                string = "";
+                FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.frameLayout, new student_apply_for_course());
+                fragmentTransaction.commit();
             }
         });
     }
@@ -222,9 +220,13 @@ public class cretae_applied_student extends Fragment {
 //            text2.append(student_apply_for_course.c2.getSchedule());
 //            text2.append("\n");
 //            text2.append(allCourses.getString(3));
-            String current = allCourses.getString(3);
 
-            if(current == student_apply_for_course.c2.getSchedule() && trineelogin.tr.getEmail()==allCourses.getString(2) && student_apply_for_course.c2 != null ){
+
+            String current = allCourses.getString(3);
+//            text2.append("current "+current);
+//            text2.append("\n");
+//            text2.append("mesh current "+student_apply_for_course.c2.getSchedule());
+            if(current.equals(student_apply_for_course.c2.getSchedule()) && trineelogin.tr.getEmail()==allCourses.getString(2) && student_apply_for_course.c2 != null ){
                 time_conflict=true;
             }
        }

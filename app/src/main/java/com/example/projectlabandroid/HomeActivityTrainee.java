@@ -8,6 +8,7 @@ import androidx.core.app.NotificationManagerCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import android.annotation.SuppressLint;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -16,6 +17,8 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.navigation.NavigationView;
@@ -45,6 +48,27 @@ public class HomeActivityTrainee extends AppCompatActivity {
         if(make_courses_avaliableFragment.NOTIFICATION_TITLE !="") {
             for (int i = 300; i < make_courses_avaliableFragment.i; i++) {
                 createNotification(i, make_courses_avaliableFragment.NOTIFICATION_TITLE, make_courses_avaliableFragment.NOTIFICATION_BODY[i - 300]);
+            }
+        }
+        DataBaseHelper dbHelper = new DataBaseHelper(HomeActivityTrainee.this, "Database", null, 1);
+
+//        TextView t = findViewById(R.id.textView15);
+//        t.append(dbHelper.returntitlesfortrainee(trineelogin.tr.getEmail()));
+//        t.append("\n");
+//        t.append(EditCourseFragment.newCourse.getCtitle());
+
+        if(EditCourseFragment.isedited == true) {
+            if (dbHelper.returntitlesfortrainee(trineelogin.tr.getEmail()).compareTo(EditCourseFragment.newCourse.getCtitle()) == 0) {
+                if (CourseFragment.NOTIFICATION_TITLE_edit != "") {
+                    for (int i = 400; i < CourseFragment.j_edit; i++) {
+                        createNotification(i, CourseFragment.NOTIFICATION_TITLE_edit, CourseFragment.NOTIFICATION_BODY_edit[i - 400]);
+                    }
+                }
+                if (CourseFragment.NOTIFICATION_TITLE_delete != "") {
+                    for (int i = 500; i < CourseFragment.j_delete; i++) {
+                        createNotification(i, CourseFragment.NOTIFICATION_TITLE_delete, CourseFragment.NOTIFICATION_BODY_delete[i - 500]);
+                    }
+                }
             }
         }
         getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, new ProfileFragment()).commit();

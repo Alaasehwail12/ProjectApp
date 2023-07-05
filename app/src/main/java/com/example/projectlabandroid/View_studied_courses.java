@@ -87,10 +87,9 @@ public class View_studied_courses extends Fragment {
             textView.append("Courses: "+allCourses.getString(0) +
                     "\n\n");
             textView.setBackground(ContextCompat.getDrawable(requireContext(), R.drawable.border)); // Set the border as desired (create a drawable XML file)
-            textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18); // Adjust the text size as desired
+            textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 22); // Adjust the text size as desired
             textView.setGravity(Gravity.CENTER);
             secondLinearLayout.addView(textView);
-
         }
     }
     @Override

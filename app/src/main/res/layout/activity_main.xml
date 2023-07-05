@@ -4,16 +4,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F7E4F4"
+    android:background="#1c111f"
     android:orientation="vertical"
     tools:context=".MainActivity"
     tools:ignore="ExtraText"> <!-- Add the background color here -->
 
     <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="wrap_content"
-        android:layout_height="552dp"
-        android:src="@drawable/logo" />
+        android:id="@+id/imageView18"
+        android:layout_width="match_parent"
+        android:layout_height="520dp"
+        app:srcCompat="@drawable/logos" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -22,12 +22,12 @@
 
         <Button
             android:id="@+id/startButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="283dp"
+            android:layout_height="82dp"
             android:layout_gravity="center"
-            android:backgroundTint="#F7E4F4"
+            android:backgroundTint="#1c111f"
             android:text="Start"
-            android:textColor="#FF07185A"
+            android:textColor="#D720AF"
             android:textSize="35sp"
             android:textStyle="bold" />
     </LinearLayout>

@@ -483,7 +483,6 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         return isAvailable;
     }
 
-
     public boolean isStudentRegesterd(String title, String email) {
         SQLiteDatabase sqLiteDatabase = getReadableDatabase();
         boolean isRegistered = false;
@@ -574,6 +573,14 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         return sqLiteDatabase.rawQuery(query, new String[]{email});
     }
 
+    public void removeCoursebyCnum(int id) {
+        SQLiteDatabase sqLiteDatabaseR = getReadableDatabase();
+        SQLiteDatabase sqLiteDatabase = getWritableDatabase();
+        Cursor cursor = sqLiteDatabaseR.rawQuery("SELECT * FROM Course "+ ";", null);
+        if (cursor.moveToFirst()) {
+            sqLiteDatabase.execSQL("DELETE FROM Course WHERE CNum = " + id +  ";");
+        }
+    }
 
     public void removeCourse_instructor() {
         SQLiteDatabase sqLiteDatabaseR = getReadableDatabase();
@@ -593,48 +600,73 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         }
     }
 
-    public void removetrinee_byemail(trainee t,Course c) {
+    public void removetrinee_byemail(trainee t, Course c) {
         SQLiteDatabase sqLiteDatabaseR = getReadableDatabase();
         SQLiteDatabase sqLiteDatabase = getWritableDatabase();
-        Cursor cursor = sqLiteDatabaseR.rawQuery("SELECT * FROM accepted_trainee_Course "+ ";", null);
+        Cursor cursor = sqLiteDatabaseR.rawQuery("SELECT * FROM accepted_trainee_Course;", null);
         if (cursor.moveToFirst()) {
-            sqLiteDatabase.execSQL("DELETE FROM accepted_trainee_Course WHERE accepted_trainee_Course.EMAIL = '" + t.getEmail() + "'accepted_trainee_Course.Ctitle = \""+c.getCtitle()+";");
+            sqLiteDatabase.execSQL("DELETE FROM accepted_trainee_Course WHERE accepted_trainee_Course.EMAIL = '" + t.getEmail() + "' AND accepted_trainee_Course.Ctitle = \"" + c.getCtitle() + "\";");
         }
     }
 
-    public void editCoursebyCnum(Course old, Course newCourse,int id,byte [] bytes) {
-        SQLiteDatabase db = getWritableDatabase();
-        String sql = "UPDATE COURSE SET  CTitle = ?, CTopics = ?, prerequisites = ?," +
-                " DEADLINECOURSE = ?,COURSESTARTDATE = ?,SCHEDULE_COURSE = ? , COURSEVENUE = ? , photo = \""+bytes+"\" WHERE CNum = ?";
-        db.execSQL(sql, new String[]{newCourse.getCtitle(), newCourse.getCTopics(),
-                newCourse.getPrerequisites(),newCourse.getDeadline(),newCourse.getStartDateCourse(),
-                newCourse.getSchedule(),newCourse.getVenue(), String.valueOf(old.getCNum())});
+    public void removewaitingtrinee_byemail(trainee t, Course c) {
+        SQLiteDatabase sqLiteDatabaseR = getReadableDatabase();
+        SQLiteDatabase sqLiteDatabase = getWritableDatabase();
+        Cursor cursor = sqLiteDatabaseR.rawQuery("SELECT * FROM trainee_Course;", null);
+        if (cursor.moveToFirst()) {
+            sqLiteDatabase.execSQL("DELETE FROM trainee_Course WHERE trainee_Course.EMAIL = '" + t.getEmail() + "' AND trainee_Course.Ctitle = \"" + c.getCtitle() + "\";");
+        }
     }
+
+
+    public void editCoursebyCnum(Course old, Course newCourse, int id, byte[] bytes) {
+        SQLiteDatabase db = getWritableDatabase();
+        String sql = "UPDATE COURSE SET CTitle = ?, CTopics = ?, prerequisites = ?, " +
+                "DEADLINECOURSE = ?, COURSESTARTDATE = ?, SCHEDULE_COURSE = ?, " +
+                "COURSEVENUE = ?, photo = ? WHERE CNum = ?";
+        db.execSQL(sql, new Object[]{
+                newCourse.getCtitle(),
+                newCourse.getCTopics(),
+                newCourse.getPrerequisites(),
+                newCourse.getDeadline(),
+                newCourse.getStartDateCourse(),
+                newCourse.getSchedule(),
+                newCourse.getVenue(),
+                bytes,  // Set the byte array as the parameter
+                old.getCNum()
+        });
+    }
+
 
     public void edittrainee(trainee old, trainee newUser) {
         SQLiteDatabase db = getWritableDatabase();
-        String sql = "UPDATE traniee SET EMAIL = ?, FIRSTNAME = ?, LASTNAME = ?, PASSWORD = ?,PHOTO = ?,mobile_number=?,ADDRESS=? WHERE EMAIL = ?";
-        db.execSQL(sql, new String[]{newUser.getEmail(), newUser.getFirst_name(), newUser.getLast_name(),
-                newUser.getPassword(),String.valueOf(newUser.getPhoto()),newUser.getMobile_number(),newUser.getAddress(), old.getEmail()});
+        String sql = "UPDATE traniee SET EMAIL = ?, FIRSTNAME = ?, LASTNAME = ?, PASSWORD = ?, PHOTO = ?, mobile_number = ?, ADDRESS = ? WHERE EMAIL = ?";
+
+
+        byte[] photoBytes = getByteArrayFromImage(newUser.getPhoto());
+        db.execSQL(sql, new Object[]{
+                newUser.getEmail(),
+                newUser.getFirst_name(),
+                newUser.getLast_name(),
+                newUser.getPassword(),
+                photoBytes,  // Set the byte array as the parameter
+                newUser.getMobile_number(),
+                newUser.getAddress(),
+                old.getEmail()
+        });
     }
 
 
-    private byte[] getByteArrayFromImage(byte [] bytes) {
-        Bitmap bitmapImageDB = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        bitmapImageDB.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
-        return byteArrayOutputStream.toByteArray();
-    }
 
-    public void editinstructor(instructor newUser,String email) {
-        SQLiteDatabase db = getWritableDatabase();
-        String sql = "UPDATE instructor SET EMAIL = ?, FIRSTNAME = ?, LASTNAME = ?, PASSWORD = ?," +
-                "PHOTO = ?,mobile_number=?,ADDRESS=?,DEGREE=?,SPECIALIZATION=? WHERE EMAIL = ?";
-        db.execSQL(sql, new String[]{newUser.getEmail(), newUser.getFirst_name(), newUser.getLast_name(),
-                newUser.getPassword(), String.valueOf(newUser.getPhoto()),newUser.getMobile_number(),newUser.getAddress(),newUser.getDegree(),newUser.getSpecialization(),email});
-        db.execSQL("UPDATE instructor SET EMAIL = '" + newUser.getEmail() + "' WHERE EMAIL = '" + email + "';");
+    private byte[] getByteArrayFromImage(byte[] image) {
+        if (image != null) {
+            Bitmap bitmap = BitmapFactory.decodeByteArray(image, 0, image.length);
+            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+            return stream.toByteArray();
+        }
+        return null;
     }
-
 
     public void deleteCourseByCNum(int cnum) {
         SQLiteDatabase db = getWritableDatabase();
@@ -649,9 +681,25 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     }
 
 
-
-
-
+    public void editinstructor(instructor newUser, String email) {
+        SQLiteDatabase db = getWritableDatabase();
+        String sql = "UPDATE instructor SET EMAIL = ?, FIRSTNAME = ?, LASTNAME = ?, PASSWORD = ?," +
+                "PHOTO = ?, mobile_number=?, ADDRESS=?, DEGREE=?, SPECIALIZATION=? WHERE EMAIL = ?";
+        // Convert the Bitmap photo to a byte array
+        byte[] photoBytes = getByteArrayFromImage(newUser.getPhoto());
+        db.execSQL(sql, new Object[]{
+                newUser.getEmail(),
+                newUser.getFirst_name(),
+                newUser.getLast_name(),
+                newUser.getPassword(),
+                photoBytes,  // Set the byte array as the parameter
+                newUser.getMobile_number(),
+                newUser.getAddress(),
+                newUser.getDegree(),
+                newUser.getSpecialization(),
+                email
+        });
+    }
 
 }
 

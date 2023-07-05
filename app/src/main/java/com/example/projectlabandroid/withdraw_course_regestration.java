@@ -71,7 +71,6 @@ public class withdraw_course_regestration extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         View v= inflater.inflate(R.layout.fragment_withdraw_course_regestration, container, false);
         secondLinearLayout = v.findViewById(R.id.secondLinearLayout80);
 
@@ -91,25 +90,27 @@ public class withdraw_course_regestration extends Fragment {
             text2.setText("Email: "+allCourses2.getString(2)+
                     "\nCourse Title: "+allCourses2.getString(1)+
                     "\n");
+
             text2.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18); // Adjust the text size as desired
             LinearLayout.LayoutParams layoutParam = new LinearLayout.LayoutParams(600, 300);
             layoutParam.setMargins(0, 0, 40, 0);
             text2.setLayoutParams(layoutParam);
             horizantal.addView(text2);
             horizantal.addView(image);
+            String title = allCourses2.getString(1);
 
             image.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     c=new Course();
-                    c.setCtitle(allCourses2.getString(1));
+                    c.setCtitle(title);
                     image.setImageResource(R.drawable.cancel_fill);
                     dbHelper.removetrinee_byemail(trineelogin.tr,c);
+                    secondLinearLayout.removeView(horizantal);
                 }
             });
 
-            horizantal.setBackground(ContextCompat.getDrawable(requireContext(), R.drawable.border)); // Set the border as desired (create a drawable XML file)
-
+            horizantal.setBackground(ContextCompat.getDrawable(requireContext(), R.drawable.border));
             secondLinearLayout.addView(horizantal);
         }
 

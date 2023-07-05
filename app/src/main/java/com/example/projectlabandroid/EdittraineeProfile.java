@@ -184,13 +184,8 @@ public class EdittraineeProfile extends Fragment {
                     }
                 }
             });
-            byte[] bytes = trineelogin.tr.getPhoto();
-//            if (bytes != null) {
-//                Bitmap bitmapImageDB = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-//                image_view2.setImageBitmap(bitmapImageDB);
-//            }else{
-               // image_view2.setImageResource(R.drawable.upload);
-         //   }
+        //    byte[] bytes = trineelogin.tr.getPhoto();
+
             canel.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

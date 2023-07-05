@@ -40,19 +40,20 @@
             android:textSize="20sp"
 
             tools:ignore="MissingConstraints" />
+
     </LinearLayout>
 
     <ImageView
         android:id="@+id/imageView5"
-        android:layout_width="233dp"
-        android:layout_height="175dp"
+        android:layout_width="203dp"
+        android:layout_height="213dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.089"
+        app:layout_constraintHorizontal_bias="0.076"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.028"
-        app:srcCompat="@drawable/logo" />
+        app:layout_constraintVertical_bias="0.06"
+        app:srcCompat="@drawable/coursegate" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

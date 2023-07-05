@@ -74,6 +74,10 @@ public class make_courses_avaliableFragment extends Fragment {
         return fragment;
     }
 
+    public static String NOTIFICATION_TITLE = "";
+    public static String NOTIFICATION_BODY []  = new String [20];
+
+    public static  int i  = 300;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -216,6 +220,9 @@ public class make_courses_avaliableFragment extends Fragment {
                     textView.setTextSize(22);
                     if(dbHelper.isCourseTitleAvailable(coursera.getCtitle())){
                         applied.setImageResource(R.drawable.tick_fill);
+                        NOTIFICATION_TITLE ="New Course is available";
+                        NOTIFICATION_BODY[i-300]= "The Course "+coursera.getCtitle()+"is available now! ";
+                        ++i;
                     }else {
                         FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
                         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();

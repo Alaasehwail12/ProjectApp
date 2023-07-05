@@ -259,13 +259,11 @@ public class EditInstructorProfile extends Fragment {
             }
         });
 
-        byte [] bytes = trineelogin.tr.getPhoto();
+        //byte [] bytes = trineelogin.tr.getPhoto();
         if(bytes != null ){
             Bitmap bitmapImageDB = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
             image_view2.setImageBitmap(bitmapImageDB);
         }
-
-
 
 
         canel.setOnClickListener(new View.OnClickListener() {

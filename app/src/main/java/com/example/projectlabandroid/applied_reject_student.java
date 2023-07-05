@@ -140,6 +140,7 @@ public class applied_reject_student extends Fragment {
                         c.setCtitle(title);
                         t=new trainee();
                         t.setEmail(email);
+                        dbHelper.removewaitingtrinee_byemail(t,c);
 
                         secondLinearLayout.removeView(horizantal);
                         NOTIFICATION_TITLE_reject = "YOU ARE REJECTED!!";
@@ -160,6 +161,7 @@ public class applied_reject_student extends Fragment {
                         t.setEmail(email);
 
                         dbHelper.insertcourse_trinee_admin(t,c);
+                        dbHelper.removewaitingtrinee_byemail(t,c);
                         secondLinearLayout.removeView(horizantal);
                         NOTIFICATION_TITLE_accepet = "YOU ARE ACCEPTED!!";
                         NOTIFICATION_BODY_accept[accept-100] = "YOU ARE ACCEPTED IN "+c.getCtitle()+" COURSE!!";

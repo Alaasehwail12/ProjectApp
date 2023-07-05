@@ -28,9 +28,9 @@
                         android:title="Studied Courses" />
 
                     <item
-                        android:id="@+id/notification"
-                        android:icon="@drawable/baseline_notifications_active_24"
-                        android:title="Notification" />
+                        android:id="@+id/details"
+                        android:icon="@drawable/baseline_details_24"
+                        android:title="Details" />
 
                     <item
                         android:id="@+id/history"

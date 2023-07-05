@@ -14,10 +14,8 @@ import android.app.PendingIntent;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.os.SystemClock;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
 
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.navigation.NavigationView;
@@ -34,13 +32,21 @@ public class HomeActivityTrainee extends AppCompatActivity {
         DrawerLayout drawerLayout = findViewById(R.id.drawer_layout1);
         NavigationView navigationView = findViewById(R.id.navigation_view1);
 
-        for(int i = 100 ; i < applied_reject_student.accept ;i++){
-        createNotification(i,applied_reject_student.NOTIFICATION_TITLE_accepet, applied_reject_student.NOTIFICATION_BODY_accept[i-100]);
+        if(applied_reject_student.NOTIFICATION_TITLE_accepet != "") {
+            for (int i = 100; i < applied_reject_student.accept; i++) {
+                createNotification(i, applied_reject_student.NOTIFICATION_TITLE_accepet, applied_reject_student.NOTIFICATION_BODY_accept[i - 100]);
             }
-        for(int i = 200 ; i < applied_reject_student.reject ;i++) {
-            createNotification(i ,applied_reject_student.NOTIFICATION_TITLE_reject, applied_reject_student.NOTIFICATION_BODY_reject[i-200]);
         }
-
+        if(applied_reject_student.NOTIFICATION_TITLE_reject != "") {
+            for (int i = 200; i < applied_reject_student.reject; i++) {
+                createNotification(i, applied_reject_student.NOTIFICATION_TITLE_reject, applied_reject_student.NOTIFICATION_BODY_reject[i - 200]);
+            }
+        }
+        if(make_courses_avaliableFragment.NOTIFICATION_TITLE !="") {
+            for (int i = 300; i < make_courses_avaliableFragment.i; i++) {
+                createNotification(i, make_courses_avaliableFragment.NOTIFICATION_TITLE, make_courses_avaliableFragment.NOTIFICATION_BODY[i - 300]);
+            }
+        }
         getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, new ProfileFragment()).commit();
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -72,8 +78,8 @@ public class HomeActivityTrainee extends AppCompatActivity {
                     case R.id.viewApplied:
                         getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, new withdraw_course_regestration()).commit();
                         break;
-                    case R.id.notification:
-                        getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, new Notifiaction()).commit();
+                    case R.id.details:
+                        getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, new Details()).commit();
                         break;
                     case R.id.logout:
                         startActivity(new Intent(HomeActivityTrainee.this, logIn.class));
